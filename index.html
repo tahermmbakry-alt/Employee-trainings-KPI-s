@@ -1,1670 +1,290 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفريق التنفيذي للتحول الرقمي – وزارة النقل والاتصالات وتقنية المعلومات - منصة التقييم المركزية للدورات وورش العمل 2026</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>منظومة إدارة المواهب والهيكل الوظيفي والتقييم - v6 Dashboard 2.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;950&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;direction:rtl}
-body{font-family:"Segoe UI","Arial",sans-serif;background:#F0F4FA;color:#1A1A2E;font-size:14px;line-height:1.6}
-.app{min-height:100vh;display:flex;flex-direction:column}
-.topbar{background:#003087;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.tt{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
-.ts{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
-.rtog{display:flex;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden}
-.rtb{padding:7px 14px;font-size:12px;font-family:inherit;border:none;cursor:pointer;color:rgba(255,255,255,.7);background:transparent}
-.rtb.on{background:#fff;color:#003087;font-weight:700}
-.sbar{padding:6px 20px;background:#E8EFF9;border-bottom:1px solid #D0DBF0;font-size:12px;color:#555;display:flex;align-items:center;gap:8px}
-.content{flex:1;padding:20px;max-width:900px;margin:0 auto;width:100%}
-.view{display:none}.view.on{display:block}
-.card{background:#fff;border:1px solid #E0E8F0;border-radius:12px;padding:16px 18px;margin-bottom:14px}
-.cblue{background:#EAF1FB;border-color:#B5D4F4}
-.cgreen{background:#EAF5EE;border-color:#A8D8B8}
-.cpurple{background:#F0EEFF;border-color:#C4B8F4}
-.cyellow{background:#FFFBEA;border-color:#F0D060}
-.sec{font-size:13px;font-weight:700;color:#003087;padding:8px 0;border-bottom:2px solid #E0E8F0;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.sec-l{display:flex;align-items:center;gap:7px}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.lbl{font-size:12px;font-weight:600;color:#555;margin-bottom:5px}
-.req{color:#DC3545;margin-right:2px}
-input[type=text],select,textarea{width:100%;padding:9px 12px;border-radius:8px;border:1px solid #D0DBF0;background:#F8FAFD;font-size:13px;color:#1A1A2E;font-family:inherit;transition:border-color .2s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#003087;background:#fff}
-textarea{min-height:56px;resize:vertical}
-.bp{background:#003087;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s}
-.bp:hover{background:#00247A}
-.bp:disabled{opacity:.5;cursor:not-allowed}
-.bp-full{width:100%;margin-bottom:8px}
-.bpg{background:#0F6E56}.bpg:hover{background:#0A5240}
-.bpp{background:#534AB7}.bpp:hover{background:#3E379A}
-.bpr{background:#A32D2D}.bpr:hover{background:#7A1F1F}
-.bpa{background:#854F0B}.bpa:hover{background:#633806}
-.bs{background:#F0F4FA;color:#003087;border:1px solid #D0DBF0;padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit}
-.bs:hover{background:#E0E8F5}
-.exprow{display:flex;gap:8px;margin-top:10px}
-.exprow .bs{flex:1;text-align:center}
-.bdg{display:inline-block;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:700}
-.b1{background:#D4EDDA;color:#155724}.b2{background:#D0E4FB;color:#003087}
-.b3{background:#FFF3CD;color:#856404}.b4{background:#F8D7DA;color:#721C24}
-.b5{background:#D1F2E8;color:#0A5240}.b6{background:#E8E4FF;color:#3E379A}
-.b7{background:#FFF3E0;color:#7A3800}
-.toast{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;font-weight:600;display:none}
-.tok{display:block;background:#D4EDDA;color:#155724;border:1px solid #A8D8B8}
-.ter{display:block;background:#F8D7DA;color:#721C24;border:1px solid #F0B4BA}
-.tin{display:block;background:#D0E4FB;color:#003087;border:1px solid #B5D4F4}
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.krow5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
-.kc{background:#fff;border:1px solid #E0E8F0;border-radius:10px;padding:14px 8px;text-align:center}
-.kv{font-size:24px;font-weight:800;color:#003087}.kl{font-size:11px;color:#888;margin-top:3px}
-.tw{background:#fff;border:1px solid #E0E8F0;border-radius:12px;overflow:hidden;margin-bottom:14px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-th{background:#003087;color:#fff;padding:10px;text-align:right;font-weight:700}
-td{padding:8px 10px;border-bottom:1px solid #F0F4FA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#F8FAFD}
-.pbwrap{background:#F0F4FA;padding:10px 18px 6px}
-.pbrow{display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:5px}
-.pbtr{height:5px;background:#E0E8F0;border-radius:3px;overflow:hidden;margin-bottom:8px}
-.pbfi{height:100%;border-radius:3px;transition:width .3s}
-.psteps{display:flex;border-radius:10px;overflow:hidden;border:1px solid #E0E8F0;margin-bottom:14px}
-.ps{flex:1;padding:9px 6px;text-align:center;font-size:12px;color:#888;background:#F8FAFD;border-left:1px solid #E0E8F0}
-.ps:last-child{border-left:none}
-.ps.done{background:#EAF5EE;color:#155724;font-weight:600}
-.ps.active{background:#003087;color:#fff;font-weight:700}
-.nrow{display:flex;gap:8px;padding:8px 0 12px}
-.nrow button{flex:1;padding:11px;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer}
-.np{background:#003087;color:#fff;border:none;font-weight:700}
-.np:hover{background:#00247A}
-.ns{background:#F0F4FA;color:#003087;border:1px solid #D0DBF0}
-.qcard{background:#fff;border:1.5px solid #E0E8F0;border-radius:12px;padding:16px;margin-bottom:10px}
-.qtxt{font-size:14px;font-weight:700;line-height:1.6;margin-bottom:14px}
-.opts{display:flex;flex-direction:column;gap:8px}
-.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid #E0E8F0;cursor:pointer;background:#FAFCFF;transition:all .15s}
-.opt:hover{background:#F0F4FA;border-color:#B5D4F4}
-.opt.sel{background:#EAF1FB;border-color:#003087}
-.opt.ok{background:#EAF5EE;border-color:#1D6F42}
-.opt.ng{background:#FDF0F0;border-color:#A32D2D}
-.ol{width:22px;height:22px;border-radius:50%;background:#F0F4FA;border:1.5px solid #D0DBF0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#888;flex-shrink:0;margin-top:1px}
-.opt.sel .ol{background:#003087;color:#fff;border-color:#003087}
-.opt.ok .ol{background:#1D6F42;color:#fff;border-color:#1D6F42}
-.opt.ng .ol{background:#A32D2D;color:#fff;border-color:#A32D2D}
-.ot{font-size:13px;line-height:1.5}
-.fb{margin-top:10px;padding:10px 13px;border-radius:8px;font-size:12px;line-height:1.6}
-.fbok{background:#EAF5EE;color:#155724;border:1px solid #A8D8B8}
-.fbng{background:#FDF0F0;color:#721C24;border:1px solid #F0B4BA}
-.ota{width:100%;min-height:70px;padding:10px;border-radius:8px;border:1.5px solid #D0DBF0;background:#F8FAFD;font-size:13px;font-family:inherit;resize:vertical;margin-bottom:8px}
-.ota:focus{outline:none;border-color:#003087}
-.scrow{display:flex;gap:8px;margin-top:10px}
-.scb{width:42px;height:42px;border-radius:8px;border:1.5px solid #D0DBF0;background:#F8FAFD;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
-.scb:hover{border-color:#003087;color:#003087}
-.scb.on{background:#003087;color:#fff;border-color:#003087}
-.evalbox{background:#fff;border:1.5px solid #E0E8F0;border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.etitle{font-size:13px;font-weight:700;margin-bottom:3px}
-.esub{font-size:11px;color:#888;margin-bottom:8px}
-.stars{display:flex;gap:6px;margin-top:6px}
-.star{font-size:28px;cursor:pointer;color:#DDD;background:none;border:none;padding:2px;line-height:1;transition:color .15s}
-.star:hover{color:#C0A500}.star.on{color:#C0A500}
-.sc5{display:flex;gap:5px;margin-top:8px}
-.s5{flex:1;padding:8px 3px;border-radius:8px;border:1.5px solid #D0DBF0;background:#F8FAFD;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;transition:all .15s}
-.s5:hover{border-color:#003087;color:#003087}.s5.on{background:#003087;color:#fff;border-color:#003087}
-.ynrow{display:flex;gap:8px;margin-top:8px}
-.yn{flex:1;padding:9px;border-radius:8px;border:1.5px solid #D0DBF0;background:#F8FAFD;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;transition:all .15s}
-.yn:hover{border-color:#003087}.yn.on{background:#003087;color:#fff;border-color:#003087}
-.profbar{background:#EAF1FB;border:1px solid #B5D4F4;border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.ava{width:38px;height:38px;border-radius:50%;background:#003087;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
-.steprow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;border:1.5px solid #E0E8F0;background:#FAFCFF}
-.stepicon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
-.priv{background:#EAF5EE;border:1px solid #A8D8B8;border-radius:8px;padding:10px 13px;font-size:12px;color:#155724;display:flex;align-items:flex-start;gap:8px;margin-bottom:14px}
-.ebarrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #F0F4FA}
-.ebarrow:last-child{border-bottom:none}
-
-/* Previous Sessions Browser */
-.session-browser-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.session-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.session-search{max-width:260px;padding:8px 10px;border-radius:8px;border:1px solid #D0DBF0;background:#F8FAFD;font-size:12px;font-family:inherit}
-.session-list{max-height:320px;overflow:auto;border:1px solid #E0E8F0;border-radius:12px;background:#fff}
-.session-list table{margin:0;min-width:780px}
-.session-code{font-weight:800;color:#003087;letter-spacing:3px;background:#EAF1FB;border-radius:6px;padding:3px 7px;display:inline-block}
-.session-row-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-.session-empty{text-align:center;padding:22px;color:#888;font-size:13px;background:#FAFCFF;border:1px dashed #D0DBF0;border-radius:12px}
-.session-mini{font-size:11px;color:#777;margin-top:2px;line-height:1.5}
-/* Question Bank Editor */
-.qb-item{background:#fff;border:1px solid #E0E8F0;border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
-.qb-item:hover{border-color:#B5D4F4}
-.qb-num{display:inline-block;background:#003087;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:8px}
-.qb-q{font-size:13px;font-weight:600;color:#1A1A2E;margin-bottom:6px}
-.qb-opts{font-size:12px;color:#555;margin-bottom:4px}
-.qb-ans{font-size:12px;color:#1D6F42;font-weight:600}
-.qb-actions{display:flex;gap:6px;margin-top:8px}
-.qb-bank{background:#FFFBEA;border:1px solid #F0D060;border-radius:10px;padding:12px;margin-bottom:10px}
-.qb-bank-title{font-size:13px;font-weight:700;color:#7A3800;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
-.qb-bank-sub{font-size:11px;color:#A05010;margin-bottom:8px}
-.qb-bank-btns{display:flex;gap:6px;flex-wrap:wrap}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:14px;padding:20px;width:92%;max-width:560px;max-height:90vh;overflow-y:auto}
-.modal-title{font-size:15px;font-weight:700;color:#003087;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.opt-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.opt-row input{flex:1}
-.opt-row .ans-radio{width:18px;height:18px;cursor:pointer;flex-shrink:0}
-@media(max-width:600px){.r2{grid-template-columns:1fr}.krow5{grid-template-columns:1fr 1fr}.content{padding:12px}}
-
+body{font-family:'Cairo',sans-serif;background:#f8fafc}::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#f1f5f9}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:14px}.card{background:white;border:1px solid #e2e8f0;border-radius:1.5rem;box-shadow:0 10px 20px -18px #0f172a}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:.9rem;padding:.7rem 1rem;font-size:.78rem;font-weight:800;transition:.2s}.btn-primary{background:#4f46e5;color:white}.btn-primary:hover{background:#4338ca}.btn-dark{background:#0f172a;color:white}.btn-soft{background:#f1f5f9;color:#334155}.btn-danger{background:#fee2e2;color:#b91c1c}.tab-active{background:#4f46e5;color:white;box-shadow:0 10px 20px -14px #4f46e5}.tab-idle{color:#475569}.tab-idle:hover{background:#f8fafc;color:#0f172a}.org-node{display:inline-block;min-width:180px;background:#fff;border:1px solid #c7d2fe;border-radius:18px;padding:12px;box-shadow:0 8px 20px -16px #1e1b4b}.org-children{display:flex;gap:18px;justify-content:center;margin-top:18px;position:relative}.org-children:before{content:"";position:absolute;top:-9px;left:8%;right:8%;height:1px;background:#cbd5e1}.org-child{position:relative;text-align:center}.org-child:before{content:"";position:absolute;top:-18px;left:50%;height:18px;width:1px;background:#cbd5e1}.modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.field{width:100%;border:1px solid #e2e8f0;border-radius:.9rem;padding:.75rem;font-size:.78rem;font-weight:700;outline:none;background:white}.field:focus{box-shadow:0 0 0 3px #e0e7ff;border-color:#818cf8}.badge{font-size:.65rem;font-weight:900;padding:.25rem .55rem;border-radius:999px}.print-only{display:none}@media print{aside,header,.no-print,footer{display:none!important}main{box-shadow:none!important;border:none!important}.print-only{display:block}.card{break-inside:avoid}}
 </style>
 </head>
-<body>
-<div class="app">
-<div class="topbar">
-  <div>
-    <div class="tt"><i class="ti ti-broadcast"></i> الفريق التنفيذي للتحول الرقمي – وزارة النقل والاتصالات وتقنية المعلومات - منصة التقييم المركزية للدورات وورش العمل 2026</div>
-    <div class="ts">اختبار المتدرب قبل وبعد الدورة وتقييم الدورة</div>
-  </div>
-  <div class="rtog">
-    <button class="rtb" id="rb-adm" onclick="setRole('adm')"><i class="ti ti-shield"></i> مشرف</button>
-    <button class="rtb"    id="rb-qb"  onclick="setRole('qb')"><i class="ti ti-list-check"></i> الأسئلة</button>
-    <button class="rtb on"    id="rb-tr"  onclick="setRole('tr')"><i class="ti ti-user"></i> متدرب</button>
-  </div>
-</div>
-<div class="sbar">
-  <span id="sdot" style="width:8px;height:8px;border-radius:50%;background:#28A745;display:inline-block;flex-shrink:0"></span>
-  <span id="stxt">جاهز</span>
-</div>
-<div class="content">
-
-<div class="view" id="v-adm">
-  <div id="adm-toast" class="toast"></div>
-  <div class="sec"><div class="sec-l"><i class="ti ti-plus-circle"></i> إنشاء جلسة جديدة</div></div>
-  <div class="card">
-    <div class="r2">
-      <div><div class="lbl"><span class="req">*</span>اسم الدورة / الدفعة</div>
-        <input type="text" id="a-batch" placeholder="الإدارة بالأهداف ومؤشرات الأداء — دفعة 1 — 2026"></div>
-      <div><div class="lbl"><span class="req">*</span>اسم المدرب</div>
-        <input type="text" id="a-trainer" placeholder="اسم المدرب الكامل"></div>
-    </div>
-    <div class="r2">
-      <div><div class="lbl">تاريخ البداية</div><input type="text" id="a-start" placeholder="2025-06-10"></div>
-      <div><div class="lbl">الموعد النهائي</div><input type="text" id="a-deadline" placeholder="2025-06-20"></div>
-    </div>
-    <div><div class="lbl"><span class="req">*</span>بنك الأسئلة لهذه الجلسة</div>
-      <select id="a-qbank" style="margin-bottom:10px">
-        <option value="">— اختر بنك الأسئلة —</option>
-      </select>
-    </div>
-    <div id="a-qbank-preview" style="display:none" class="card cyellow" style="margin-top:0">
-      <div style="font-size:12px;font-weight:700;color:#7A3800;margin-bottom:4px" id="a-qbank-info"></div>
-    </div>
-    <button class="bp bp-full" onclick="createSession()"><i class="ti ti-key"></i> إنشاء الجلسة وتوليد رمز المشاركة</button>
-  </div>
-
-  <div class="sec"><div class="sec-l"><i class="ti ti-refresh"></i> تحميل جلسة موجودة</div></div>
-  <div class="card">
-    <div class="r2">
-      <div><div class="lbl">رمز الجلسة (6 أحرف)</div>
-        <input type="text" id="a-code" placeholder="AGILE3"
-          style="letter-spacing:4px;text-transform:uppercase;text-align:center;font-size:18px;font-weight:700"
-          maxlength="6" oninput="this.value=this.value.toUpperCase()"></div>
-      <div style="display:flex;align-items:flex-end">
-        <button class="bp" onclick="loadSession()"><i class="ti ti-download"></i> تحميل البيانات</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card cblue">
-    <div class="session-browser-head">
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+<header class="no-print bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 text-white shadow-2xl sticky top-0 z-40 border-b border-indigo-400/20">
+  <div class="max-w-7xl mx-auto h-20 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg"><i class="fa-solid fa-sitemap text-xl"></i></div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#003087"><i class="ti ti-history"></i> استعراض بيانات كافة الجلسات السابقة</div>
-        <div class="session-mini">اختر أي جلسة من القائمة أدناه لتحميل بياناتها وسجلات المتدربين مباشرة.</div>
-      </div>
-      <div class="session-tools">
-        <input type="text" id="session-search" class="session-search" placeholder="بحث بالرمز / الدورة / المدرب" oninput="renderSessionHistory()">
-        <button class="bs" onclick="renderSessionHistory()"><i class="ti ti-refresh"></i> تحديث القائمة</button>
+        <h1 class="text-lg sm:text-2xl font-black">منظومة إدارة المواهب والهيكل والتقييم المؤسسي</h1>
+        <p class="text-xs text-indigo-200 font-semibold">اختبارات الموظفين، الهيكل الوظيفي، الوصف الوظيفي، KPIs، وتبادل البيانات Excel / CSV / JSON</p>
       </div>
     </div>
-    <div id="session-history-wrap" class="session-empty">جاري تحميل الجلسات السابقة...</div>
-  </div>
-
-  <div id="adm-panel" style="display:none">
-    <div id="adm-banner" class="card cblue"></div>
-    <div class="sec"><div class="sec-l"><i class="ti ti-chart-bar"></i> ملخص الأداء الكامل</div></div>
-    <div class="krow5">
-      <div class="kc"><div class="kv" id="k-tot">0</div><div class="kl">مسجلون</div></div>
-      <div class="kc"><div class="kv" id="k-pre">0</div><div class="kl">أكملوا قبل</div></div>
-      <div class="kc"><div class="kv" id="k-post">0</div><div class="kl">أكملوا بعد</div></div>
-      <div class="kc"><div class="kv" id="k-gap">—</div><div class="kl">متوسط الفجوة</div></div>
-      <div class="kc"><div class="kv" id="k-eval">—</div><div class="kl">تقييم الدورة</div></div>
-    </div>
-    <div class="sec"><div class="sec-l"><i class="ti ti-star"></i> ملخص تقييم الدورة والمدرب</div></div>
-    <div id="eval-summary" class="card"></div>
-    <div class="sec">
-      <div class="sec-l"><i class="ti ti-users"></i> سجلات المتدربين</div>
-      <button class="bs" onclick="loadSession()"><i class="ti ti-refresh"></i> تحديث</button>
-    </div>
-    <div class="tw"><table>
-      <thead><tr>
-        <th style="width:14%">الاسم</th><th style="width:12%">الرقم الوظيفي</th><th style="width:12%">الإدارة</th>
-        <th style="width:7%">قبل</th><th style="width:7%">بعد</th><th style="width:8%">فجوة</th>
-        <th style="width:9%">الدورة</th><th style="width:9%">المدرب</th>
-        <th style="width:10%">الحالة</th><th style="width:12%">تاريخ</th>
-      </tr></thead>
-      <tbody id="adm-tbody"></tbody>
-    </table></div>
-    <div class="exprow">
-      <button class="bs" onclick="doExport('csv')"><i class="ti ti-table-export"></i> CSV</button>
-      <button class="bs" onclick="doExport('json')"><i class="ti ti-braces"></i> JSON</button>
-      <button class="bs" onclick="doExport('copy')"><i class="ti ti-copy"></i> نسخ</button>
+    <div class="hidden md:flex gap-3 text-right">
+      <div class="bg-slate-900/70 border border-slate-700 rounded-2xl px-4 py-2"><span class="block text-[10px] text-slate-400 font-black">الموظفون</span><strong id="headEmployees" class="text-emerald-300">0</strong></div>
+      <div class="bg-slate-900/70 border border-slate-700 rounded-2xl px-4 py-2"><span class="block text-[10px] text-slate-400 font-black">متوسط الأداء</span><strong id="headPerformance" class="text-amber-300">0%</strong></div>
     </div>
   </div>
+</header>
+<div class="flex flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
+  <aside class="no-print w-72 flex-shrink-0 hidden lg:block">
+    <nav class="sticky top-28 card p-4 space-y-1.5">
+      <p class="text-[10px] font-black text-slate-400 px-3 mb-2">الوحدات الرئيسية</p>
+      <button data-tab="dashboard" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-active"><i class="fa-solid fa-chart-line ml-3"></i>لوحة التحكم</button>
+      <button data-tab="org" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-sitemap ml-3"></i>الهيكل الوظيفي</button>
+      <button data-tab="employees" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-users ml-3"></i>الموظفون</button>
+      <button data-tab="jobs" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-id-card-clip ml-3"></i>الوصف الوظيفي</button>
+      <button data-tab="tests" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-clipboard-question ml-3"></i>الاختبارات وبنك الأسئلة</button>
+      <button data-tab="performance" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-bullseye ml-3"></i>تقييم الأداء KPIs</button>
+      <button data-tab="gap" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-chart-gantt ml-3"></i>تحليل فجوات المهارات</button>
+      <button data-tab="training" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-graduation-cap ml-3"></i>ورش العمل والبرامج</button>
+      <button data-tab="succession" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-table-cells-large ml-3"></i>التعاقب و 9-Box</button>
+      <button data-tab="surveys" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-comment-dots ml-3"></i>استمارات الرضا</button>
+      <button data-tab="budget" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-wallet ml-3"></i>الموازنة</button>
+      <button data-tab="data" class="navbtn w-full flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all tab-idle"><i class="fa-solid fa-file-export ml-3"></i>تصدير واستيراد البيانات</button>
+    </nav>
+  </aside>
+  <main class="flex-1 min-w-0 card p-5 sm:p-6 overflow-hidden">
+    <div class="no-print lg:hidden flex overflow-x-auto gap-2 pb-4 mb-5 border-b border-slate-100" id="mobileTabs"></div>
+    <div id="toast" class="hidden fixed bottom-5 left-5 z-50 bg-slate-950 text-white rounded-2xl px-5 py-3 shadow-2xl text-xs font-bold"></div>
+    <section id="tab-dashboard" class="space-y-6"></section>
+    <section id="tab-org" class="hidden space-y-6"></section>
+    <section id="tab-employees" class="hidden space-y-6"></section>
+    <section id="tab-jobs" class="hidden space-y-6"></section>
+    <section id="tab-tests" class="hidden space-y-6"></section>
+    <section id="tab-performance" class="hidden space-y-6"></section>
+    <section id="tab-gap" class="hidden space-y-6"></section>
+    <section id="tab-training" class="hidden space-y-6"></section>
+    <section id="tab-succession" class="hidden space-y-6"></section>
+    <section id="tab-surveys" class="hidden space-y-6"></section>
+    <section id="tab-budget" class="hidden space-y-6"></section>
+    <section id="tab-data" class="hidden space-y-6"></section>
+  </main>
 </div>
-
-<div class="view" id="v-qb">
-  <div id="qb-toast" class="toast"></div>
-
-  <div class="sec">
-    <div class="sec-l"><i class="ti ti-library"></i> بنوك الأسئلة المحفوظة</div>
-    <button class="bp bpa" onclick="showNewBankModal()"><i class="ti ti-plus"></i> بنك جديد</button>
-  </div>
-  <div id="qb-banks-list">
-    <div style="text-align:center;padding:20px;color:#888;font-size:13px">
-      <i class="ti ti-books" style="font-size:24px;display:block;margin-bottom:8px"></i>
-      لا بنوك أسئلة بعد — أنشئ بنكاً جديداً
-    </div>
-  </div>
-
-  <div class="sec"><div class="sec-l"><i class="ti ti-file-import"></i> استيراد / تصدير</div></div>
-  <div class="card">
-    <div class="r2">
-      <div>
-        <div class="lbl">استيراد بنك أسئلة من ملف JSON أو CSV أو XLSX</div>
-        <input type="file" id="qb-import-file" accept=".json,.csv,.xlsx,.xls" onchange="importBank()" style="font-size:12px;padding:6px">
-        <div style="font-size:11px;color:#888;margin-top:6px;line-height:1.6">
-          أعمدة CSV/XLSX المطلوبة: bank_name, question_type, section, question, option_1, option_2, option_3, option_4, correct_answer, explanation, placeholder, scale_min, scale_max
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap">
-        <button class="bp" onclick="exportAllBanks()"><i class="ti ti-download"></i> JSON</button>
-        <button class="bp bpg" onclick="exportAllBanksCSV()"><i class="ti ti-table-export"></i> CSV</button>
-        <button class="bp bpp" onclick="exportAllBanksXLSX()"><i class="ti ti-file-spreadsheet"></i> XLSX</button>
-        <button class="bs" onclick="downloadQuestionsTemplate('csv')"><i class="ti ti-file-type-csv"></i> قالب CSV</button>
-        <button class="bs" onclick="downloadQuestionsTemplate('xlsx')"><i class="ti ti-file-spreadsheet"></i> قالب XLSX</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="view on" id="v-tr">
-  <div id="tr-toast" class="toast"></div>
-  <div id="tr-s1">
-    <div style="text-align:center;padding:24px 0 16px">
-      <div style="width:56px;height:56px;border-radius:50%;background:#EAF1FB;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <i class="ti ti-user-check" style="font-size:26px;color:#003087"></i>
-      </div>
-      <div style="font-size:17px;font-weight:700;color:#003087;margin-bottom:4px">بوابة المتدرب</div>
-      <div style="font-size:13px;color:#666">أدخل رمز الجلسة ورقمك الوظيفي للمتابعة من حيث توقفت</div>
-    </div>
-    <div class="card">
-      <div class="priv"><i class="ti ti-lock" style="flex-shrink:0;margin-top:1px"></i> بياناتك محمية — لا يطّلع عليها المتدربون الآخرون</div>
-      <div class="r2">
-        <div><div class="lbl"><span class="req">*</span>رمز الجلسة</div>
-          <input type="text" id="tr-code" placeholder="AGILE3"
-            style="text-align:center;font-size:22px;font-weight:700;letter-spacing:8px;text-transform:uppercase"
-            maxlength="6" oninput="this.value=this.value.toUpperCase()"></div>
-        <div><div class="lbl">الرقم الوظيفي (للعودة لسجلك)</div>
-          <input type="text" id="tr-eid-l" placeholder="MTCIT-1234 — فارغ إن كنت جديداً"></div>
-      </div>
-      <button class="bp bp-full" onclick="trJoin()"><i class="ti ti-arrow-left"></i> تحقق واستأنف</button>
-    </div>
-  </div>
-  <div id="tr-s2" style="display:none">
-    <div id="tr-sess-banner" class="card cblue" style="margin-bottom:14px"></div>
-    <div class="sec"><div class="sec-l"><i class="ti ti-id-badge"></i> بياناتك الشخصية</div></div>
-    <div class="card">
-      <div class="r2">
-        <div><div class="lbl"><span class="req">*</span>الاسم الكامل</div><input type="text" id="tr-name" placeholder="محمد بن سالم البوسعيدي"></div>
-        <div><div class="lbl"><span class="req">*</span>الرقم الوظيفي</div><input type="text" id="tr-eid" placeholder="MTCIT-1234"></div>
-      </div>
-      <div class="r2">
-        <div><div class="lbl"><span class="req">*</span>الإدارة</div>
-          <select id="tr-dept">
-            <option value="">— اختر —</option>
-            <option>دائرة التحول الرقمي</option><option>دائرة الخدمات الرقمية</option>
-            <option>دائرة البنية التحتية</option><option>دائرة الأمن السيبراني</option>
-            <option>دائرة مشاريع الطرق</option><option>دائرة النقل البري</option>
-            <option>دائرة النقل البحري</option><option>الإدارة المالية</option>
-            <option>الموارد البشرية</option><option>أخرى</option>
-          </select></div>
-        <div><div class="lbl">المسمى الوظيفي</div><input type="text" id="tr-title" placeholder="مدير مشاريع"></div>
-      </div>
-      <button class="bp bp-full" onclick="trRegister()"><i class="ti ti-player-play"></i> تأكيد وبدء الاختبار</button>
-    </div>
-  </div>
-  <div id="tr-s3" style="display:none">
-    <div id="resume-banner" class="card cblue" style="margin-bottom:14px"></div>
-    <div style="font-size:14px;font-weight:700;color:#003087;margin-bottom:12px">وضعك الحالي في الدورة</div>
-    <div id="sr-pre" class="steprow">
-      <div class="stepicon" id="si-pre" style="background:#EAF5EE"><i class="ti ti-check" style="color:#1D6F42"></i></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700">اختبار قبل الورشة</div>
-        <div style="font-size:12px;color:#888" id="sub-pre">—</div></div>
-      <span id="bdg-pre" class="bdg b1">مكتمل</span>
-    </div>
-    <div id="sr-post" class="steprow">
-      <div class="stepicon" id="si-post" style="background:#F0F4FA"><i class="ti ti-clock" style="color:#888"></i></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700">اختبار بعد الورشة</div>
-        <div style="font-size:12px;color:#888" id="sub-post">في الانتظار</div></div>
-      <span id="bdg-post" class="bdg b3">في الانتظار</span>
-    </div>
-    <div id="sr-eval" class="steprow">
-      <div class="stepicon" id="si-eval" style="background:#F0EEFF"><i class="ti ti-star" style="color:#888"></i></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700">تقييم الدورة والمدرب</div>
-        <div style="font-size:12px;color:#888" id="sub-eval">متاح بعد اختبار بعد</div></div>
-      <span id="bdg-eval" class="bdg b4">غير متاح</span>
-    </div>
-    <div style="margin-top:16px" id="resume-btns"></div>
-  </div>
-  <div id="tr-s4" style="display:none">
-    <div id="tr-profbar" class="profbar"></div>
-    <div class="psteps"><div class="ps" id="ps1">اختبار قبل</div><div class="ps" id="ps2">اختبار بعد</div><div class="ps" id="ps3">تقييم الدورة</div></div>
-    <div class="pbwrap">
-      <div class="pbrow"><span id="tr-ql">السؤال 1</span><span id="tr-qs" style="color:#888"></span></div>
-      <div class="pbtr"><div class="pbfi" id="tr-pb" style="width:5%;background:#003087"></div></div>
-    </div>
-    <div id="tr-qa" style="padding:12px 0"></div>
-    <div class="nrow" id="tr-nav">
-      <button class="ns" id="tr-back" onclick="trNav(-1)" style="display:none"><i class="ti ti-arrow-right"></i> السابق</button>
-      <button class="np" id="tr-fwd" onclick="trNav(1)">التالي <i class="ti ti-arrow-left"></i></button>
-    </div>
-    <div id="tr-res" style="display:none"></div>
-  </div>
-  <div id="tr-s5" style="display:none">
-    <div id="tr-eval-prof" class="profbar"></div>
-    <div class="psteps">
-      <div class="ps done">اختبار قبل &#10003;</div>
-      <div class="ps done">اختبار بعد &#10003;</div>
-      <div class="ps active">تقييم الدورة</div>
-    </div>
-    <div class="card cpurple" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <i class="ti ti-star" style="font-size:20px;color:#534AB7"></i>
-        <div><div style="font-size:14px;font-weight:700;color:#3E379A">تقييم الدورة التدريبية والمدرب</div>
-          <div style="font-size:12px;color:#7E75CC">إجاباتك سرية — لتحسين الدورات القادمة</div></div>
-      </div>
-    </div>
-    <div id="eval-form"></div>
-    <button class="bp bpp bp-full" id="btn-eval" onclick="saveEval()"><i class="ti ti-send"></i> إرسال التقييم وإنهاء</button>
-    <div id="eval-done"></div>
-  </div>
-</div>
-
-<!-- New Bank Modal -->
-<div class="modal-overlay" id="modal-bank">
-  <div class="modal">
-    <div class="modal-title"><i class="ti ti-library"></i> <span id="modal-bank-title">إنشاء بنك أسئلة جديد</span></div>
-    <div class="lbl"><span class="req">*</span>اسم البنك</div>
-    <input type="text" id="mb-name" placeholder="مثال: الإدارة بالأهداف ومؤشرات الأداء — المستوى الأساسي" style="margin-bottom:12px">
-    <div class="lbl">وصف مختصر</div>
-    <input type="text" id="mb-desc" placeholder="مثال: 20 سؤال لقياس فهم Agile والتطبيق العملي" style="margin-bottom:16px">
-    <div style="display:flex;gap:8px">
-      <button class="bp" onclick="saveBankMeta()" style="flex:1"><i class="ti ti-check"></i> حفظ وإضافة الأسئلة</button>
-      <button class="bs" onclick="closeModal('modal-bank')" style="flex:0.4">إلغاء</button>
-    </div>
-  </div>
-</div>
-
-<!-- Question Editor Modal -->
-<div class="modal-overlay" id="modal-q">
-  <div class="modal">
-    <div class="modal-title"><i class="ti ti-pencil"></i> <span id="modal-q-title">إضافة سؤال</span></div>
-    <input type="hidden" id="mq-idx" value="-1">
-    <div class="lbl">نوع السؤال</div>
-    <select id="mq-type" onchange="toggleQType()" style="margin-bottom:12px">
-      <option value="m">موضوعي (اختيار من متعدد)</option>
-      <option value="open">مفتوح (إجابة نصية)</option>
-      <option value="scale">مقياس (1-5)</option>
-    </select>
-    <div class="lbl">المحور / الموضوع</div>
-    <input type="text" id="mq-sec" placeholder="مثال: أسس Agile" style="margin-bottom:12px">
-    <div class="lbl"><span class="req">*</span>نص السؤال</div>
-    <textarea id="mq-q" placeholder="اكتب السؤال هنا..." style="margin-bottom:12px;min-height:70px"></textarea>
-    <div id="mq-opts-wrap">
-      <div class="lbl">الخيارات (ضع علامة &#9737; أمام الإجابة الصحيحة)</div>
-      <div id="mq-opts">
-        <div class="opt-row"><input type="radio" name="mq-ans" class="ans-radio" value="0"><input type="text" class="mq-opt" placeholder="الخيار أ"></div>
-        <div class="opt-row"><input type="radio" name="mq-ans" class="ans-radio" value="1"><input type="text" class="mq-opt" placeholder="الخيار ب"></div>
-        <div class="opt-row"><input type="radio" name="mq-ans" class="ans-radio" value="2"><input type="text" class="mq-opt" placeholder="الخيار ج"></div>
-        <div class="opt-row"><input type="radio" name="mq-ans" class="ans-radio" value="3"><input type="text" class="mq-opt" placeholder="الخيار د"></div>
-      </div>
-      <div class="lbl" style="margin-top:10px">تفسير الإجابة الصحيحة (اختياري)</div>
-      <textarea id="mq-exp" placeholder="اشرح لماذا هذه الإجابة صحيحة..." style="min-height:50px;margin-bottom:12px"></textarea>
-    </div>
-    <div id="mq-open-wrap" style="display:none">
-      <div class="lbl">نص placeholder للإجابة المفتوحة</div>
-      <input type="text" id="mq-ph" placeholder="مثال: 3-4 جمل كافية..." style="margin-bottom:12px">
-    </div>
-    <div id="mq-scale-wrap" style="display:none">
-      <div class="r2">
-        <div><div class="lbl">وصف القيمة 1 (الأدنى)</div><input type="text" id="mq-sl0" placeholder="لا ثقة إطلاقاً"></div>
-        <div><div class="lbl">وصف القيمة 5 (الأعلى)</div><input type="text" id="mq-sl1" placeholder="ثقة كاملة"></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="bp" onclick="saveQuestion()" style="flex:1"><i class="ti ti-device-floppy"></i> حفظ السؤال</button>
-      <button class="bs" onclick="closeModal('modal-q')" style="flex:0.4">إلغاء</button>
-    </div>
-  </div>
-</div>
-</div></div>
-
+<footer class="no-print bg-slate-950 text-slate-400 py-5 text-center text-xs">© 2026 - نسخة مطورة v5 Enterprise تعمل محلياً عبر المتصفح مع حفظ LocalStorage وإمكانية التصدير والاستيراد.</footer>
+<div id="modal" class="modal"><div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"><div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white p-5 flex justify-between items-center"><h3 id="modalTitle" class="font-black"></h3><button onclick="closeModal()" class="text-slate-300 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button></div><div id="modalBody" class="p-6"></div></div></div>
 <script>
-/* ===================== DEFAULT QUESTION BANK ===================== */
-var DEFAULT_QS = [
-  {
-    "t": "m",
-    "s": "مفاهيم الإدارة بالأهداف",
-    "q": "ما التعريف الأدق للإدارة بالأهداف MBO؟",
-    "o": [
-      "منهجية تعتمد على تنفيذ الأنشطة فقط",
-      "اتفاق المدير والموظف على أهداف واضحة وقابلة للقياس ثم تقييم الأداء بناءً على النتائج",
-      "نظام لمراقبة الحضور والانصراف",
-      "أسلوب لتوزيع المهام دون قياس"
-    ],
-    "a": 1,
-    "e": "الإدارة بالأهداف تركز على النتائج المتفق عليها والقابلة للقياس، وليس مجرد الأنشطة."
-  },
-  {
-    "t": "m",
-    "s": "مفاهيم الإدارة بالأهداف",
-    "q": "من طرح مفهوم الإدارة بالأهداف في كتاب The Practice of Management عام 1954؟",
-    "o": [
-      "Kaplan & Norton",
-      "Peter Drucker",
-      "Henry Fayol",
-      "Michael Porter"
-    ],
-    "a": 1,
-    "e": "يرتبط مفهوم MBO ببيتر دراكر وكتابه الصادر عام 1954."
-  },
-  {
-    "t": "m",
-    "s": "مفاهيم الإدارة بالأهداف",
-    "q": "أي خيار يمثل أحد المبادئ الأساسية للإدارة بالأهداف؟",
-    "o": [
-      "فرض الأهداف من الإدارة العليا فقط",
-      "متابعة الأداء في نهاية السنة فقط",
-      "تحديد الأهداف بشكل تشاركي",
-      "تقييم الموظف بالانطباع الشخصي"
-    ],
-    "a": 2,
-    "e": "من أهم مبادئ MBO التشارك والاتفاق على الأهداف بين المدير والموظف."
-  },
-  {
-    "t": "m",
-    "s": "دورة MBO",
-    "q": "ما الترتيب الصحيح لدورة الإدارة بالأهداف؟",
-    "o": [
-      "التنفيذ ← التعلم ← التخطيط ← التقييم",
-      "تحديد الأهداف ← التخطيط التنفيذي ← التنفيذ والمتابعة ← التقييم الدوري ← التعلم والتطوير",
-      "التقييم ← المكافأة ← التوثيق ← الإغلاق",
-      "اختيار المؤشر ← إعداد التقرير ← اعتماد الميزانية"
-    ],
-    "a": 1,
-    "e": "الدورة تبدأ بتحديد الأهداف ثم التخطيط والتنفيذ والمتابعة والتقييم ثم التعلم والتطوير."
-  },
-  {
-    "t": "m",
-    "s": "MBO في MTCIT",
-    "q": "ما المقصود بالتركيز على النتائج لا الأنشطة في MBO؟",
-    "o": [
-      "قياس عدد التقارير المكتوبة فقط",
-      "قياس أثر العمل مثل تحسين دقة البيانات أو تقليل وقت الخدمة",
-      "زيادة عدد الاجتماعات الأسبوعية",
-      "إلزام الموظف بمهام أكثر"
-    ],
-    "a": 1,
-    "e": "التركيز يكون على النتيجة القابلة للقياس مثل التحسن أو الأثر، وليس كمية النشاط فقط."
-  },
-  {
-    "t": "m",
-    "s": "الأهداف SMART",
-    "q": "ماذا يعني حرف S في معيار SMART؟",
-    "o": [
-      "Simple بسيط",
-      "Specific محدد",
-      "Strategic استراتيجي",
-      "Standard قياسي"
-    ],
-    "a": 1,
-    "e": "S تعني Specific أي أن الهدف محدد وواضح ولا يحتمل التأويل."
-  },
-  {
-    "t": "m",
-    "s": "الأهداف SMART",
-    "q": "أي مثال يُعد هدفاً SMART أفضل؟",
-    "o": [
-      "تحسين خدمات الوزارة",
-      "رفع معدل رضا مستفيدي منصة نقل من −56 إلى +20 بحلول ديسمبر 2026",
-      "بذل جهد أكبر في خدمة المستفيدين",
-      "العمل على تطوير الخدمات قريباً"
-    ],
-    "a": 1,
-    "e": "الهدف الصحيح يحتوي على رقم مستهدف وتاريخ ونطاق واضح."
-  },
-  {
-    "t": "m",
-    "s": "الأهداف SMART",
-    "q": "ماذا يعني حرف M في SMART؟",
-    "o": [
-      "قابل للإدارة",
-      "قابل للقياس",
-      "متعدد المحاور",
-      "مرتبط بالمدير"
-    ],
-    "a": 1,
-    "e": "M تعني Measurable أي وجود رقم أو أداة قياس واضحة لمعرفة النجاح."
-  },
-  {
-    "t": "m",
-    "s": "الأهداف SMART",
-    "q": "أي عبارة توضّح عنصر Time-bound في الهدف؟",
-    "o": [
-      "تحسين التقارير لاحقاً",
-      "تسليم نموذج تقرير KPI موحد بحلول 30 يونيو 2026",
-      "زيادة جودة العمل",
-      "تطوير مهارات الفريق"
-    ],
-    "a": 1,
-    "e": "Time-bound يعني أن الهدف له موعد بداية أو نهاية أو نقاط مراجعة زمنية محددة."
-  },
-  {
-    "t": "m",
-    "s": "الأهداف والمبادرات",
-    "q": "ما الفرق الأساسي بين الهدف والمبادرة؟",
-    "o": [
-      "الهدف يوضح النتيجة والمبادرة توضح النشاط أو المشروع الذي يساعد على تحقيقها",
-      "لا يوجد فرق",
-      "المبادرة تقاس دائماً بنسبة مئوية والهدف لا يقاس",
-      "الهدف نشاط يومي فقط"
-    ],
-    "a": 0,
-    "e": "الهدف يجيب: ماذا وكم ومتى؟ أما المبادرة فتجيب: كيف سنحقق ذلك؟"
-  },
-  {
-    "t": "m",
-    "s": "مؤشرات الأداء KPIs",
-    "q": "ما هو مؤشر الأداء الرئيسي KPI؟",
-    "o": [
-      "وصف عام غير قابل للقياس",
-      "قيمة قابلة للقياس توضّح مدى تحقيق الهدف",
-      "قائمة مهام تشغيلية",
-      "رأي المدير في أداء الفريق"
-    ],
-    "a": 1,
-    "e": "KPI يجب أن يكون قابلاً للقياس ومرتبطاً بهدف واضح."
-  },
-  {
-    "t": "m",
-    "s": "مؤشرات الأداء KPIs",
-    "q": "ما الفرق بين KPI وKRI؟",
-    "o": [
-      "KPI يقيس الأداء نحو الهدف، وKRI يقيس المخاطر التي قد تمنع الوصول",
-      "KRI هو نفسه KPI",
-      "KPI يقيس المخاطر فقط",
-      "KRI يستخدم للموارد البشرية فقط"
-    ],
-    "a": 0,
-    "e": "KPI للأداء والإنجاز، أما KRI فهو مؤشر مخاطر مبكر."
-  },
-  {
-    "t": "m",
-    "s": "Leading/Lagging",
-    "q": "ما المقصود بالمؤشر المتأخر Lagging؟",
-    "o": [
-      "يقيس النتيجة بعد حدوثها",
-      "يتنبأ بالنتيجة قبل حدوثها",
-      "يقيس خطة التدريب فقط",
-      "يستخدم يومياً فقط"
-    ],
-    "a": 0,
-    "e": "المؤشر المتأخر يقيس النتيجة النهائية بعد تحققها أو فشلها."
-  },
-  {
-    "t": "m",
-    "s": "Leading/Lagging",
-    "q": "أي مثال يمثل مؤشراً مبكراً Leading؟",
-    "o": [
-      "نسبة الخدمات الرقمية المنجزة في نهاية السنة",
-      "نسبة إنجاز مشاريع الرقمنة حتى الربع الثاني",
-      "معدل الرضا السنوي النهائي",
-      "عدد المشاريع المغلقة العام الماضي"
-    ],
-    "a": 1,
-    "e": "المؤشر المبكر يعطي إشارة قبل النتيجة النهائية حتى يمكن التصحيح."
-  },
-  {
-    "t": "m",
-    "s": "أنواع المؤشرات",
-    "q": "أي مؤشر يُعد من مؤشرات الكفاءة Efficiency؟",
-    "o": [
-      "رضا المستفيد النهائي",
-      "متوسط تكلفة معالجة الطلب الواحد",
-      "الأثر الاقتصادي بعيد المدى",
-      "سمعة الجهة"
-    ],
-    "a": 1,
-    "e": "الكفاءة تقيس استخدام الموارد مثل الوقت والتكلفة والجهد."
-  },
-  {
-    "t": "m",
-    "s": "بطاقة الأداء المتوازن BSC",
-    "q": "أي منظور في BSC يركز على قيمة الخدمة للمواطن أو المقيم؟",
-    "o": [
-      "المالي والكفاءة",
-      "التعلم والنمو",
-      "المستفيد",
-      "العمليات الداخلية"
-    ],
-    "a": 2,
-    "e": "منظور المستفيد يركز على الرضا، الوقت، السهولة، والشكاوى."
-  },
-  {
-    "t": "m",
-    "s": "اختيار المؤشر المناسب",
-    "q": "وفق قاعدة اختيار المؤشر المناسب، ماذا نفعل إذا كان المؤشر لا يرتبط بهدف استراتيجي؟",
-    "o": [
-      "نقيسه للاحتياط",
-      "نضيفه للتقرير فقط",
-      "لا نقيسه",
-      "نرفعه للقيادة مباشرة"
-    ],
-    "a": 2,
-    "e": "إذا لم يكن المؤشر مرتبطاً بهدف واضح فلا يضيف قيمة لاتخاذ القرار."
-  },
-  {
-    "t": "m",
-    "s": "KPI Card",
-    "q": "أي حقل من حقول بطاقة المؤشر يوضح الصيغة الرياضية الدقيقة للحساب؟",
-    "o": [
-      "اسم المؤشر",
-      "معادلة الاحتساب",
-      "الفريق المسؤول",
-      "القيمة الأساسية"
-    ],
-    "a": 1,
-    "e": "معادلة الاحتساب تحدد كيف يتم حساب قيمة المؤشر بدقة."
-  },
-  {
-    "t": "open",
-    "s": "تطبيق عملي",
-    "q": "حوّل الهدف الضعيف التالي إلى هدف SMART: تحسين خدمة العملاء.",
-    "ph": "اكتب هدفاً يحتوي على رقم مستهدف وتاريخ ومجال تطبيق واضح..."
-  },
-  {
-    "t": "scale",
-    "s": "التقييم الذاتي",
-    "q": "ما مستوى ثقتك في بناء بطاقة KPI كاملة بعد الورشة؟",
-    "sl": [
-      "لا أستطيع بناء البطاقة",
-      "أستطيع بناء بطاقة KPI كاملة بثقة"
-    ]
-  }
-];
+const KEY='mtcit_talent_suite_v4';
+let DB={
+ orgUnits:[
+  {id:'org1',name:'مكتب الرئيس التنفيذي',type:'رئاسة',parentId:'',managerEmployeeId:'emp1'},
+  {id:'org2',name:'الإدارة العامة للتحول الرقمي',type:'إدارة عامة',parentId:'org1',managerEmployeeId:'emp1'},
+  {id:'org3',name:'إدارة الشؤون المالية',type:'إدارة',parentId:'org1',managerEmployeeId:'emp2'},
+  {id:'org4',name:'إدارة الكفاءات البشرية',type:'إدارة',parentId:'org1',managerEmployeeId:'emp4'},
+  {id:'org5',name:'مديرية هندسة البرمجيات',type:'مديرية',parentId:'org2',managerEmployeeId:'emp1'},
+  {id:'org6',name:'مديرية البنية التحتية والشبكات',type:'مديرية',parentId:'org2',managerEmployeeId:'emp3'}
+ ],
+ jobs:[
+  {id:'job1',title:'رئيس قطاع تكنولوجيا المعلومات',grade:'قيادي',summary:'قيادة الاستراتيجية الرقمية وضمان مواءمة التقنية مع أهداف المؤسسة.',tasks:'وضع خارطة التحول الرقمي؛ الإشراف على المشاريع؛ إدارة المخاطر التقنية؛ قيادة فرق العمل.',skills:'القيادة الاستراتيجية، الحوكمة التقنية، أمن المعلومات، إدارة المشاريع',kpis:[{name:'نسبة إنجاز المبادرات الرقمية',target:90,weight:35},{name:'استقرار الخدمات الرقمية',target:99,weight:25},{name:'خفض المخاطر التقنية',target:80,weight:20},{name:'تطوير الفريق',target:85,weight:20}]},
+  {id:'job2',title:'المدير المالي التنفيذي',grade:'قيادي',summary:'إدارة التخطيط المالي والميزانيات والرقابة على الأداء المالي.',tasks:'إعداد الميزانيات؛ تحليل الانحرافات؛ إدارة التدفقات؛ ضمان الالتزام المالي.',skills:'التخطيط المالي، الحوكمة، التحليل المالي، إدارة المخاطر',kpis:[{name:'دقة التنبؤ المالي',target:90,weight:30},{name:'الالتزام بالموازنة',target:95,weight:30},{name:'سرعة إغلاق التقارير',target:90,weight:20},{name:'خفض المخاطر المالية',target:80,weight:20}]},
+  {id:'job3',title:'مهندس نظم أول',grade:'تخصصي',summary:'تشغيل الأنظمة والبنية التحتية وضمان جاهزيتها واستمراريتها.',tasks:'إدارة الخوادم؛ متابعة الأعطال؛ تطبيق معايير الأمن؛ توثيق الإجراءات.',skills:'الشبكات، الأنظمة، الأمن السيبراني، إدارة الحوادث',kpis:[{name:'زمن الاستجابة للحوادث',target:85,weight:30},{name:'توافر الأنظمة',target:99,weight:35},{name:'تطبيق التحديثات الأمنية',target:95,weight:20},{name:'توثيق الإجراءات',target:90,weight:15}]}
+ ],
+ employees:[
+  {id:'emp1',name:'يوسف خالد المصري',number:'1001',email:'yousef@example.gov',orgUnitId:'org5',jobId:'job1',status:'نشط'},
+  {id:'emp2',name:'أمل عبد الرحمن شهاب',number:'1002',email:'amal@example.gov',orgUnitId:'org3',jobId:'job2',status:'نشط'},
+  {id:'emp3',name:'طارق عبد الله مراد',number:'1003',email:'tareq@example.gov',orgUnitId:'org6',jobId:'job3',status:'نشط'},
+  {id:'emp4',name:'رانيا سمير الجميل',number:'1004',email:'rania@example.gov',orgUnitId:'org4',jobId:'job1',status:'نشط'}
+ ],
+ questions:[
+  {id:'q1',competency:'القيادة الاستراتيجية',level:'متوسط',question:'ما أفضل إجراء عند تعارض أولويات مشروعين استراتيجيين؟',a:'إعداد مصفوفة أثر/أولوية وربط القرار بالمخاطر والموارد',b:'اختيار المشروع الأسهل فقط',c:'تأجيل القرار',d:'ترك القرار للفريق دون توجيه',correct:'a'},
+  {id:'q2',competency:'أمن المعلومات',level:'متقدم',question:'ما الإجراء الأنسب عند اكتشاف ثغرة حرجة في خدمة عامة؟',a:'نشر تفاصيلها فوراً',b:'تطبيق احتواء عاجل وتحليل أثر ثم معالجة موثقة',c:'تجاهلها حتى نهاية الربع',d:'إيقاف كل الخدمات بلا تقييم',correct:'b'},
+  {id:'q3',competency:'التخطيط المالي',level:'متوسط',question:'ما المؤشر الأفضل لقياس الالتزام بالموازنة؟',a:'عدد الاجتماعات',b:'نسبة الانحراف بين المخطط والفعلي',c:'عدد رسائل البريد',d:'حجم الفريق',correct:'b'}
+ ],
+ exams:[],
+ budgetItems:[
+  {id:'bd1',date:'2026-06-01',item:'برنامج القيادة الاستراتيجية',department:'الإدارة العامة للتحول الرقمي',planned:15000,actual:12500,category:'تدريب',notes:'تم التنفيذ ضمن الخطة'},
+  {id:'bd2',date:'2026-06-10',item:'اختبارات قياس الجدارات',department:'إدارة الكفاءات البشرية',planned:8000,actual:6500,category:'اختبارات',notes:'رسوم منصة الاختبار'},
+  {id:'bd3',date:'2026-06-15',item:'ورشة التخطيط المالي',department:'إدارة الشؤون المالية',planned:12000,actual:11000,category:'تدريب',notes:'مدرب خارجي وقاعة'}
+ ],
+ courses:[
+  {id:'cr1',title:'القيادة الإستراتيجية واتخاذ القرار',trainer:'أ. د. أحمد الشريف',target:'القيادات والصف الثاني',hours:18,cost:15000,date:'2026-07-10',status:'مجدول',kpi:'تطوير الفريق',description:'برنامج لتطوير التفكير الاستراتيجي واتخاذ القرار وربط النتائج بمؤشرات الأداء.'},
+  {id:'cr2',title:'الذكاء الاصطناعي وتطبيقاته في إدارة المواهب',trainer:'م. رامي منصور',target:'الخبرات الفنية',hours:15,cost:12500,date:'2026-06-20',status:'نشط',kpi:'نسبة إنجاز المبادرات الرقمية',description:'تدريب عملي على تحليل البيانات وتطبيقات الذكاء الاصطناعي في الموارد البشرية.'},
+  {id:'cr3',title:'إدارة وتوجيه المجموعات والتفاوض الفعال',trainer:'د. ياسمين صبري',target:'الصف الثاني',hours:12,cost:11000,date:'2026-05-15',status:'مكتمل',kpi:'تطوير الفريق',description:'ورشة سلوكية لتطوير مهارات التواصل والتفاوض وإدارة فرق العمل.'}
+ ],
+ successors:[
+  {id:'sc1',employeeId:'emp1',targetJobId:'job1',performance:86,potential:92,readiness:'جاهز خلال سنة',developmentPlan:'برنامج القيادة الاستراتيجية + مشروع قيادي'},
+  {id:'sc2',employeeId:'emp2',targetJobId:'job2',performance:91,potential:88,readiness:'جاهز الآن',developmentPlan:'تمكين في إدارة المخاطر والحوكمة'},
+  {id:'sc3',employeeId:'emp4',targetJobId:'job1',performance:82,potential:90,readiness:'جاهز خلال سنة',developmentPlan:'إسناد مهام تحول رقمي وتوجيه قيادي'}
+ ],
+ surveys:[
+  {id:'sv1',courseId:'cr3',respondent:'موظف متدرب',content:5,instructor:5,venue:4,impact:5,comment:'ورشة عملية وممتازة وساعدت في تحسين مهارات التفاوض.'}
+ ],
+ appraisals:[
+  {id:'ap1',employeeId:'emp1',period:'النصف الأول 2026',date:'2026-06-25',scores:[{kpi:'نسبة إنجاز المبادرات الرقمية',actual:86,weight:35},{kpi:'استقرار الخدمات الرقمية',actual:98,weight:25},{kpi:'خفض المخاطر التقنية',actual:75,weight:20},{kpi:'تطوير الفريق',actual:90,weight:20}],notes:'أداء جيد مع حاجة لتعزيز إدارة المخاطر.'}
+ ]
+};
+function uid(p){return p+Math.random().toString(36).slice(2,9)}
+function save(){localStorage.setItem(KEY,JSON.stringify(DB));}
+function load(){try{const s=localStorage.getItem(KEY);if(s){let old=JSON.parse(s);DB={...DB,...old};if(!DB.budgetItems)DB.budgetItems=[];if(!DB.courses)DB.courses=[];if(!DB.successors)DB.successors=[];if(!DB.surveys)DB.surveys=[]}}catch(e){console.warn(e)}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)}
+function esc(s){return String(s??'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
+const byId=(arr,id)=>arr.find(x=>x.id===id)||{};
+function orgName(id){return byId(DB.orgUnits,id).name||'غير محدد'}
+function jobName(id){return byId(DB.jobs,id).title||'غير مرتبط'}
+function empName(id){return byId(DB.employees,id).name||'لا يوجد'}
+function avgPerformance(){let vals=DB.appraisals.map(calcAppraisal);return vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0}
+function calcAppraisal(ap){let w=ap.scores.reduce((s,x)=>s+Number(x.weight||0),0)||1;return Math.round(ap.scores.reduce((s,x)=>s+(Number(x.actual||0)*Number(x.weight||0)),0)/w)}
+function switchTab(tab){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById('tab-'+tab).classList.remove('hidden');document.querySelectorAll('.navbtn').forEach(b=>{b.classList.remove('tab-active');b.classList.add('tab-idle')});document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b=>{b.classList.add('tab-active');b.classList.remove('tab-idle')});render(tab)}
+function initTabs(){document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));const labels={dashboard:'الرئيسية',org:'الهيكل',employees:'الموظفون',jobs:'الوصف الوظيفي',tests:'الاختبارات',performance:'الأداء',gap:'الفجوات',training:'الورش',succession:'9-Box',surveys:'الرضا',budget:'الموازنة',data:'البيانات'};document.getElementById('mobileTabs').innerHTML=Object.entries(labels).map(([k,v])=>`<button data-tab="${k}" class="navbtn px-4 py-2 text-xs font-black whitespace-nowrap rounded-xl ${k==='dashboard'?'tab-active':'tab-idle bg-slate-100'}">${v}</button>`).join('');document.querySelectorAll('#mobileTabs .navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));}
+function updateHeader(){document.getElementById('headEmployees').textContent=DB.employees.length;document.getElementById('headPerformance').textContent=avgPerformance()+'%'}
+function render(tab='dashboard'){updateHeader();({dashboard:renderDashboard,org:renderOrg,employees:renderEmployees,jobs:renderJobs,tests:renderTests,performance:renderPerformance,gap:renderGap,training:renderTraining,succession:renderSuccession,surveys:renderSurveys,budget:renderBudget,data:renderData}[tab]||renderDashboard)();}
+function renderDashboard(){
+    const totalEmp=DB.employees.length;
+    const active=DB.employees.filter(e=>e.status==='نشط').length;
+    const orgCount=DB.orgUnits.length;
+    const deptCount=DB.orgUnits.filter(o=>['إدارة','إدارة عامة','مديرية'].includes(o.type)).length;
+    const jobs=DB.jobs.length;
+    const assignedJobs=DB.employees.filter(e=>e.jobId).length;
+    const jobCompletion=totalEmp?Math.round(assignedJobs/totalEmp*100):0;
+    const avg=avgPerformance();
+    const highPerf=DB.appraisals.filter(a=>calcAppraisal(a)>=85).length;
+    const lowPerf=DB.appraisals.filter(a=>calcAppraisal(a)<70).length;
+    const kpiAchievement=DB.appraisals.length?Math.round(DB.appraisals.reduce((s,a)=>s+calcAppraisal(a),0)/DB.appraisals.length):0;
+    const budget=budgetTotals();
+    const courses=DB.courses.length;
+    const completedCourses=DB.courses.filter(c=>c.status==='مكتمل').length;
+    const trainingHours=DB.courses.reduce((s,c)=>s+Number(c.hours||0),0);
+    const trainingCost=DB.courses.reduce((s,c)=>s+Number(c.cost||0),0);
+    const costPerEmp=totalEmp?Math.round(trainingCost/totalEmp):0;
+    const readySucc=DB.successors.filter(s=>Number(s.performance||0)>=80 && Number(s.potential||0)>=80).length;
+    const successionCoverage=jobs?Math.round(DB.successors.length/jobs*100):0;
+    const readiness=jobs&&totalEmp?Math.round((jobCompletion*.25)+(kpiAchievement*.25)+(Math.min(successionCoverage,100)*.2)+((courses?completedCourses/courses*100:0)*.15)+((budget.planned?Math.max(0,100-budget.rate):85)*.15)):0;
+    const surveyAvg=DB.surveys.length?((DB.surveys.reduce((s,v)=>s+(Number(v.content||0)+Number(v.instructor||0)+Number(v.venue||0)+Number(v.impact||0))/4,0)/DB.surveys.length).toFixed(1)):0;
+    const skillMap={};
+    DB.jobs.forEach(j=>(j.skills||'').split(/[،,]/).map(x=>x.trim()).filter(Boolean).forEach(sk=>skillMap[sk]=(skillMap[sk]||0)+1));
+    const criticalSkill=Object.entries(skillMap).sort((a,b)=>b[1]-a[1])[0]?.[0]||'لا توجد بيانات';
+    const bestAp=DB.appraisals.map(a=>({name:empName(a.employeeId),score:calcAppraisal(a)})).sort((a,b)=>b.score-a.score)[0];
+    const worstAp=DB.appraisals.map(a=>({name:empName(a.employeeId),score:calcAppraisal(a)})).sort((a,b)=>a.score-b.score)[0];
+    const deptGroups=DB.orgUnits.map(o=>({name:o.name,count:DB.employees.filter(e=>e.orgUnitId===o.id).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count);
+    const maxDept=Math.max(...deptGroups.map(x=>x.count),1);
+    const perfBuckets=[{label:'متميز 90+',count:DB.appraisals.filter(a=>calcAppraisal(a)>=90).length},{label:'عالٍ 80-89',count:DB.appraisals.filter(a=>calcAppraisal(a)>=80&&calcAppraisal(a)<90).length},{label:'متوسط 70-79',count:DB.appraisals.filter(a=>calcAppraisal(a)>=70&&calcAppraisal(a)<80).length},{label:'منخفض <70',count:lowPerf}];
+    const maxBucket=Math.max(...perfBuckets.map(x=>x.count),1);
+    const months={}; DB.courses.forEach(c=>{let m=(c.date||'').slice(0,7)||'غير محدد';months[m]=(months[m]||0)+1});
+    const monthRows=Object.entries(months).sort().slice(-6); const maxMonth=Math.max(...monthRows.map(x=>x[1]),1);
+    const alerts=[];
+    if(budget.rate>85)alerts.push(['rose','تجاوز أو اقتراب مالي','معدل الصرف وصل إلى '+budget.rate+'% من الموازنة المعتمدة.']);
+    else alerts.push(['emerald','الوضع المالي مستقر','معدل الصرف الحالي '+budget.rate+'% ضمن الحدود الآمنة.']);
+    if(lowPerf>0)alerts.push(['rose','أداء يحتاج تدخل','يوجد '+lowPerf+' موظف/موظفين أقل من 70%.']);
+    if(jobCompletion<90)alerts.push(['amber','استكمال الربط الوظيفي','نسبة ربط الموظفين بالأوصاف الوظيفية '+jobCompletion+'%.']);
+    if(successionCoverage<75)alerts.push(['amber','تغطية التعاقب','تغطية البدلاء للمناصب '+successionCoverage+'% وتحتاج تعزيز.']);
+    alerts.push(['indigo','أولوية تطوير مهاري','أكثر مهارة متكررة في الأوصاف: '+criticalSkill+'.']);
+    const compare=[['متوسط الأداء',78,kpiAchievement],['جاهزية التعاقب',55,Math.min(successionCoverage,100)],['اكتمال الوصف الوظيفي',62,jobCompletion],['تنفيذ التدريب',60,courses?Math.round(completedCourses/courses*100):0],['كفاءة الصرف',70,budget.planned?Math.max(0,100-budget.rate):85]];
+    document.getElementById('tab-dashboard').innerHTML=`
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+  <div><h2 class="text-2xl font-black text-slate-950">لوحة تحليلات الكفاءة الإستراتيجية للأفراد</h2><p class="text-xs text-slate-500 font-semibold">لوحة تنفيذية موحدة تربط الموظفين، الهيكل، الوصف الوظيفي، الاختبارات، KPIs، التعاقب، التدريب والموازنة.</p></div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-black no-print">
+    <button onclick="switchTab('employees')" class="btn btn-soft"><i class="fa-solid fa-users"></i>الموظفون</button>
+    <button onclick="switchTab('gap')" class="btn btn-soft"><i class="fa-solid fa-chart-gantt"></i>الفجوات</button>
+    <button onclick="switchTab('budget')" class="btn btn-soft"><i class="fa-solid fa-wallet"></i>الموازنة</button>
+    <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i>طباعة</button>
+  </div>
+</div>
 
-var EQS = [
-  {id:'course_overall',type:'stars',label:'التقييم العام للدورة',sub:'ما تقييمك الإجمالي لهذه الدورة؟'},
-  {id:'content_quality',type:'sc5',label:'جودة المحتوى',sub:'هل كان واضحاً ومناسباً لعملك؟',opts:['ضعيف','مقبول','جيد','جيد جداً','ممتاز']},
-  {id:'trainer_knowledge',type:'stars',label:'كفاءة المدرب',sub:'هل أظهر معرفة عميقة بالمادة؟'},
-  {id:'trainer_delivery',type:'sc5',label:'أسلوب تقديم المدرب',sub:'هل كان الشرح واضحاً وجذاباً؟',opts:['ضعيف','مقبول','جيد','جيد جداً','ممتاز']},
-  {id:'trainer_interaction',type:'stars',label:'تفاعل المدرب',sub:'هل كان متجاوباً مع الأسئلة؟'},
-  {id:'time_management',type:'sc5',label:'إدارة الوقت',sub:'هل كانت المدة وتوزيع الوقت مناسبَين؟',opts:['سيئة','ضعيفة','مقبولة','جيدة','ممتازة']},
-  {id:'practical_exercises',type:'sc5',label:'التطبيقات العملية',sub:'هل كانت الأنشطة كافية ومفيدة؟',opts:['غير كافية','قليلة','مقبولة','جيدة','ممتازة']},
-  {id:'relevance_to_work',type:'sc5',label:'صلة الدورة بالعمل',sub:'هل يمكنك تطبيق ما تعلمته؟',opts:['لا صلة','ضعيفة','متوسطة','جيدة','ممتازة']},
-  {id:'recommend',type:'yn',label:'هل توصي بالدورة لزملائك؟',sub:''},
-  {id:'best_part',type:'text',label:'أفضل شيء في الدورة',sub:'ما الجانب الذي استفدت منه أكثر؟',ph:'اكتب هنا...'},
-  {id:'improvement',type:'text',label:'مقترحات التحسين',sub:'ما الذي تقترح تحسينه؟',ph:'اكتب هنا...'}
-];
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+  <div class="card p-6 bg-gradient-to-br from-indigo-950 to-slate-950 text-white lg:col-span-1">
+    <div class="flex items-center justify-between"><span class="text-xs font-black text-indigo-200">مؤشر جاهزية المؤسسة</span><i class="fa-solid fa-circle-nodes text-indigo-300"></i></div>
+    <div class="mt-6 flex items-center justify-center"><div class="relative w-40 h-40 rounded-full flex items-center justify-center" style="background:conic-gradient(#818cf8 ${readiness*3.6}deg,#1e293b 0deg)"><div class="w-28 h-28 rounded-full bg-slate-950 flex flex-col items-center justify-center"><strong class="text-4xl font-black">${readiness}%</strong><span class="text-[10px] text-slate-400 font-bold">جاهزية كلية</span></div></div></div>
+    <div class="mt-5 grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-300"><div>الأداء: <b class="text-white">${kpiAchievement}%</b></div><div>الأوصاف: <b class="text-white">${jobCompletion}%</b></div><div>التعاقب: <b class="text-white">${successionCoverage}%</b></div><div>الصرف: <b class="text-white">${budget.rate}%</b></div></div>
+  </div>
+  <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+    ${kpiCard('إجمالي الموظفين',totalEmp,'fa-users','indigo','المسجلون في المنظومة')}
+    ${kpiCard('الإدارات والمديريات',deptCount,'fa-building','sky','وحدات تشغيلية')}
+    ${kpiCard('الأوصاف الوظيفية',jobs,'fa-id-card-clip','purple','مع نسبة ربط '+jobCompletion+'%')}
+    ${kpiCard('متوسط الأداء',avg+'%','fa-gauge-high','amber','آخر تقييمات KPIs')}
+    ${kpiCard('نسبة تحقيق KPIs',kpiAchievement+'%','fa-bullseye','emerald','متوسط موزون')}
+    ${kpiCard('جاهزية الصف الثاني',readySucc+' / '+DB.successors.length,'fa-chess-queen','fuchsia','مرشحون مرتفعو الأداء والإمكانات')}
+    ${kpiCard('عدد البرامج التدريبية',courses,'fa-graduation-cap','cyan','المكتمل منها '+completedCourses)}
+    ${kpiCard('تكلفة التدريب للفرد',costPerEmp.toLocaleString()+' ر.ع','fa-coins','rose','حسب تكلفة البرامج')}
+    ${kpiCard('ساعات التدريب',trainingHours,'fa-clock','blue','إجمالي الساعات المخططة')}
+    ${kpiCard('رضا المتدربين',surveyAvg+' / 5','fa-face-smile','lime','متوسط الاستمارات')}
+    ${kpiCard('المنصرف الفعلي',budget.actual.toLocaleString()+' ر.ع','fa-wallet','orange','المتبقي '+budget.remaining.toLocaleString())}
+    ${kpiCard('اكتمال البيانات',Math.round((jobCompletion+Math.min(successionCoverage,100)+(DB.questions.length?100:0))/3)+'%','fa-database','slate','موظفون + وصف + بنك أسئلة')}
+  </div>
+</div>
 
-/* ===================== STATE ===================== */
-var currentCode = null;
-var currentBankId = null;
-var editingBankId = null;
-var ADMIN_PASSWORD = 'MTCIT2026';
-var adminUnlocked = false;
-var tr = {code:null,rec:null,qs:[],mode:'pre',idx:0,ans:[],rev:[],ev:{}};
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+  <div class="card p-5 xl:col-span-2"><div class="flex items-center justify-between mb-4"><h3 class="font-black">توزيع الموظفين حسب الوحدات التنظيمية</h3><span class="badge bg-indigo-50 text-indigo-700">Org Analytics</span></div><div class="space-y-3">${deptGroups.map(d=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${esc(d.name)}</span><span>${d.count} موظف</span></div><div class="h-3 bg-slate-100 rounded-full overflow-hidden"><div class="h-3 bg-indigo-600 rounded-full" style="width:${d.count/maxDept*100}%"></div></div></div>`).join('')||empty('لا يوجد تسكين بعد')}</div></div>
+  <div class="card p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-black">Executive Alerts</h3><span class="badge bg-rose-50 text-rose-700">${alerts.length} تنبيه</span></div><div class="space-y-3">${alerts.map(a=>`<div class="rounded-2xl border border-${a[0]}-100 bg-${a[0]}-50 p-3 text-xs"><strong class="block text-${a[0]}-800 mb-1">${a[1]}</strong><span class="text-slate-600 font-semibold">${a[2]}</span></div>`).join('')}</div></div>
+</div>
 
-/* ===================== CENTRAL STORAGE CONFIG =====================
-   ضع رابط Web App من Google Apps Script أو رابط Power Automate هنا.
-   العقد المطلوب للـ API:
-   POST { action:'getDB' }  =>  يرجع { sessions:{}, records:{}, banks:{} }
-   POST { action:'setDB', db:{...} }  =>  يرجع { ok:true }
-   عند ترك الرابط فارغاً سيتم التخزين محلياً كنسخة احتياطية.
-=================================================================== */
-var CENTRAL_API_URL = 'https://script.google.com/macros/s/AKfycbzIzOY3hCDLk5uT1-dR3qsTiMiAdOrV2lgaJc_UX6IQVJSv-Bbio2yL2QGF_0DlHRWw/exec'; // مثال Google Apps Script: https://script.google.com/macros/s/XXXXX/exec
-var STORAGE_KEY = 'mtcit_mbo_kpi_v1';
-var CENTRAL_STORAGE_ENABLED = CENTRAL_API_URL && CENTRAL_API_URL.indexOf('http') === 0;
-var DB_CACHE = null;
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="card p-5"><h3 class="font-black mb-4">توزيع الأداء المؤسسي</h3><div class="space-y-4">${perfBuckets.map(b=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${b.label}</span><span>${b.count}</span></div><div class="h-20 bg-slate-50 rounded-2xl flex items-end p-2"><div class="w-full rounded-xl bg-emerald-500" style="height:${Math.max(8,b.count/maxBucket*100)}%"></div></div></div>`).join('')}</div></div>
+  <div class="card p-5"><h3 class="font-black mb-4">البرامج التدريبية حسب الشهر</h3><div class="space-y-3">${monthRows.map(([m,c])=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${m}</span><span>${c}</span></div><div class="h-2.5 bg-slate-100 rounded-full"><div class="h-2.5 bg-cyan-500 rounded-full" style="width:${c/maxMonth*100}%"></div></div></div>`).join('')||empty('لا توجد برامج')}</div></div>
+  <div class="card p-5"><h3 class="font-black mb-4">الموازنة التدريبية</h3><div class="flex items-center justify-center py-3"><div class="relative w-36 h-36 rounded-full flex items-center justify-center" style="background:conic-gradient(#f97316 ${budget.rate*3.6}deg,#e2e8f0 0deg)"><div class="w-24 h-24 rounded-full bg-white flex flex-col items-center justify-center"><strong class="text-2xl font-black text-orange-600">${budget.rate}%</strong><span class="text-[10px] font-bold text-slate-400">صرف</span></div></div></div><div class="grid grid-cols-3 gap-2 text-center text-[10px] font-black"><div class="bg-slate-50 rounded-xl p-2">المعتمد<br>${budget.planned.toLocaleString()}</div><div class="bg-orange-50 text-orange-700 rounded-xl p-2">المنصرف<br>${budget.actual.toLocaleString()}</div><div class="bg-emerald-50 text-emerald-700 rounded-xl p-2">المتبقي<br>${budget.remaining.toLocaleString()}</div></div></div>
+</div>
 
-/* ===================== STORAGE ===================== */
-function emptyDB(){return {sessions:{},records:{},banks:{}};}
-function normalizeDB(d){
-  d=d||emptyDB();
-  if(!d.sessions)d.sessions={};
-  if(!d.records)d.records={};
-  if(!d.banks)d.banks={};
-  return d;
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+  <div class="card p-5"><h3 class="font-black mb-4">مؤشرات المقارنة 2025 / 2026</h3><div class="overflow-x-auto"><table class="w-full text-xs"><thead class="bg-slate-50 text-slate-500"><tr><th class="p-3 text-right">المؤشر</th><th class="p-3">2025</th><th class="p-3">2026</th><th class="p-3">التحسن</th></tr></thead><tbody class="divide-y">${compare.map(r=>`<tr><td class="p-3 font-black">${r[0]}</td><td class="p-3 text-center">${r[1]}%</td><td class="p-3 text-center font-black text-indigo-700">${r[2]}%</td><td class="p-3 text-center font-black ${r[2]-r[1]>=0?'text-emerald-600':'text-rose-600'}">${r[2]-r[1]>=0?'+':''}${r[2]-r[1]}%</td></tr>`).join('')}</tbody></table></div></div>
+  <div class="card p-5 bg-gradient-to-br from-slate-50 to-indigo-50"><div class="flex items-center gap-2 mb-4"><i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i><h3 class="font-black">AI Executive Advisor</h3></div><div class="grid sm:grid-cols-2 gap-3 text-xs">${advisor('أفضل أداء',bestAp?bestAp.name+' - '+bestAp.score+'%':'لا توجد تقييمات','emerald')}${advisor('أقل أداء يحتاج دعم',worstAp?worstAp.name+' - '+worstAp.score+'%':'لا توجد تقييمات','rose')}${advisor('أولوية مهارية',criticalSkill,'indigo')}${advisor('القرار المقترح',lowPerf>0?'إطلاق خطة تطوير فردية للموظفين الأقل من 70%':'تركيز الجهود على التعاقب والقيادات','amber')}</div></div>
+</div>`;
 }
-function localGetDB(){try{return normalizeDB(JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"sessions":{},"records":{},"banks":{}}'));}catch(e){return emptyDB();}}
-function localSetDB(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(normalizeDB(d)));}
-function centralRequest(payload){
-  if(!CENTRAL_STORAGE_ENABLED)return null;
-  try{
-    var xhr=new XMLHttpRequest();
-    xhr.open('POST',CENTRAL_API_URL,false);
-    xhr.setRequestHeader('Content-Type','text/plain;charset=utf-8');
-    xhr.send(JSON.stringify(payload));
-    if(xhr.status>=200&&xhr.status<300){
-      return JSON.parse(xhr.responseText||'{}');
-    }
-  }catch(e){console.warn('Central storage error:',e);}
-  return null;
-}
-function getDB(){
-  if(CENTRAL_STORAGE_ENABLED){
-    var res=centralRequest({action:'getDB'});
-    if(res){DB_CACHE=normalizeDB(res.db||res); localSetDB(DB_CACHE); return DB_CACHE;}
-    setStatus('تعذر الاتصال بالتخزين المركزي — يتم استخدام نسخة محلية مؤقتة','#DC3545');
-  }
-  DB_CACHE=localGetDB();
-  return DB_CACHE;
-}
-function setDB(d){
-  d=normalizeDB(d);
-  DB_CACHE=d;
-  localSetDB(d); // نسخة احتياطية محلية
-  if(CENTRAL_STORAGE_ENABLED){
-    var res=centralRequest({action:'setDB',db:d,updatedAt:new Date().toISOString()});
-    if(!res||res.ok!==true){
-      setStatus('لم يتم الحفظ مركزياً — حُفظت نسخة محلية مؤقتة','#DC3545');
-      return;
-    }
-    setStatus('تم الحفظ مركزياً','#28A745');
-  }
-}
+function kpiCard(t,v,icon,color,sub=''){return `<div class="card p-4 hover:-translate-y-0.5 transition-all"><div class="flex items-start justify-between gap-3"><div><span class="text-[10px] font-black text-slate-400 block">${t}</span><strong class="text-2xl font-black text-slate-950 mt-1 block">${v}</strong><small class="text-[10px] font-bold text-slate-400">${sub}</small></div><div class="w-11 h-11 rounded-2xl bg-${color}-50 text-${color}-600 flex items-center justify-center"><i class="fa-solid ${icon}"></i></div></div></div>`}
+function stat(t,v,icon,color){return kpiCard(t,v,icon,color)}
+function advisor(t,v,color){return `<div class="bg-white/80 border border-${color}-100 rounded-2xl p-4"><span class="text-[10px] font-black text-${color}-700 block mb-1">${t}</span><strong class="text-slate-800 leading-relaxed">${esc(v)}</strong></div>`}
+function empty(t){return `<div class="p-6 text-center text-xs text-slate-400 font-bold">${t}</div>`}
 
-/* ===================== UTILS ===================== */
-function setStatus(m,c){document.getElementById('stxt').textContent=m;document.getElementById('sdot').style.background=c||'#28A745';}
-function showToast(id,m,t){var e=document.getElementById(id);e.className='toast '+t;e.textContent=m;setTimeout(function(){e.style.display='none';e.className='toast';},5000);}
-function genCode(){var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
-function genId(){return 'bk_'+Date.now()+'_'+Math.floor(Math.random()*9999);}
-function avg(a){var f=a.filter(function(x){return x!=null&&x>0;});return f.length?f.reduce(function(s,v){return s+v;},0)/f.length:0;}
-function stars(v,max){max=max||5;var s='';for(var i=1;i<=max;i++)s+='<span style="color:'+(i<=v?'#C0A500':'#DDD')+';font-size:15px">&#9733;</span>';return s;}
-function show(id,d){var e=document.getElementById(id);if(e)e.style.display=d||'block';}
-function hide(id){var e=document.getElementById(id);if(e)e.style.display='none';}
-function setRole(r){
-  if((r==='adm'||r==='qb')&&!adminUnlocked){
-    var p=prompt('هذه الصفحة مخصصة للمشرف فقط. أدخل كلمة السر:');
-    if(p!==ADMIN_PASSWORD){
-      setStatus('تم رفض الدخول — كلمة السر غير صحيحة','#DC3545');
-      ['adm','qb','tr'].forEach(function(x){
-        document.getElementById('v-'+x).classList.toggle('on',x==='tr');
-        document.getElementById('rb-'+x).classList.toggle('on',x==='tr');
-      });
-      return;
-    }
-    adminUnlocked=true;
-    setStatus('تم فتح صلاحيات المشرف لهذه الجلسة','#28A745');
-  }
-  ['adm','qb','tr'].forEach(function(x){
-    document.getElementById('v-'+x).classList.toggle('on',x===r);
-    document.getElementById('rb-'+x).classList.toggle('on',x===r);
-  });
-  if(r==='qb')renderBanksList();
-  if(r==='adm'){populateBankSelect();renderSessionHistory();}
-}
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
+function renderOrg(){document.getElementById('tab-org').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الهيكل الوظيفي</h2><p class="text-xs text-slate-500">إضافة، تعديل، حذف، وربط مدير لكل وحدة مع عرض شجري مباشر.</p></div><button onclick="openOrgForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وحدة</button></div><div class="card p-5 overflow-x-auto"><div class="min-w-[760px] text-center">${renderOrgTree('')}</div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[760px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الوحدة</th><th class="p-3">النوع</th><th class="p-3">تتبع إلى</th><th class="p-3">المدير</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.orgUnits.map(o=>`<tr><td class="p-3 font-black">${esc(o.name)}</td><td class="p-3 text-center">${esc(o.type)}</td><td class="p-3 text-center">${orgName(o.parentId)}</td><td class="p-3 text-center">${empName(o.managerEmployeeId)}</td><td class="p-3 text-center no-print"><button onclick="openOrgForm('${o.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('orgUnits','${o.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function renderOrgTree(parent){let kids=DB.orgUnits.filter(o=>(o.parentId||'')===parent);if(!kids.length)return '';return `<div class="org-children">${kids.map(o=>`<div class="org-child"><div class="org-node"><div class="font-black text-slate-900">${esc(o.name)}</div><div class="text-[10px] text-indigo-600 font-black mt-1">${esc(o.type)}</div><div class="text-[10px] text-slate-500 mt-1">${empName(o.managerEmployeeId)}</div></div>${renderOrgTree(o.id)}</div>`).join('')}</div>`}
+function renderEmployees(){document.getElementById('tab-employees').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">هيكلة وتسكين كادر الموظفين والمديريات</h2><p class="text-xs text-slate-500">إضافة وتعديل وحذف بيانات الموظف، تسكينه على المديرية، وربطه بالوصف الوظيفي وخطط التقييم.</p></div><button onclick="openEmployeeForm()" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>إضافة موظف</button></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الرقم/الاسم</th><th class="p-3">البريد</th><th class="p-3">الوحدة</th><th class="p-3">الوصف الوظيفي</th><th class="p-3">الحالة</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.employees.map(e=>`<tr><td class="p-3"><strong>${esc(e.name)}</strong><small class="block text-slate-400">${esc(e.number)}</small></td><td class="p-3 text-center">${esc(e.email)}</td><td class="p-3 text-center">${orgName(e.orgUnitId)}</td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}</td><td class="p-3 text-center"><span class="badge bg-emerald-50 text-emerald-700">${esc(e.status)}</span></td><td class="p-3 text-center no-print"><button onclick="openEmployeeForm('${e.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('employees','${e.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function renderJobs(){document.getElementById('tab-jobs').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">الوصف الوظيفي Job Description</h2><p class="text-xs text-slate-500">تعريف المهام والمهارات وKPIs وربطها مباشرة بتقييم الموظف.</p></div><button onclick="openJobForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وصف وظيفي</button></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5">${DB.jobs.map(j=>`<div class="card p-5"><div class="flex justify-between gap-2"><div><h3 class="font-black text-lg">${esc(j.title)}</h3><span class="badge bg-indigo-50 text-indigo-700">${esc(j.grade)}</span></div><div class="no-print"><button onclick="openJobForm('${j.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('jobs','${j.id}')" class="btn btn-danger py-2">حذف</button></div></div><p class="text-xs text-slate-600 font-semibold mt-3 leading-relaxed">${esc(j.summary)}</p><div class="mt-3 text-xs"><strong>المهام:</strong><p class="text-slate-500 mt-1">${esc(j.tasks)}</p></div><div class="mt-3 text-xs"><strong>المهارات:</strong><p class="text-slate-500 mt-1">${esc(j.skills)}</p></div><div class="mt-4 bg-slate-50 rounded-2xl p-3"><strong class="text-xs">KPIs المرتبطة:</strong>${(j.kpis||[]).map(k=>`<div class="flex justify-between text-[11px] mt-2"><span>${esc(k.name)}</span><span class="font-black">مستهدف ${k.target}% / وزن ${k.weight}%</span></div>`).join('')}</div></div>`).join('')}</div>`}
+function renderTests(){document.getElementById('tab-tests').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">نظام اختبار الموظفين وبنك الأسئلة</h2><p class="text-xs text-slate-500">إنشاء أسئلة، تنفيذ اختبار، حفظ النتيجة، وتصدير/استيراد البنك.</p></div><div class="flex gap-2"><button onclick="openQuestionForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة سؤال</button><button onclick="openExamForm()" class="btn btn-dark"><i class="fa-solid fa-play"></i>بدء اختبار</button></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card overflow-x-auto"><div class="p-4 bg-slate-50 font-black">بنك الأسئلة (${DB.questions.length})</div><table class="w-full text-xs min-w-[700px]"><tbody class="divide-y">${DB.questions.map(q=>`<tr><td class="p-3"><strong>${esc(q.question)}</strong><small class="block text-indigo-600 font-black">${esc(q.competency)} - ${esc(q.level)}</small></td><td class="p-3 text-center no-print"><button onclick="openQuestionForm('${q.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('questions','${q.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div><div class="card overflow-x-auto"><div class="p-4 bg-slate-50 font-black">نتائج الاختبارات (${DB.exams.length})</div><table class="w-full text-xs"><tbody class="divide-y">${DB.exams.map(e=>`<tr><td class="p-3"><strong>${empName(e.employeeId)}</strong><small class="block text-slate-400">${esc(e.date)} - ${esc(e.competency)}</small></td><td class="p-3 text-center font-black text-indigo-700">${e.score}%</td><td class="p-3 text-center no-print"><button onclick="del('exams','${e.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')||`<tr><td>${empty('لا توجد اختبارات منفذة')}</td></tr>`}</tbody></table></div></div>`}
+function renderPerformance(){document.getElementById('tab-performance').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">نظام تقييم الأداء Performance Appraisal</h2><p class="text-xs text-slate-500">يربط الوصف الوظيفي بأهداف قابلة للقياس KPIs ويحسب تقييم الموظف دورياً.</p></div><button onclick="openAppraisalForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تقييم جديد</button></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">الفترة</th><th class="p-3">الوظيفة</th><th class="p-3">النتيجة</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.appraisals.map(a=>{let e=byId(DB.employees,a.employeeId);return `<tr><td class="p-3 font-black">${empName(a.employeeId)}</td><td class="p-3 text-center">${esc(a.period)}<small class="block text-slate-400">${esc(a.date)}</small></td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}</td><td class="p-3 text-center"><span class="text-lg font-black ${calcAppraisal(a)>=85?'text-emerald-700':calcAppraisal(a)>=70?'text-amber-600':'text-rose-600'}">${calcAppraisal(a)}%</span></td><td class="p-3">${esc(a.notes)}</td><td class="p-3 text-center no-print"><button onclick="openAppraisalForm('${a.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('appraisals','${a.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')}</tbody></table></div>`}
 
-/* ===================== QUESTION BANK MANAGEMENT ===================== */
-function initDefaultBank(){
-  var db=getDB();
-  if(!db.banks)db.banks={};
-  var hasDefault=false;
-  for(var k in db.banks){if(db.banks[k].isDefault){hasDefault=true;break;}}
-  if(!hasDefault){
-    var id=genId();
-    db.banks[id]={id:id,name:'الإدارة بالأهداف ومؤشرات الأداء — الأساسي',desc:'20 سؤالاً من ورشة الإدارة بالأهداف وبناء مؤشرات الأداء الرئيسية',questions:DEFAULT_QS,isDefault:true,created:new Date().toISOString()};
-    setDB(db);
-  }
-}
+function budgetTotals(){let planned=(DB.budgetItems||[]).reduce((s,x)=>s+Number(x.planned||0),0), actual=(DB.budgetItems||[]).reduce((s,x)=>s+Number(x.actual||0),0);return {planned,actual,remaining:planned-actual,rate:planned?Math.round(actual/planned*100):0}}
 
-function renderBanksList(){
-  var db=getDB();
-  var div=document.getElementById('qb-banks-list');
-  var banks=Object.values(db.banks||{});
-  if(!banks.length){
-    div.innerHTML='<div style="text-align:center;padding:20px;color:#888;font-size:13px"><i class="ti ti-books" style="font-size:24px;display:block;margin-bottom:8px"></i>لا بنوك أسئلة بعد</div>';
-    return;
-  }
-  div.innerHTML=banks.map(function(b){
-    var mcq=b.questions.filter(function(q){return q.t==='m';}).length;
-    var open=b.questions.filter(function(q){return q.t==='open';}).length;
-    var scale=b.questions.filter(function(q){return q.t==='scale';}).length;
-    var secs=[...new Set(b.questions.map(function(q){return q.s;}))];
-    return '<div class="qb-bank">'
-      +'<div class="qb-bank-title"><span><i class="ti ti-books" style="margin-left:5px"></i>'+b.name+(b.isDefault?'  <span class="bdg b2">افتراضي</span>':'')+'</span>'
-      +'<span style="font-size:12px;color:#888">'+b.questions.length+' سؤال</span></div>'
-      +'<div class="qb-bank-sub">'+(b.desc||'')+'</div>'
-      +'<div style="font-size:12px;color:#888;margin-bottom:10px">'
-      +'<span class="bdg b2" style="margin-left:6px">'+mcq+' موضوعي</span>'
-      +'<span class="bdg b3" style="margin-left:6px">'+open+' مفتوح</span>'
-      +'<span class="bdg b6" style="margin-left:6px">'+scale+' مقياس</span>'
-      +'<span style="margin-right:8px;color:#888">المحاور: '+secs.join(' · ')+'</span></div>'
-      +'<div class="qb-bank-btns">'
-      +'<button class="bp" onclick="editBank(\''+b.id+'\')" style="flex:0;padding:7px 12px;font-size:12px"><i class="ti ti-pencil"></i> تعديل الأسئلة</button>'
-      +'<button class="bp bpg" onclick="duplicateBank(\''+b.id+'\')" style="flex:0;padding:7px 12px;font-size:12px"><i class="ti ti-copy"></i> نسخ</button>'
-      +'<button class="bs" onclick="exportBank(\''+b.id+'\')" style="font-size:12px"><i class="ti ti-download"></i> JSON</button>'
-      +'<button class="bs" onclick="exportBankCSV(\''+b.id+'\')" style="font-size:12px"><i class="ti ti-table-export"></i> CSV</button>'
-      +'<button class="bs" onclick="exportBankXLSX(\''+b.id+'\')" style="font-size:12px"><i class="ti ti-file-spreadsheet"></i> XLSX</button>'
-      +(b.isDefault?'':'<button class="bp bpr" onclick="deleteBank(\''+b.id+'\')" style="flex:0;padding:7px 12px;font-size:12px"><i class="ti ti-trash"></i></button>')
-      +'</div></div>';
-  }).join('');
-}
+function skillList(job){return String(job.skills||'').split(/[،,]/).map(x=>x.trim()).filter(Boolean)}
+function examScoreByCompetency(empId,comp){let arr=(DB.exams||[]).filter(e=>e.employeeId===empId && (!comp || e.competency===comp));return arr.length?Math.round(arr.reduce((s,x)=>s+Number(x.score||0),0)/arr.length):60}
+function gapRowsForEmployee(e){let job=byId(DB.jobs,e.jobId);let skills=skillList(job);return skills.map(sk=>{let current=examScoreByCompetency(e.id,sk);let target=85;let gap=Math.max(target-current,0);let course=(DB.courses||[]).find(c=>String(c.description+' '+c.title+' '+c.kpi).includes(sk))||DB.courses?.[0]||{};return {skill:sk,current,target,gap,course:course.title||'برنامج تطوير عام'}})}
+function renderGap(){let empId=document.getElementById('gapEmp')?.value||DB.employees[0]?.id;let e=byId(DB.employees,empId)||DB.employees[0]||{};let rows=e.id?gapRowsForEmployee(e):[];let avg=rows.length?Math.round(rows.reduce((s,x)=>s+x.current,0)/rows.length):0;document.getElementById('tab-gap').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">تحليل فجوات المهارات والجدارات</h2><p class="text-xs text-slate-500">مقارنة مستوى الموظف الحالي مع متطلبات الوصف الوظيفي، مع توصية تلقائية بالورش المناسبة.</p></div><select id="gapEmp" onchange="renderGap()" class="field max-w-sm">${DB.employees.map(x=>`<option value="${x.id}" ${x.id===e.id?'selected':''}>${esc(x.name)} - ${jobName(x.jobId)}</option>`).join('')}</select></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('الموظف',esc(e.name),'fa-user','indigo')}${stat('الوظيفة',jobName(e.jobId),'fa-id-card','emerald')}${stat('متوسط الجدارة',avg+'%','fa-gauge-high','amber')}${stat('متوسط الفجوة',Math.max(85-avg,0)+'%','fa-chart-gantt','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الجدارة المطلوبة</th><th class="p-3">الحالي</th><th class="p-3">المستهدف</th><th class="p-3">الفجوة</th><th class="p-3">البرنامج المقترح</th><th class="p-3">مؤشر بصري</th></tr></thead><tbody class="divide-y">${rows.map(r=>`<tr><td class="p-3 font-black">${esc(r.skill)}</td><td class="p-3 text-center font-black">${r.current}%</td><td class="p-3 text-center">${r.target}%</td><td class="p-3 text-center font-black ${r.gap>15?'text-rose-600':'text-emerald-700'}">${r.gap}%</td><td class="p-3 text-indigo-700 font-black">${esc(r.course)}</td><td class="p-3"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 bg-indigo-500" style="width:${Math.min(r.current,100)}%"></div></div></td></tr>`).join('')||`<tr><td colspan="6">${empty('لا توجد بيانات')}</td></tr>`}</tbody></table></div>`}
+function renderTraining(){document.getElementById('tab-training').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">دليل ومواصفات ورش العمل والبرامج التدريبية</h2><p class="text-xs text-slate-500">إدارة البرامج، التكلفة، المدرب، الساعات، الربط بالـ KPIs، وتقييم الأثر.</p></div><button onclick="openCourseForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة برنامج</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-5">${(DB.courses||[]).map(c=>`<div class="card p-5"><div class="flex justify-between"><span class="badge bg-indigo-50 text-indigo-700">${esc(c.status)}</span><span class="text-xs text-slate-400 font-bold">${esc(c.date)}</span></div><h3 class="font-black text-lg mt-3">${esc(c.title)}</h3><p class="text-xs text-slate-500 mt-2 leading-relaxed">${esc(c.description)}</p><div class="grid grid-cols-2 gap-2 mt-4 text-xs"><div class="bg-slate-50 rounded-xl p-3"><b>المدرب</b><br>${esc(c.trainer)}</div><div class="bg-slate-50 rounded-xl p-3"><b>الساعات</b><br>${esc(c.hours)} ساعة</div><div class="bg-slate-50 rounded-xl p-3"><b>التكلفة</b><br>${Number(c.cost||0).toLocaleString()} ر.ع</div><div class="bg-slate-50 rounded-xl p-3"><b>KPI</b><br>${esc(c.kpi)}</div></div><div class="no-print mt-4 flex gap-2"><button onclick="openCourseForm('${c.id}')" class="btn btn-soft py-2">تعديل</button><button onclick="del('courses','${c.id}')" class="btn btn-danger py-2">حذف</button></div></div>`).join('')||empty('لا توجد برامج')}</div>`}
+function nineBoxCell(sc){let p=Number(sc.performance||0), po=Number(sc.potential||0);let row=po>=85?'قدرة عالية':po>=70?'قدرة متوسطة':'قدرة منخفضة';let col=p>=85?'أداء عالٍ':p>=70?'أداء متوسط':'أداء منخفض';return row+' / '+col}
+function renderSuccession(){let cells=['قدرة عالية / أداء منخفض','قدرة عالية / أداء متوسط','قدرة عالية / أداء عالٍ','قدرة متوسطة / أداء منخفض','قدرة متوسطة / أداء متوسط','قدرة متوسطة / أداء عالٍ','قدرة منخفضة / أداء منخفض','قدرة منخفضة / أداء متوسط','قدرة منخفضة / أداء عالٍ'];document.getElementById('tab-succession').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">برامج التعاقب ومصفوفة الـ (9-Box Grid) للقيادات</h2><p class="text-xs text-slate-500">تصنيف المرشحين حسب الأداء والإمكانات، وربطهم بخطط إحلال وتطوير.</p></div><button onclick="openSuccessionForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة مرشح</button></div><div class="card p-5"><div class="grid grid-cols-1 md:grid-cols-3 gap-3">${cells.map(c=>`<div class="min-h-36 rounded-2xl border border-slate-200 bg-slate-50 p-3"><h4 class="text-[11px] font-black text-slate-600 mb-2">${c}</h4>${(DB.successors||[]).filter(sc=>nineBoxCell(sc)===c).map(sc=>`<div class="bg-white border border-indigo-100 rounded-xl p-2 mb-2 text-xs"><b>${empName(sc.employeeId)}</b><br><span class="text-indigo-700 font-black">${jobName(sc.targetJobId)}</span><br><small>${esc(sc.readiness)}</small></div>`).join('')}</div>`).join('')}</div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">المنصب المستهدف</th><th class="p-3">الأداء</th><th class="p-3">الإمكانات</th><th class="p-3">الجاهزية</th><th class="p-3">خطة التطوير</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.successors||[]).map(sc=>`<tr><td class="p-3 font-black">${empName(sc.employeeId)}</td><td class="p-3 text-center text-indigo-700 font-black">${jobName(sc.targetJobId)}</td><td class="p-3 text-center">${sc.performance}%</td><td class="p-3 text-center">${sc.potential}%</td><td class="p-3 text-center">${esc(sc.readiness)}</td><td class="p-3">${esc(sc.developmentPlan)}</td><td class="p-3 no-print"><button onclick="openSuccessionForm('${sc.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('successors','${sc.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function renderSurveys(){let n=(DB.surveys||[]).length||1, avg=k=>Math.round((DB.surveys||[]).reduce((s,x)=>s+Number(x[k]||0),0)/n*10)/10;document.getElementById('tab-surveys').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">استمارات قياس الآراء ورضى المتدربين والخبراء</h2><p class="text-xs text-slate-500">تحليل رضا المتدربين عن المحتوى والمدرب والتنظيم والأثر العملي.</p></div><button onclick="openSurveyForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تسجيل استمارة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('جودة المحتوى',avg('content')+'/5','fa-book','indigo')}${stat('أداء المدرب',avg('instructor')+'/5','fa-chalkboard-user','emerald')}${stat('التنظيم',avg('venue')+'/5','fa-building','amber')}${stat('الأثر العملي',avg('impact')+'/5','fa-chart-line','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البرنامج</th><th class="p-3">المشارك</th><th class="p-3">المحتوى</th><th class="p-3">المدرب</th><th class="p-3">التنظيم</th><th class="p-3">الأثر</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.surveys||[]).map(v=>`<tr><td class="p-3 font-black">${esc((byId(DB.courses,v.courseId)||{}).title||v.courseId)}</td><td class="p-3 text-center">${esc(v.respondent)}</td><td class="p-3 text-center">${v.content}/5</td><td class="p-3 text-center">${v.instructor}/5</td><td class="p-3 text-center">${v.venue}/5</td><td class="p-3 text-center">${v.impact}/5</td><td class="p-3">${esc(v.comment)}</td><td class="p-3 no-print"><button onclick="openSurveyForm('${v.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('surveys','${v.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function renderBudget(){let b=budgetTotals(), byDept={};(DB.budgetItems||[]).forEach(x=>{byDept[x.department]=byDept[x.department]||{planned:0,actual:0};byDept[x.department].planned+=Number(x.planned||0);byDept[x.department].actual+=Number(x.actual||0)});document.getElementById('tab-budget').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الموازنة والصرف</h2><p class="text-xs text-slate-500">تخطيط الموازنة، تسجيل الصرف الفعلي، متابعة الانحرافات، وتعديل أو حذف أي بند.</p></div><button onclick="openBudgetForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة بند موازنة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('إجمالي المخطط',b.planned.toLocaleString()+' ر.ع','fa-coins','indigo')}${stat('إجمالي الفعلي',b.actual.toLocaleString()+' ر.ع','fa-money-bill-transfer','emerald')}${stat('المتبقي/الانحراف',b.remaining.toLocaleString()+' ر.ع','fa-scale-balanced','amber')}${stat('نسبة الصرف',b.rate+'%','fa-chart-pie','rose')}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card p-5"><h3 class="font-black mb-4">الصرف حسب الإدارة</h3><div class="space-y-3">${Object.entries(byDept).map(([d,v])=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${esc(d)}</span><span>${v.actual.toLocaleString()} / ${v.planned.toLocaleString()} ر.ع</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 ${v.actual>v.planned?'bg-rose-500':'bg-indigo-500'} rounded-full" style="width:${Math.min(v.actual/Math.max(v.planned,1)*100,100)}%"></div></div></div>`).join('')||empty('لا توجد بيانات موازنة')}</div></div><div class="card p-5"><h3 class="font-black mb-4">تنبيهات مالية</h3>${b.actual>b.planned?`<div class="bg-rose-50 border border-rose-100 text-rose-700 rounded-2xl p-4 text-xs font-black">يوجد تجاوز في إجمالي الصرف الفعلي عن المخطط.</div>`:`<div class="bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl p-4 text-xs font-black">الصرف الحالي داخل حدود الموازنة المخططة.</div>`}<div class="mt-3 text-xs text-slate-500 leading-relaxed">يمكن تصدير هذه الصفحة ضمن Excel/CSV/JSON من مركز البيانات.</div></div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[950px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البند</th><th class="p-3">التاريخ</th><th class="p-3">الإدارة</th><th class="p-3">التصنيف</th><th class="p-3">المخطط</th><th class="p-3">الفعلي</th><th class="p-3">الانحراف</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.budgetItems||[]).map(x=>{let diff=Number(x.planned||0)-Number(x.actual||0);return `<tr><td class="p-3 font-black">${esc(x.item)}</td><td class="p-3 text-center">${esc(x.date)}</td><td class="p-3 text-center">${esc(x.department)}</td><td class="p-3 text-center"><span class="badge bg-indigo-50 text-indigo-700">${esc(x.category)}</span></td><td class="p-3 text-center font-black">${Number(x.planned||0).toLocaleString()}</td><td class="p-3 text-center font-black">${Number(x.actual||0).toLocaleString()}</td><td class="p-3 text-center font-black ${diff<0?'text-rose-600':'text-emerald-700'}">${diff.toLocaleString()}</td><td class="p-3">${esc(x.notes)}</td><td class="p-3 text-center no-print"><button onclick="openBudgetForm('${x.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('budgetItems','${x.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')||`<tr><td colspan="9">${empty('لا توجد بنود موازنة')}</td></tr>`}</tbody></table></div>`}
 
-function showNewBankModal(){
-  editingBankId=null;
-  document.getElementById('modal-bank-title').textContent='إنشاء بنك أسئلة جديد';
-  document.getElementById('mb-name').value='';
-  document.getElementById('mb-desc').value='';
-  openModal('modal-bank');
-}
+function renderData(){document.getElementById('tab-data').innerHTML=`<div><h2 class="text-2xl font-black">مركز البيانات والتبادل</h2><p class="text-xs text-slate-500">تصدير واستيراد كامل أو جزئي للبيانات بصيغ Excel وCSV وJSON.</p></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card p-5 space-y-3"><h3 class="font-black">تصدير البيانات</h3><div class="grid grid-cols-2 gap-2"><button onclick="exportJSON()" class="btn btn-primary">JSON كامل</button><button onclick="exportExcel()" class="btn btn-primary">Excel Workbook</button><button onclick="exportCSV('employees')" class="btn btn-soft">CSV الموظفون</button><button onclick="exportCSV('orgUnits')" class="btn btn-soft">CSV الهيكل</button><button onclick="exportCSV('jobs')" class="btn btn-soft">CSV الوصف</button><button onclick="exportCSV('questions')" class="btn btn-soft">CSV الأسئلة</button><button onclick="exportCSV('appraisals')" class="btn btn-soft">CSV التقييم</button><button onclick="exportCSV('budgetItems')" class="btn btn-soft">CSV الموازنة</button><button onclick="exportCSV('courses')" class="btn btn-soft">CSV البرامج</button><button onclick="exportCSV('successors')" class="btn btn-soft">CSV التعاقب</button><button onclick="exportCSV('surveys')" class="btn btn-soft">CSV الرضا</button><button onclick="window.print()" class="btn btn-dark">طباعة/حفظ PDF</button></div></div><div class="card p-5 space-y-3"><h3 class="font-black">استيراد البيانات</h3><label class="block text-xs font-black text-slate-600 mb-1">نوع البيانات المراد استيرادها</label><select id="importTarget" class="field"><option value="all">JSON كامل للنظام</option><option value="employees">الموظفون CSV/Excel</option><option value="orgUnits">الهيكل CSV/Excel</option><option value="jobs">الوصف الوظيفي CSV/Excel</option><option value="questions">بنك الأسئلة CSV/Excel</option><option value="appraisals">التقييم CSV/Excel</option><option value="budgetItems">الموازنة CSV/Excel</option><option value="courses">البرامج التدريبية CSV/Excel</option><option value="successors">التعاقب CSV/Excel</option><option value="surveys">استمارات الرضا CSV/Excel</option></select><label class="block text-xs font-black text-slate-600 mb-1">اختر ملف البيانات</label><input type="file" id="importFile" accept=".json,.csv,.xlsx,.xls" class="field"><button onclick="importFile()" class="btn btn-primary w-full">استيراد وتحديث النظام</button><button onclick="resetDemo()" class="btn btn-danger w-full">استعادة بيانات تجريبية</button><p class="text-[11px] text-slate-500 leading-relaxed">ملاحظة: ملف Excel يستورد أول ورقة فقط إلى الجدول المختار. JSON الكامل يستبدل جميع بيانات النظام.</p></div></div>`}
+function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function options(arr,selected,blank='-- اختر --'){return `<option value="">${blank}</option>`+arr.map(x=>`<option value="${x.id}" ${x.id===selected?'selected':''}>${esc(x.name||x.title)}</option>`).join('')}
 
-function saveBankMeta(){
-  var name=document.getElementById('mb-name').value.trim();
-  if(!name){showToast('qb-toast','اسم البنك مطلوب.','ter');return;}
-  var db=getDB();
-  if(!db.banks)db.banks={};
-  var id=editingBankId||genId();
-  if(!db.banks[id]){
-    db.banks[id]={id:id,name:name,desc:document.getElementById('mb-desc').value.trim(),questions:[],created:new Date().toISOString()};
-  } else {
-    db.banks[id].name=name;
-    db.banks[id].desc=document.getElementById('mb-desc').value.trim();
-  }
-  setDB(db);
-  closeModal('modal-bank');
-  currentBankId=id;
-  renderBankEditor(id);
-  showToast('qb-toast','تم حفظ البنك — أضف الأسئلة الآن','tok');
-}
+function fieldBlock(label, inner, extra='') { return `<div class="${extra}"><label class="block text-xs font-black text-slate-600 mb-1">${label}</label>${inner}</div>`; }
+function openOrgForm(id=''){let o=id?byId(DB.orgUnits,id):{id:'',name:'',type:'',parentId:'',managerEmployeeId:''};openModal(id?'تعديل وحدة تنظيمية':'إضافة وحدة تنظيمية',`<form onsubmit="saveOrg(event,'${id}')" class="space-y-4"><div><label class="block text-xs font-black text-slate-600 mb-1">اسم الوحدة</label><input name="name" class="field" required placeholder="اسم الوحدة" value="${esc(o.name)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">نوع الوحدة</label><input name="type" class="field" required placeholder="النوع: إدارة/قسم/مديرية" value="${esc(o.type)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تتبع إلى</label><select name="parentId" class="field">${options(DB.orgUnits.filter(x=>x.id!==id),o.parentId,'جذر الهيكل')}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">مدير الوحدة</label><select name="managerEmployeeId" class="field">${options(DB.employees,o.managerEmployeeId,'لا يوجد')}</select></div><button class="btn btn-primary w-full">حفظ</button></form>`)}
+function saveOrg(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('org'),name:f.get('name'),type:f.get('type'),parentId:f.get('parentId'),managerEmployeeId:f.get('managerEmployeeId')};upsert('orgUnits',obj,id)}
+function openEmployeeForm(id=''){let x=id?byId(DB.employees,id):{name:'',number:'',email:'',orgUnitId:'',jobId:'',status:'نشط'};openModal(id?'تعديل موظف':'إضافة موظف',`<form onsubmit="saveEmployee(event,'${id}')" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">اسم الموظف</label><input name="name" class="field" required placeholder="اسم الموظف" value="${esc(x.name)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الرقم الوظيفي</label><input name="number" class="field" placeholder="الرقم الوظيفي" value="${esc(x.number)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">البريد الإلكتروني</label><input name="email" class="field" placeholder="البريد" value="${esc(x.email)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">حالة الموظف</label><select name="status" class="field"><option ${x.status==='نشط'?'selected':''}>نشط</option><option ${x.status==='موقوف'?'selected':''}>موقوف</option><option ${x.status==='منقول'?'selected':''}>منقول</option></select></div><div><label class="block text-xs font-black text-slate-600 mb-1">الوحدة</label><select name="orgUnitId" class="field">${options(DB.orgUnits,x.orgUnitId)}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">الوصف الوظيفي</label><select name="jobId" class="field">${options(DB.jobs,x.jobId)}</select></div><button class="btn btn-primary sm:col-span-2">حفظ</button></form>`)}
+function saveEmployee(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('emp'),name:f.get('name'),number:f.get('number'),email:f.get('email'),orgUnitId:f.get('orgUnitId'),jobId:f.get('jobId'),status:f.get('status')};upsert('employees',obj,id)}
+function openJobForm(id=''){let j=id?byId(DB.jobs,id):{title:'',grade:'',summary:'',tasks:'',skills:'',kpis:[{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25}]};openModal(id?'تعديل الوصف الوظيفي':'إضافة وصف وظيفي',`<form onsubmit="saveJob(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">المسمى الوظيفي</label><input name="title" class="field" required placeholder="المسمى الوظيفي" value="${esc(j.title)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الدرجة / المستوى</label><input name="grade" class="field" placeholder="الدرجة/المستوى" value="${esc(j.grade)}"></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">ملخص الوظيفة</label><textarea name="summary" class="field" placeholder="ملخص الوظيفة">${esc(j.summary)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهام والمسؤوليات</label><textarea name="tasks" class="field" placeholder="المهام والمسؤوليات">${esc(j.tasks)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهارات والجدارات</label><textarea name="skills" class="field" placeholder="المهارات والجدارات">${esc(j.skills)}</textarea></div><div class="bg-slate-50 rounded-2xl p-4"><h4 class="font-black text-sm mb-3">KPIs</h4>${[0,1,2,3].map(i=>`<div class="grid grid-cols-12 gap-2 mb-2"><div class="col-span-6"><label class="block text-[10px] font-black text-slate-500 mb-1">اسم KPI</label><input name="kpi${i}" class="field" placeholder="اسم KPI" value="${esc((j.kpis[i]||{}).name)}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">المستهدف</label><input name="target${i}" type="number" class="field" placeholder="المستهدف" value="${(j.kpis[i]||{}).target||''}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الوزن</label><input name="weight${i}" type="number" class="field" placeholder="الوزن" value="${(j.kpis[i]||{}).weight||''}"></div></div>`).join('')}</div><button class="btn btn-primary w-full">حفظ</button></form>`)}
+function saveJob(e,id){e.preventDefault();let f=new FormData(e.target), kpis=[0,1,2,3].map(i=>({name:f.get('kpi'+i),target:Number(f.get('target'+i)||0),weight:Number(f.get('weight'+i)||0)})).filter(k=>k.name);let obj={id:id||uid('job'),title:f.get('title'),grade:f.get('grade'),summary:f.get('summary'),tasks:f.get('tasks'),skills:f.get('skills'),kpis};upsert('jobs',obj,id)}
+function openQuestionForm(id=''){let q=id?byId(DB.questions,id):{competency:'',level:'متوسط',question:'',a:'',b:'',c:'',d:'',correct:'a'};openModal(id?'تعديل سؤال':'إضافة سؤال',`<form onsubmit="saveQuestion(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">الجدارة</label><input name="competency" class="field" required placeholder="الجدارة" value="${esc(q.competency)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">مستوى السؤال</label><select name="level" class="field"><option ${q.level==='أساسي'?'selected':''}>أساسي</option><option ${q.level==='متوسط'?'selected':''}>متوسط</option><option ${q.level==='متقدم'?'selected':''}>متقدم</option></select></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">نص السؤال</label><textarea name="question" class="field" required placeholder="نص السؤال">${esc(q.question)}</textarea></div>${['a','b','c','d'].map(l=>`<div><label class="block text-xs font-black text-slate-600 mb-1">اختيار ${l.toUpperCase()}</label><input name="${l}" class="field" placeholder="اختيار ${l.toUpperCase()}" value="${esc(q[l])}"></div>`).join('')}<label class="block text-xs font-black text-slate-600 mb-1">الإجابة الصحيحة</label><select name="correct" class="field">${['a','b','c','d'].map(l=>`<option value="${l}" ${q.correct===l?'selected':''}>${l.toUpperCase()}</option>`).join('')}</select><button class="btn btn-primary w-full">حفظ السؤال</button></form>`)}
+function saveQuestion(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('q'),competency:f.get('competency'),level:f.get('level'),question:f.get('question'),a:f.get('a'),b:f.get('b'),c:f.get('c'),d:f.get('d'),correct:f.get('correct')};upsert('questions',obj,id)}
+function openExamForm(){openModal('تنفيذ اختبار موظف',`<form onsubmit="runExam(event)" class="space-y-4"><label class="block text-xs font-black text-slate-600 mb-1">الموظف</label><select name="employeeId" class="field" required>${options(DB.employees,'')}</select><label class="text-xs font-black">الجدارة / المجال</label><input name="competency" class="field" placeholder="اتركها فارغة لاستخدام جميع الأسئلة"><p class="text-xs text-slate-500">سيتم احتساب نتيجة تجريبية من اختيار الإجابات في النموذج التالي.</p><div id="examQuestions" class="space-y-3">${DB.questions.map(q=>`<div class="bg-slate-50 rounded-2xl p-3"><strong class="text-xs">${esc(q.question)}</strong><select name="ans_${q.id}" class="field mt-2"><option value="a">A - ${esc(q.a)}</option><option value="b">B - ${esc(q.b)}</option><option value="c">C - ${esc(q.c)}</option><option value="d">D - ${esc(q.d)}</option></select></div>`).join('')}</div><button class="btn btn-primary w-full">حفظ نتيجة الاختبار</button></form>`)}
+function runExam(e){e.preventDefault();let f=new FormData(e.target), total=DB.questions.length||1, ok=0;DB.questions.forEach(q=>{if(f.get('ans_'+q.id)===q.correct)ok++});DB.exams.unshift({id:uid('exam'),employeeId:f.get('employeeId'),competency:f.get('competency')||'اختبار شامل',date:new Date().toISOString().slice(0,10),score:Math.round(ok/total*100)});save();closeModal();toast('تم حفظ نتيجة الاختبار');renderTests();}
 
-function editBank(id){
-  currentBankId=id;
-  renderBankEditor(id);
-}
+function openBudgetForm(id=''){let x=id?byId(DB.budgetItems||[],id):{date:new Date().toISOString().slice(0,10),item:'',department:'',planned:'',actual:'',category:'تدريب',notes:''};openModal(id?'تعديل بند موازنة':'إضافة بند موازنة',`<form onsubmit="saveBudget(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">اسم البند / البرنامج</label><input name="item" class="field" required placeholder="اسم البند / البرنامج" value="${esc(x.item)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تاريخ البند</label><input name="date" type="date" class="field" value="${esc(x.date)}"></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">الإدارة</label><select name="department" class="field" required><option value="">اختر الإدارة</option>${DB.orgUnits.map(o=>`<option value="${esc(o.name)}" ${x.department===o.name?'selected':''}>${esc(o.name)}</option>`).join('')}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">تصنيف البند</label><select name="category" class="field"><option ${x.category==='تدريب'?'selected':''}>تدريب</option><option ${x.category==='اختبارات'?'selected':''}>اختبارات</option><option ${x.category==='استشارات'?'selected':''}>استشارات</option><option ${x.category==='تشغيل'?'selected':''}>تشغيل</option><option ${x.category==='أخرى'?'selected':''}>أخرى</option></select></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">المبلغ المخطط</label><input name="planned" type="number" class="field" required placeholder="المبلغ المخطط" value="${esc(x.planned)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">المبلغ الفعلي</label><input name="actual" type="number" class="field" required placeholder="المبلغ الفعلي" value="${esc(x.actual)}"></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">ملاحظات</label><textarea name="notes" class="field" placeholder="ملاحظات">${esc(x.notes)}</textarea></div><button class="btn btn-primary w-full">حفظ بند الموازنة</button></form>`)}
+function saveBudget(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('bd'),date:f.get('date'),item:f.get('item'),department:f.get('department'),planned:Number(f.get('planned')||0),actual:Number(f.get('actual')||0),category:f.get('category'),notes:f.get('notes')};if(!DB.budgetItems)DB.budgetItems=[];if(!DB.courses)DB.courses=[];if(!DB.successors)DB.successors=[];if(!DB.surveys)DB.surveys=[];upsert('budgetItems',obj,id)}
 
-function renderBankEditor(id){
-  var db=getDB();
-  var bank=db.banks[id];
-  if(!bank)return;
-  var div=document.getElementById('qb-banks-list');
-  var qs=bank.questions;
-  var html='<div style="margin-bottom:14px">'
-    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'
-    +'<button class="bs" onclick="renderBanksList()"><i class="ti ti-arrow-right"></i> رجوع للقائمة</button>'
-    +'<div style="font-size:15px;font-weight:700;color:#003087">'+bank.name+'</div>'
-    +'<span class="bdg b2">'+qs.length+' سؤال</span></div>'
-    +'<button class="bp bpg" onclick="showAddQModal()" style="margin-bottom:10px"><i class="ti ti-plus"></i> إضافة سؤال جديد</button>'
-    +'</div>';
-  if(!qs.length){html+='<div style="text-align:center;padding:20px;color:#888;font-size:13px">لا أسئلة بعد — أضف أول سؤال</div>';}
-  else{
-    html+=qs.map(function(q,i){
-      var typeLabel=q.t==='m'?'موضوعي':q.t==='open'?'مفتوح':'مقياس';
-      var typeCls=q.t==='m'?'b2':q.t==='open'?'b3':'b6';
-      var optText='';
-      if(q.t==='m'&&q.o){optText='<div class="qb-opts">'+q.o.map(function(o,j){return '<span style="color:'+(j===q.a?'#1D6F42':'#888')+'">'+(j===q.a?'✓ ':'')+['أ','ب','ج','د'][j]+'. '+o+'</span>';}).join(' &nbsp;|&nbsp; ')+'</div>';}
-      return '<div class="qb-item">'
-        +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">'
-        +'<div style="flex:1">'
-        +'<span class="qb-num">س'+(i+1)+'</span> <span class="bdg '+typeCls+'" style="margin-bottom:6px">'+typeLabel+'</span>'
-        +(q.s?'<span style="font-size:11px;color:#888;margin-right:6px">'+q.s+'</span>':'')
-        +'<div class="qb-q">'+q.q+'</div>'
-        +optText+'</div>'
-        +'<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">'
-        +'<button class="bs" onclick="editQuestion('+i+')" style="font-size:11px;padding:4px 8px"><i class="ti ti-pencil"></i></button>'
-        +(i>0?'<button class="bs" onclick="moveQ('+i+',-1)" style="font-size:11px;padding:4px 8px"><i class="ti ti-arrow-up"></i></button>':'')
-        +(i<qs.length-1?'<button class="bs" onclick="moveQ('+i+',1)" style="font-size:11px;padding:4px 8px"><i class="ti ti-arrow-down"></i></button>':'')
-        +'<button class="bp bpr" onclick="deleteQuestion('+i+')" style="padding:4px 8px;font-size:11px"><i class="ti ti-trash"></i></button>'
-        +'</div></div></div>';
-    }).join('');
-  }
-  div.innerHTML=html;
-}
+function openAppraisalForm(id=''){let a=id?byId(DB.appraisals,id):{employeeId:DB.employees[0]?.id||'',period:'',date:new Date().toISOString().slice(0,10),scores:[],notes:''};let emp=byId(DB.employees,a.employeeId), job=byId(DB.jobs,emp.jobId);let kpis=(a.scores&&a.scores.length?a.scores:(job.kpis||[]).map(k=>({kpi:k.name,actual:k.target,weight:k.weight})));openModal(id?'تعديل تقييم الأداء':'تقييم أداء جديد',`<form onsubmit="saveAppraisal(event,'${id}')" class="space-y-4"><label class="block text-xs font-black text-slate-600 mb-1">الموظف</label><select name="employeeId" class="field" onchange="closeModal();setTimeout(()=>openAppraisalForEmployee(this.value),0)">${options(DB.employees,a.employeeId)}</select></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">فترة التقييم</label><input name="period" class="field" required placeholder="مثال: الربع الأول 2026" value="${esc(a.period)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تاريخ التقييم</label><input name="date" type="date" class="field" value="${esc(a.date)}"></div></div><div class="bg-slate-50 rounded-2xl p-4"><h4 class="font-black text-sm mb-3">KPIs حسب الوصف الوظيفي: ${jobName(emp.jobId)}</h4>${[0,1,2,3,4,5].map(i=>`<div class="grid grid-cols-12 gap-2 mb-2"><div class="col-span-6"><label class="block text-[10px] font-black text-slate-500 mb-1">KPI</label><input name="kpi${i}" class="field" placeholder="KPI" value="${esc((kpis[i]||{}).kpi)}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الفعلي</label><input name="actual${i}" type="number" class="field" placeholder="الفعلي" value="${(kpis[i]||{}).actual||''}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الوزن</label><input name="weight${i}" type="number" class="field" placeholder="الوزن" value="${(kpis[i]||{}).weight||''}"></div></div>`).join('')}</div><div><label class="block text-xs font-black text-slate-600 mb-1">ملاحظات وتوصيات</label><textarea name="notes" class="field" placeholder="ملاحظات وتوصيات">${esc(a.notes)}</textarea></div><button class="btn btn-primary w-full">حفظ التقييم</button></form>`)}
+function openAppraisalForEmployee(empId){let emp=byId(DB.employees,empId), job=byId(DB.jobs,emp.jobId), kpis=(job.kpis||[]).map(k=>({kpi:k.name,actual:k.target,weight:k.weight}));openModal('تقييم أداء جديد',`<form onsubmit="saveAppraisal(event,'')" class="space-y-4"><div><label class="block text-xs font-black text-slate-600 mb-1">الموظف</label><select name="employeeId" class="field">${options(DB.employees,empId)}</select></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">فترة التقييم</label><input name="period" class="field" required placeholder="مثال: الربع الأول 2026"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تاريخ التقييم</label><input name="date" type="date" class="field" value="${new Date().toISOString().slice(0,10)}"></div></div><div class="bg-slate-50 rounded-2xl p-4">${[0,1,2,3,4,5].map(i=>`<div class="grid grid-cols-12 gap-2 mb-2"><div class="col-span-6"><label class="block text-[10px] font-black text-slate-500 mb-1">KPI</label><input name="kpi${i}" class="field" value="${esc((kpis[i]||{}).kpi||'')}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الفعلي</label><input name="actual${i}" type="number" class="field" value="${(kpis[i]||{}).actual||''}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الوزن</label><input name="weight${i}" type="number" class="field" value="${(kpis[i]||{}).weight||''}"></div></div>`).join('')}</div><div><label class="block text-xs font-black text-slate-600 mb-1">ملاحظات</label><textarea name="notes" class="field" placeholder="ملاحظات"></textarea></div><button class="btn btn-primary w-full">حفظ</button></form>`)}
+function saveAppraisal(e,id){e.preventDefault();let f=new FormData(e.target), scores=[0,1,2,3,4,5].map(i=>({kpi:f.get('kpi'+i),actual:Number(f.get('actual'+i)||0),weight:Number(f.get('weight'+i)||0)})).filter(x=>x.kpi);let obj={id:id||uid('ap'),employeeId:f.get('employeeId'),period:f.get('period'),date:f.get('date'),scores,notes:f.get('notes')};upsert('appraisals',obj,id)}
+function upsert(table,obj,id){if(id){let i=DB[table].findIndex(x=>x.id===id);DB[table][i]=obj}else DB[table].unshift(obj);save();closeModal();toast('تم الحفظ بنجاح');render(document.querySelector('main>section:not(.hidden)').id.replace('tab-',''))}
+function del(table,id){if(!confirm('هل تريد حذف هذا البيان؟'))return;DB[table]=DB[table].filter(x=>x.id!==id);save();toast('تم الحذف');render(document.querySelector('main>section:not(.hidden)').id.replace('tab-',''))}
+function download(name,content,type){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
 
-function showAddQModal(){
-  document.getElementById('mq-idx').value='-1';
-  document.getElementById('modal-q-title').textContent='إضافة سؤال جديد';
-  document.getElementById('mq-type').value='m';
-  document.getElementById('mq-sec').value='';
-  document.getElementById('mq-q').value='';
-  document.getElementById('mq-exp').value='';
-  document.getElementById('mq-ph').value='';
-  document.getElementById('mq-sl0').value='';
-  document.getElementById('mq-sl1').value='';
-  document.querySelectorAll('.mq-opt').forEach(function(el){el.value='';});
-  document.querySelectorAll('.ans-radio').forEach(function(el){el.checked=false;});
-  toggleQType();
-  openModal('modal-q');
-}
-
-function editQuestion(idx){
-  var db=getDB();
-  var q=db.banks[currentBankId].questions[idx];
-  document.getElementById('mq-idx').value=idx;
-  document.getElementById('modal-q-title').textContent='تعديل السؤال '+(idx+1);
-  document.getElementById('mq-type').value=q.t;
-  document.getElementById('mq-sec').value=q.s||'';
-  document.getElementById('mq-q').value=q.q||'';
-  document.getElementById('mq-exp').value=q.e||'';
-  document.getElementById('mq-ph').value=q.ph||'';
-  document.getElementById('mq-sl0').value=(q.sl&&q.sl[0])||'';
-  document.getElementById('mq-sl1').value=(q.sl&&q.sl[1])||'';
-  var opts=document.querySelectorAll('.mq-opt');
-  var radios=document.querySelectorAll('.ans-radio');
-  opts.forEach(function(el,i){el.value=(q.o&&q.o[i])||'';});
-  radios.forEach(function(el,i){el.checked=(q.a===i);});
-  toggleQType();
-  openModal('modal-q');
-}
-
-function toggleQType(){
-  var t=document.getElementById('mq-type').value;
-  document.getElementById('mq-opts-wrap').style.display=t==='m'?'block':'none';
-  document.getElementById('mq-open-wrap').style.display=t==='open'?'block':'none';
-  document.getElementById('mq-scale-wrap').style.display=t==='scale'?'block':'none';
-}
-
-function saveQuestion(){
-  var t=document.getElementById('mq-type').value;
-  var q_text=document.getElementById('mq-q').value.trim();
-  var sec=document.getElementById('mq-sec').value.trim();
-  if(!q_text){showToast('qb-toast','نص السؤال مطلوب.','ter');return;}
-  var q={t:t,s:sec,q:q_text};
-  if(t==='m'){
-    var opts=[];
-    document.querySelectorAll('.mq-opt').forEach(function(el){opts.push(el.value.trim());});
-    opts=opts.filter(function(o){return o;});
-    if(opts.length<2){showToast('qb-toast','أضف خيارَين على الأقل.','ter');return;}
-    var ans=-1;
-    document.querySelectorAll('.ans-radio').forEach(function(el,i){if(el.checked)ans=i;});
-    if(ans<0){showToast('qb-toast','حدد الإجابة الصحيحة.','ter');return;}
-    q.o=opts;q.a=ans;q.e=document.getElementById('mq-exp').value.trim();
-  } else if(t==='open'){
-    q.ph=document.getElementById('mq-ph').value.trim()||'اكتب إجابتك هنا...';
-  } else if(t==='scale'){
-    q.sl=[document.getElementById('mq-sl0').value.trim()||'الأدنى',document.getElementById('mq-sl1').value.trim()||'الأعلى'];
-  }
-  var db=getDB();
-  var idx=parseInt(document.getElementById('mq-idx').value);
-  if(idx>=0){db.banks[currentBankId].questions[idx]=q;}
-  else{db.banks[currentBankId].questions.push(q);}
-  setDB(db);
-  closeModal('modal-q');
-  renderBankEditor(currentBankId);
-  showToast('qb-toast','تم حفظ السؤال','tok');
-}
-
-function deleteQuestion(idx){
-  if(!confirm('حذف هذا السؤال؟'))return;
-  var db=getDB();
-  db.banks[currentBankId].questions.splice(idx,1);
-  setDB(db);
-  renderBankEditor(currentBankId);
-}
-
-function moveQ(idx,dir){
-  var db=getDB();
-  var qs=db.banks[currentBankId].questions;
-  var ni=idx+dir;
-  if(ni<0||ni>=qs.length)return;
-  var tmp=qs[idx];qs[idx]=qs[ni];qs[ni]=tmp;
-  setDB(db);
-  renderBankEditor(currentBankId);
-}
-
-function duplicateBank(id){
-  var db=getDB();
-  var orig=db.banks[id];
-  var newId=genId();
-  db.banks[newId]={id:newId,name:'نسخة من: '+orig.name,desc:orig.desc,
-    questions:JSON.parse(JSON.stringify(orig.questions)),created:new Date().toISOString()};
-  setDB(db);
-  renderBanksList();
-  showToast('qb-toast','تم نسخ البنك','tok');
-}
-
-function deleteBank(id){
-  if(!confirm('حذف هذا البنك نهائياً؟'))return;
-  var db=getDB();
-  delete db.banks[id];
-  setDB(db);
-  renderBanksList();
-}
-
-function exportBank(id){
-  var db=getDB();
-  var b=db.banks[id];
-  var blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});
-  var u=URL.createObjectURL(blob);var a=document.createElement('a');
-  a.href=u;a.download=b.name.replace(/\s+/g,'_')+'.json';a.click();URL.revokeObjectURL(u);
-}
-
-function exportAllBanks(){
-  var db=getDB();
-  var blob=new Blob([JSON.stringify(db.banks,null,2)],{type:'application/json'});
-  var u=URL.createObjectURL(blob);var a=document.createElement('a');
-  a.href=u;a.download='MTCIT_MBO_KPI_QBanks_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(u);
-}
-
-
-/* ===================== CSV / XLSX QUESTION BANK IMPORT & EXPORT ===================== */
-var QB_EXPORT_HEADERS = ['bank_name','bank_desc','question_type','section','question','option_1','option_2','option_3','option_4','correct_answer','explanation','placeholder','scale_min','scale_max'];
-
-function cleanFileName(name){return (name||'MTCIT_QBank').replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_');}
-function csvEscape(v){v=(v==null?'':String(v));return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
-function csvToRows(text){
-  var rows=[],row=[],cur='',q=false;
-  for(var i=0;i<text.length;i++){
-    var ch=text[i],nx=text[i+1];
-    if(q){
-      if(ch==='"'&&nx==='"'){cur+='"';i++;}
-      else if(ch==='"'){q=false;}
-      else cur+=ch;
-    }else{
-      if(ch==='"')q=true;
-      else if(ch===','){row.push(cur);cur='';}
-      else if(ch==='\n'){row.push(cur);rows.push(row);row=[];cur='';}
-      else if(ch==='\r'){}
-      else cur+=ch;
-    }
-  }
-  row.push(cur);rows.push(row);
-  return rows.filter(function(r){return r.some(function(c){return String(c).trim()!=='';});});
-}
-function rowsToObjects(rows){
-  if(!rows.length)return [];
-  var headers=rows[0].map(function(h){return String(h||'').trim().toLowerCase();});
-  return rows.slice(1).map(function(r){var o={};headers.forEach(function(h,i){o[h]=r[i]==null?'':String(r[i]).trim();});return o;});
-}
-function bankToRows(bank){
-  return (bank.questions||[]).map(function(q){
-    return {
-      bank_name:bank.name||'',bank_desc:bank.desc||'',question_type:q.t||'',section:q.s||'',question:q.q||'',
-      option_1:(q.o&&q.o[0])||'',option_2:(q.o&&q.o[1])||'',option_3:(q.o&&q.o[2])||'',option_4:(q.o&&q.o[3])||'',
-      correct_answer:q.t==='m'?(Number(q.a)+1):'',explanation:q.e||'',placeholder:q.ph||'',
-      scale_min:(q.sl&&q.sl[0])||'',scale_max:(q.sl&&q.sl[1])||''
-    };
-  });
-}
-function allBanksToRows(){
-  var db=getDB(), rows=[];
-  Object.values(db.banks||{}).forEach(function(b){rows=rows.concat(bankToRows(b));});
-  return rows;
-}
-function rowsToCSV(rows){
-  var lines=[QB_EXPORT_HEADERS.map(csvEscape).join(',')];
-  rows.forEach(function(r){lines.push(QB_EXPORT_HEADERS.map(function(h){return csvEscape(r[h]);}).join(','));});
-  return '\ufeff'+lines.join('\n');
-}
-function downloadBlob(content,type,filename){
-  var blob=new Blob([content],{type:type});
-  var u=URL.createObjectURL(blob);var a=document.createElement('a');
-  a.href=u;a.download=filename;a.click();URL.revokeObjectURL(u);
-}
-function exportBankCSV(id){
-  var b=getDB().banks[id]; if(!b)return;
-  downloadBlob(rowsToCSV(bankToRows(b)),'text/csv;charset=utf-8',cleanFileName(b.name)+'.csv');
-}
-function exportAllBanksCSV(){
-  downloadBlob(rowsToCSV(allBanksToRows()),'text/csv;charset=utf-8','MTCIT_MBO_KPI_QBanks_'+new Date().toISOString().slice(0,10)+'.csv');
-}
-function exportRowsXLSX(rows,filename){
-  if(typeof XLSX==='undefined'){showToast('qb-toast','تعذر تحميل مكتبة XLSX. استخدم CSV أو اتصل بالإنترنت.','ter');return;}
-  var ws=XLSX.utils.json_to_sheet(rows,{header:QB_EXPORT_HEADERS});
-  var wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Questions');
-  XLSX.writeFile(wb,filename);
-}
-function exportBankXLSX(id){
-  var b=getDB().banks[id]; if(!b)return;
-  exportRowsXLSX(bankToRows(b),cleanFileName(b.name)+'.xlsx');
-}
-function exportAllBanksXLSX(){
-  exportRowsXLSX(allBanksToRows(),'MTCIT_MBO_KPI_QBanks_'+new Date().toISOString().slice(0,10)+'.xlsx');
-}
-function downloadQuestionsTemplate(fmt){
-  var sample=[{bank_name:'الإدارة بالأهداف ومؤشرات الأداء — نموذج',bank_desc:'وصف مختصر للبنك',question_type:'m',section:'أسس Agile',question:'اكتب السؤال هنا',option_1:'الخيار الأول',option_2:'الخيار الثاني',option_3:'الخيار الثالث',option_4:'الخيار الرابع',correct_answer:'1',explanation:'شرح الإجابة الصحيحة',placeholder:'',scale_min:'',scale_max:''},
-  {bank_name:'الإدارة بالأهداف ومؤشرات الأداء — نموذج',bank_desc:'وصف مختصر للبنك',question_type:'open',section:'التطبيق',question:'سؤال مفتوح هنا',option_1:'',option_2:'',option_3:'',option_4:'',correct_answer:'',explanation:'',placeholder:'اكتب إجابتك هنا...',scale_min:'',scale_max:''},
-  {bank_name:'الإدارة بالأهداف ومؤشرات الأداء — نموذج',bank_desc:'وصف مختصر للبنك',question_type:'scale',section:'التقييم الذاتي',question:'مستوى ثقتك من 1 إلى 5؟',option_1:'',option_2:'',option_3:'',option_4:'',correct_answer:'',explanation:'',placeholder:'',scale_min:'لا ثقة إطلاقاً',scale_max:'ثقة كاملة'}];
-  if(fmt==='xlsx')exportRowsXLSX(sample,'MTCIT_MBO_KPI_QBank_Template.xlsx');
-  else downloadBlob(rowsToCSV(sample),'text/csv;charset=utf-8','MTCIT_MBO_KPI_QBank_Template.csv');
-}
-function normalizeQType(v){
-  v=String(v||'').trim().toLowerCase();
-  if(['m','mcq','multiple','multiple choice','موضوعي','اختيار من متعدد'].indexOf(v)>=0)return 'm';
-  if(['open','text','essay','مفتوح','نصي'].indexOf(v)>=0)return 'open';
-  if(['scale','rating','مقياس','تقييم'].indexOf(v)>=0)return 'scale';
-  return 'm';
-}
-function objectsToBanks(objs){
-  var grouped={};
-  objs.forEach(function(r){
-    var name=(r.bank_name||r.bank||r['اسم البنك']||'بنك أسئلة مستورد').trim();
-    if(!grouped[name])grouped[name]={name:name,desc:r.bank_desc||'',questions:[]};
-    var t=normalizeQType(r.question_type||r.type||r['نوع السؤال']);
-    var qtext=r.question||r.q||r['السؤال']||r['نص السؤال'];
-    if(!qtext)return;
-    var q={t:t,s:r.section||r.s||r['المحور']||'',q:qtext};
-    if(t==='m'){
-      q.o=[r.option_1,r.option_2,r.option_3,r.option_4].filter(function(x){return x!=null&&String(x).trim()!=='';});
-      var ans=String(r.correct_answer||r.answer||r['الإجابة الصحيحة']||'').trim();
-      var ai=parseInt(ans,10);
-      if(!isNaN(ai)) q.a=Math.max(0,Math.min(q.o.length-1,ai-1));
-      else q.a=Math.max(0,q.o.indexOf(ans));
-      q.e=r.explanation||r.e||r['الشرح']||'';
-      if(q.o.length<2)return;
-    } else if(t==='open') q.ph=r.placeholder||r.ph||'اكتب إجابتك هنا...';
-    else if(t==='scale') q.sl=[r.scale_min||'الأدنى',r.scale_max||'الأعلى'];
-    grouped[name].questions.push(q);
-  });
-  return Object.values(grouped).filter(function(b){return b.questions.length;});
-}
-function saveImportedBanks(banks){
-  var db=getDB(); if(!db.banks)db.banks={};
-  banks.forEach(function(b){var id=genId(); db.banks[id]={id:id,name:b.name,desc:b.desc||'',questions:b.questions,imported:new Date().toISOString()};});
-  setDB(db); renderBanksList(); populateBankSelect();
-  showToast('qb-toast','تم استيراد '+banks.length+' بنك أسئلة بنجاح','tok');
-}
-function importStructuredRows(rows){
-  var banks=objectsToBanks(rowsToObjects(rows));
-  if(!banks.length){showToast('qb-toast','لم يتم العثور على أسئلة صالحة في الملف.','ter');return;}
-  saveImportedBanks(banks);
-}
-
-function importBank(){
-  var f=document.getElementById('qb-import-file').files[0];
-  if(!f)return;
-  var name=f.name.toLowerCase();
-  if(name.endsWith('.csv')){
-    var rCsv=new FileReader();
-    rCsv.onload=function(e){try{importStructuredRows(csvToRows(e.target.result));}catch(err){showToast('qb-toast','خطأ في قراءة ملف CSV','ter');}};
-    rCsv.readAsText(f,'UTF-8');
-    return;
-  }
-  if(name.endsWith('.xlsx')||name.endsWith('.xls')){
-    if(typeof XLSX==='undefined'){showToast('qb-toast','تعذر تحميل مكتبة XLSX. استخدم CSV أو اتصل بالإنترنت.','ter');return;}
-    var rX=new FileReader();
-    rX.onload=function(e){
-      try{
-        var wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
-        var ws=wb.Sheets[wb.SheetNames[0]];
-        var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-        importStructuredRows(rows);
-      }catch(err){showToast('qb-toast','خطأ في قراءة ملف XLSX','ter');}
-    };
-    rX.readAsArrayBuffer(f);
-    return;
-  }
-  var reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      var data=JSON.parse(e.target.result);
-      var db=getDB();
-      if(!db.banks)db.banks={};
-      if(data.id&&data.name&&data.questions){
-        var id=genId();
-        data.id=id;data.imported=new Date().toISOString();
-        db.banks[id]=data;
-        setDB(db);
-        renderBanksList(); populateBankSelect();
-        showToast('qb-toast','تم استيراد البنك: '+data.name,'tok');
-      } else if(typeof data==='object'&&!data.id){
-        var count=0;
-        for(var k in data){if(data[k].questions){var bid=genId();data[k].id=bid;db.banks[bid]=data[k];count++;}}
-        setDB(db);renderBanksList();populateBankSelect();
-        showToast('qb-toast','تم استيراد '+count+' بنك','tok');
-      }
-    }catch(err){showToast('qb-toast','خطأ في قراءة الملف','ter');}
-  };
-  reader.readAsText(f);
-}
-
-/* ===================== POPULATE BANK SELECT ===================== */
-function populateBankSelect(){
-  var db=getDB();
-  var sel=document.getElementById('a-qbank');
-  var cur=sel.value;
-  sel.innerHTML='<option value="">— اختر بنك الأسئلة —</option>';
-  Object.values(db.banks||{}).forEach(function(b){
-    var opt=document.createElement('option');
-    opt.value=b.id;opt.textContent=b.name+' ('+b.questions.length+' سؤال)';
-    if(b.id===cur)opt.selected=true;
-    sel.appendChild(opt);
-  });
-  sel.onchange=function(){
-    var id=sel.value;
-    if(!id){hide('a-qbank-preview');return;}
-    var bank=db.banks[id];
-    document.getElementById('a-qbank-info').textContent=bank.name+' — '+bank.questions.length+' سؤال '+(bank.desc?'· '+bank.desc:'');
-    show('a-qbank-preview');
-  };
-  if(cur&&db.banks[cur]){
-    var bk=db.banks[cur];
-    document.getElementById('a-qbank-info').textContent=bk.name+' — '+bk.questions.length+' سؤال';
-    show('a-qbank-preview');
-  }
-}
-
-/* ===================== ADMIN ===================== */
-function createSession(){
-  var batch=document.getElementById('a-batch').value.trim();
-  var trainer=document.getElementById('a-trainer').value.trim();
-  var bankId=document.getElementById('a-qbank').value;
-  if(!batch||!trainer){showToast('adm-toast','اسم الدورة واسم المدرب مطلوبان.','ter');return;}
-  if(!bankId){showToast('adm-toast','اختر بنك الأسئلة أولاً.','ter');return;}
-  var db=getDB();
-  var bank=db.banks[bankId];
-  if(!bank){showToast('adm-toast','البنك المختار غير موجود.','ter');return;}
-  var code=genCode();
-  var sess={code:code,batch:batch,trainer:trainer,bankId:bankId,bankName:bank.name,
-    start:document.getElementById('a-start').value.trim()||new Date().toISOString().slice(0,10),
-    deadline:document.getElementById('a-deadline').value.trim(),
-    created:new Date().toISOString()};
-  db.sessions[code]=sess;
-  db.records[code]=[];
-  setDB(db);
-  currentCode=code;
-  renderAdmPanel(code,sess,[]);
-  renderSessionHistory();
-  showToast('adm-toast','تم إنشاء الجلسة — رمز المشاركة: '+code,'tok');
-  setStatus('جلسة نشطة: '+code,'#28A745');
-  document.getElementById('a-batch').value='';
-  document.getElementById('a-trainer').value='';
-  document.getElementById('a-qbank').value='';
-  hide('a-qbank-preview');
-}
-
-function loadSession(){
-  var code=(document.getElementById('a-code').value.trim().toUpperCase()||currentCode||'');
-  if(!code||code.length!==6){showToast('adm-toast','أدخل رمزاً من 6 أحرف.','ter');return;}
-  var db=getDB();
-  var sess=db.sessions&&db.sessions[code];
-  if(!sess){showToast('adm-toast','الجلسة غير موجودة.','ter');setStatus('غير موجود','#DC3545');return;}
-  var recs=(db.records&&db.records[code])||[];
-  currentCode=code;
-  renderAdmPanel(code,sess,recs);
-  renderSessionHistory();
-  showToast('adm-toast','تم التحميل — '+recs.length+' متدرب','tok');
-  setStatus('تم التحميل','#28A745');
-}
-
-function safeHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
-function shortDate(v){if(!v)return '—';var d=String(v);return d.length>=10?d.slice(0,10):d;}
-function loadSessionByCode(code){
-  document.getElementById('a-code').value=String(code||'').toUpperCase();
-  loadSession();
-  try{document.getElementById('adm-panel').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
-}
-function renderSessionHistory(){
-  var wrap=document.getElementById('session-history-wrap');
-  if(!wrap)return;
-  var db=getDB();
-  var q=(document.getElementById('session-search')?document.getElementById('session-search').value:'').trim().toLowerCase();
-  var rows=Object.keys(db.sessions||{}).map(function(code){
-    var s=db.sessions[code]||{};
-    var recs=(db.records&&db.records[code])||[];
-    var pre=recs.filter(function(r){return r.pre;}).length;
-    var post=recs.filter(function(r){return r.post;}).length;
-    var ev=recs.filter(function(r){return r.eval;}).length;
-    var gaps=recs.filter(function(r){return r.gap!=null;}).map(function(r){return Number(r.gap)||0;});
-    var avgGap=gaps.length?Math.round(gaps.reduce(function(a,b){return a+b;},0)/gaps.length):null;
-    return {code:code,batch:s.batch||'',trainer:s.trainer||'',bank:s.bankName||'',start:s.start||'',deadline:s.deadline||'',created:s.created||'',total:recs.length,pre:pre,post:post,ev:ev,avgGap:avgGap};
-  }).filter(function(r){
-    if(!q)return true;
-    return (r.code+' '+r.batch+' '+r.trainer+' '+r.bank).toLowerCase().indexOf(q)>=0;
-  }).sort(function(a,b){return String(b.created||b.start).localeCompare(String(a.created||a.start));});
-  if(!rows.length){
-    wrap.className='session-empty';
-    wrap.innerHTML='<i class="ti ti-database-off" style="font-size:24px;display:block;margin-bottom:6px"></i>لا توجد جلسات محفوظة حتى الآن أو لا توجد نتائج مطابقة للبحث.';
-    return;
-  }
-  wrap.className='session-list';
-  wrap.innerHTML='<table><thead><tr>'+
-    '<th style="width:11%">رمز الجلسة</th><th style="width:22%">الدورة / الدفعة</th><th style="width:13%">المدرب</th><th style="width:11%">التاريخ</th><th style="width:10%">المتدربون</th><th style="width:14%">الإنجاز</th><th style="width:9%">متوسط الفجوة</th><th style="width:10%">إجراء</th>'+
-    '</tr></thead><tbody>'+rows.map(function(r){
-      var active=currentCode===r.code;
-      return '<tr style="'+(active?'background:#EAF5EE':'')+'">'+
-        '<td><span class="session-code">'+safeHtml(r.code)+'</span></td>'+
-        '<td><b>'+safeHtml(r.batch||'جلسة بدون اسم')+'</b><div class="session-mini"><i class="ti ti-books"></i> '+safeHtml(r.bank||'بنك غير محدد')+'</div></td>'+
-        '<td>'+safeHtml(r.trainer||'—')+'</td>'+
-        '<td>'+safeHtml(shortDate(r.start))+'<div class="session-mini">إنشاء: '+safeHtml(shortDate(r.created))+'</div></td>'+
-        '<td><b>'+r.total+'</b></td>'+
-        '<td><span class="bdg b2">قبل '+r.pre+'</span> <span class="bdg b5">بعد '+r.post+'</span> <span class="bdg b6">تقييم '+r.ev+'</span></td>'+
-        '<td>'+(r.avgGap!=null?(r.avgGap>=0?'+':'')+r.avgGap+' نقطة':'—')+'</td>'+
-        '<td><div class="session-row-actions"><button class="bp" style="padding:7px 10px;font-size:12px" onclick="loadSessionByCode(&quot;'+safeHtml(r.code)+'&quot;)"><i class="ti ti-download"></i> تحميل</button></div></td>'+
-      '</tr>';
-    }).join('')+'</tbody></table>';
-}
-
-function renderAdmPanel(code,sess,recs){
-  show('adm-panel');
-  document.getElementById('adm-banner').innerHTML='<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">'
-    +'<div style="font-size:28px;font-weight:800;color:#003087;letter-spacing:6px;background:#fff;padding:8px 16px;border-radius:10px;border:2px solid #003087">'+code+'</div>'
-    +'<div style="flex:1"><div style="font-size:14px;font-weight:700;color:#003087">'+sess.batch+'</div>'
-    +'<div style="font-size:12px;color:#555">المدرب: '+(sess.trainer||'—')+' · '+sess.start+(sess.deadline?' — '+sess.deadline:'')+'</div>'
-    +'<div style="font-size:12px;color:#888;margin-top:2px"><i class="ti ti-books" style="font-size:12px"></i> بنك الأسئلة: '+(sess.bankName||'—')+'</div></div>'
-    +'<button class="bs" onclick="copyCode(\''+code+'\')"><i class="ti ti-copy"></i> نسخ الرمز</button></div>';
-
-  var evals=recs.filter(function(r){return r.eval;});
-  var gaps=recs.filter(function(r){return r.gap!=null;}).map(function(r){return r.gap;});
-  var avgGap=gaps.length?Math.round(gaps.reduce(function(a,b){return a+b;},0)/gaps.length):null;
-  var avgEval=evals.length?(Math.round(avg(evals.map(function(r){return r.eval.course_overall||0;}))*10)/10):null;
-
-  document.getElementById('k-tot').textContent=recs.length;
-  document.getElementById('k-pre').textContent=recs.filter(function(r){return r.pre;}).length;
-  document.getElementById('k-post').textContent=recs.filter(function(r){return r.post;}).length;
-  document.getElementById('k-gap').textContent=avgGap!==null?avgGap+' نقطة':'—';
-  document.getElementById('k-eval').textContent=avgEval!==null?avgEval+'/5':'—';
-  renderEvalSummary(evals);
-  var tblHdr=document.getElementById('tbl-hdr');
-  if(tblHdr) tblHdr.textContent='المتدربون ('+recs.length+')';
-  renderTable(recs);
-}
-
-function renderEvalSummary(evals){
-  var div=document.getElementById('eval-summary');
-  if(!evals.length){div.innerHTML='<div style="text-align:center;padding:16px;color:#888;font-size:13px">لا تقييمات بعد</div>';return;}
-  var ac=avg(evals.map(function(r){return r.eval.course_overall||0;}));
-  var atk=avg(evals.map(function(r){return r.eval.trainer_knowledge||0;}));
-  var atd=avg(evals.map(function(r){return r.eval.trainer_delivery||0;}));
-  var ati=avg(evals.map(function(r){return r.eval.trainer_interaction||0;}));
-  var acon=avg(evals.map(function(r){return r.eval.content_quality||0;}));
-  var ape=avg(evals.map(function(r){return r.eval.practical_exercises||0;}));
-  var arl=avg(evals.map(function(r){return r.eval.relevance_to_work||0;}));
-  var atm=avg(evals.map(function(r){return r.eval.time_management||0;}));
-  var rec_yes=evals.filter(function(r){return r.eval.recommend==='yes';}).length;
-  var avgT=(atk+atd+ati)/3;
-  var improvements=evals.filter(function(r){return r.eval.improvement&&r.eval.improvement.trim();}).map(function(r){return '"'+r.eval.improvement.trim()+'"';});
-  var bests=evals.filter(function(r){return r.eval.best_part&&r.eval.best_part.trim();}).map(function(r){return '"'+r.eval.best_part.trim()+'"';});
-  var bars=[['كفاءة المدرب',atk,'#003087'],['أسلوب التقديم',atd,'#0F6E56'],['التفاعل',ati,'#C0A500'],['جودة المحتوى',acon,'#534AB7'],['التطبيق العملي',ape,'#A32D2D'],['الصلة بالعمل',arl,'#1D9E75'],['إدارة الوقت',atm,'#888']];
-  var barsHtml=bars.map(function(b){return '<div class="ebarrow"><span style="font-size:13px;min-width:130px">'+b[0]+'</span><div style="flex:1;background:#E0E8F0;border-radius:3px;height:8px;overflow:hidden;margin:0 10px"><div style="width:'+(b[1]/5*100)+'%;height:100%;background:'+b[2]+';border-radius:3px"></div></div><span style="font-size:12px;font-weight:700;min-width:36px;text-align:left;color:#003087">'+b[1].toFixed(1)+'</span></div>';}).join('');
-  var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">'
-    +'<div style="background:#F8FAFD;border:1px solid #E0E8F0;border-radius:10px;padding:14px;text-align:center"><div style="font-size:12px;color:#888;margin-bottom:4px">التقييم العام</div><div style="font-size:30px;font-weight:800;color:#003087">'+ac.toFixed(1)+'<span style="font-size:15px;color:#888">/5</span></div><div style="font-size:18px;margin-top:3px">'+stars(Math.round(ac))+'</div><div style="font-size:12px;color:#888;margin-top:4px">'+evals.length+' تقييم</div></div>'
-    +'<div style="background:#F8FAFD;border:1px solid #E0E8F0;border-radius:10px;padding:14px;text-align:center"><div style="font-size:12px;color:#888;margin-bottom:4px">تقييم المدرب</div><div style="font-size:30px;font-weight:800;color:#003087">'+avgT.toFixed(1)+'<span style="font-size:15px;color:#888">/5</span></div><div style="font-size:18px;margin-top:3px">'+stars(Math.round(avgT))+'</div><div style="font-size:12px;color:#888;margin-top:4px">متوسط 3 محاور</div></div></div>'
-    +barsHtml
-    +'<div style="padding:10px 0;border-top:1px solid #E0E8F0;margin-top:8px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">يوصون بالدورة</span><span class="bdg b1">'+rec_yes+' من '+evals.length+' ('+Math.round(rec_yes/evals.length*100)+'%)</span></div>';
-  if(bests.length)html+='<div style="margin-top:10px"><div style="font-size:13px;font-weight:700;color:#003087;margin-bottom:6px">أفضل جوانب الدورة</div>'+bests.slice(0,4).map(function(t){return '<div style="font-size:12px;color:#555;padding:5px 0;border-bottom:1px solid #F0F4FA">'+t+'</div>';}).join('')+'</div>';
-  if(improvements.length)html+='<div style="margin-top:10px"><div style="font-size:13px;font-weight:700;color:#003087;margin-bottom:6px">مقترحات التحسين</div>'+improvements.slice(0,4).map(function(t){return '<div style="font-size:12px;color:#555;padding:5px 0;border-bottom:1px solid #F0F4FA">'+t+'</div>';}).join('')+'</div>';
-  div.innerHTML=html;
-}
-
-function safeTxt(v){return (v==null||v==='')?'—':String(v).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function renderTable(recs){
-  var tbody=document.getElementById('adm-tbody');
-  if(!tbody)return;
-  if(!recs||!recs.length){tbody.innerHTML='<tr><td colspan="10" style="text-align:center;color:#888;padding:20px">لا متدربين بعد</td></tr>';return;}
-  tbody.innerHTML=recs.map(function(r){
-    r=r||{};
-    var pre=(r.pre&&r.pre.total!=null)?r.pre.total+'%':'—';
-    var post=(r.post&&r.post.total!=null)?r.post.total+'%':'—';
-    var gap=r.gap!=null?(r.gap>=0?'+':'')+r.gap+' نقطة':'—';
-    var gb=r.gap==null?'b2':r.gap>=20?'b1':r.gap>=10?'b2':r.gap>=0?'b3':'b4';
-    var ce=r.eval&&r.eval.course_overall?stars(r.eval.course_overall):'—';
-    var te=r.eval&&r.eval.trainer_knowledge?stars(r.eval.trainer_knowledge):'—';
-    var st=r.eval?'<span class="bdg b1">مكتمل &#10003;</span>':r.post?'<span class="bdg b5">بعد &#10003;</span>':r.pre?'<span class="bdg b3">قبل &#10003;</span>':'<span class="bdg b4">لم يبدأ</span>';
-    var d='—';
-    if(r.lastUpdate){var dt=new Date(r.lastUpdate);d=isNaN(dt.getTime())?'—':dt.toLocaleDateString('ar-OM');}
-    var name=safeTxt(r.name);
-    var eid=safeTxt(r.eid);
-    var dept=safeTxt(r.dept).replace('دائرة ','');
-    return '<tr><td title="'+name+'">'+name+'</td><td title="'+eid+'" style="font-weight:600;color:#003087">'+eid+'</td><td>'+dept+'</td><td>'+pre+'</td><td>'+post+'</td><td><span class="bdg '+gb+'">'+gap+'</span></td><td>'+ce+'</td><td>'+te+'</td><td>'+st+'</td><td style="font-size:11px;color:#888">'+d+'</td></tr>';
-  }).join('');
-}
-
-function copyCode(c){navigator.clipboard.writeText(c).then(function(){showToast('adm-toast','تم نسخ الرمز: '+c,'tin');}).catch(function(){showToast('adm-toast','الرمز: '+c,'tin');});}
-
-/* ===================== TRAINEE ===================== */
-function trJoin(){
-  var code=document.getElementById('tr-code').value.trim().toUpperCase();
-  var eid=document.getElementById('tr-eid-l').value.trim();
-  if(code.length!==6){showToast('tr-toast','أدخل رمزاً من 6 أحرف.','ter');return;}
-  var db=getDB();
-  var sess=db.sessions&&db.sessions[code];
-  if(!sess){showToast('tr-toast','الرمز غير صحيح. تواصل مع المشرف.','ter');return;}
-  var bank=db.banks&&db.banks[sess.bankId];
-  if(!bank){showToast('tr-toast','بنك الأسئلة غير موجود. تواصل مع المشرف.','ter');return;}
-  tr.code=code;tr.qs=bank.questions;
-  var recs=(db.records&&db.records[code])||[];
-  if(eid){
-    var rec=null;
-    for(var i=0;i<recs.length;i++){if(recs[i].eid===eid||recs[i].eid.toLowerCase()===eid.toLowerCase()){rec=recs[i];break;}}
-    if(rec){tr.rec=rec;hide('tr-s1');showResume(code,sess,rec);return;}
-    else{showToast('tr-toast','الرقم الوظيفي غير موجود — سجّل بياناتك.','tin');document.getElementById('tr-eid').value=eid;}
-  }
-  hide('tr-s1');
-  document.getElementById('tr-sess-banner').innerHTML='<div style="display:flex;align-items:center;gap:10px"><i class="ti ti-circle-check" style="font-size:18px;color:#003087"></i><div><div style="font-size:13px;font-weight:700;color:#003087">'+sess.batch+'</div><div style="font-size:12px;color:#555">المدرب: '+(sess.trainer||'—')+' · بنك: '+bank.name+'</div></div></div>';
-  show('tr-s2');
-}
-
-function trRegister(){
-  var name=document.getElementById('tr-name').value.trim();
-  var dept=document.getElementById('tr-dept').value;
-  var eid=document.getElementById('tr-eid').value.trim();
-  if(!name||!dept){showToast('tr-toast','الاسم والإدارة مطلوبان.','ter');return;}
-  var db=getDB();var code=tr.code;
-  if(!db.records[code])db.records[code]=[];
-  var existing=null;
-  for(var i=0;i<db.records[code].length;i++){if(db.records[code][i].eid===eid||db.records[code][i].name===name){existing=db.records[code][i];break;}}
-  var rec=existing||{id:Date.now(),name:name,eid:eid,dept:dept,title:document.getElementById('tr-title').value.trim(),pre:null,post:null,gap:null,eval:null,lastUpdate:new Date().toISOString()};
-  if(!existing){db.records[code].push(rec);setDB(db);}
-  tr.rec=rec;hide('tr-s2');startMode('pre');
-}
-
-function showResume(code,sess,rec){
-  var ini=rec.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  document.getElementById('resume-banner').innerHTML='<div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:50%;background:#003087;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">'+ini+'</div><div><div style="font-size:14px;font-weight:700;color:#003087">'+rec.name+'</div><div style="font-size:12px;color:#555">'+rec.dept+' · '+sess.batch+'</div></div><div style="margin-right:auto;font-size:12px;color:#888">رمز: <strong>'+code+'</strong></div></div>';
-  var hasPre=rec.pre!=null,hasPost=rec.post!=null,hasEval=rec.eval!=null;
-  if(hasPre){document.getElementById('si-pre').style.background='#EAF5EE';document.getElementById('si-pre').innerHTML='<i class="ti ti-check" style="color:#1D6F42"></i>';document.getElementById('sub-pre').textContent='الدرجة: '+rec.pre.total+'%';document.getElementById('bdg-pre').className='bdg b1';document.getElementById('bdg-pre').textContent='مكتمل';document.getElementById('sr-pre').style.background='#F0FAF4';}
-  else{document.getElementById('si-pre').style.background='#003087';document.getElementById('si-pre').innerHTML='<i class="ti ti-player-play" style="color:#fff"></i>';document.getElementById('sub-pre').textContent='لم تبدأ بعد';document.getElementById('bdg-pre').className='bdg b3';document.getElementById('bdg-pre').textContent='لم يبدأ';}
-  if(hasPost){document.getElementById('si-post').style.background='#EAF5EE';document.getElementById('si-post').innerHTML='<i class="ti ti-check" style="color:#1D6F42"></i>';document.getElementById('sub-post').textContent='الدرجة: '+rec.post.total+'% · فجوة: '+(rec.gap>=0?'+':'')+rec.gap+' نقطة';document.getElementById('bdg-post').className='bdg b1';document.getElementById('bdg-post').textContent='مكتمل';document.getElementById('sr-post').style.background='#F0FAF4';}
-  else if(hasPre){document.getElementById('si-post').style.background='#003087';document.getElementById('si-post').innerHTML='<i class="ti ti-player-play" style="color:#fff"></i>';document.getElementById('sub-post').textContent='جاهز للبدء';document.getElementById('bdg-post').className='bdg b2';document.getElementById('bdg-post').textContent='جاهز الآن';document.getElementById('sr-post').style.border='2px solid #003087';}
-  if(hasEval){document.getElementById('si-eval').style.background='#EAF5EE';document.getElementById('si-eval').innerHTML='<i class="ti ti-check" style="color:#1D6F42"></i>';document.getElementById('sub-eval').textContent='اكتمل';document.getElementById('bdg-eval').className='bdg b1';document.getElementById('bdg-eval').textContent='مكتمل';document.getElementById('sr-eval').style.background='#F0FAF4';}
-  else if(hasPost){document.getElementById('si-eval').style.background='#534AB7';document.getElementById('si-eval').innerHTML='<i class="ti ti-star" style="color:#fff"></i>';document.getElementById('sub-eval').textContent='جاهز — شارك رأيك';document.getElementById('bdg-eval').className='bdg b6';document.getElementById('bdg-eval').textContent='جاهز الآن';document.getElementById('sr-eval').style.border='2px solid #534AB7';}
-  var area=document.getElementById('resume-btns');
-  if(!hasPre){area.innerHTML='<button class="bp bp-full" onclick="resumeStart(\'pre\')"><i class="ti ti-player-play"></i> ابدأ اختبار قبل الورشة الآن</button>';}
-  else if(!hasPost){area.innerHTML='<button class="bp bpg bp-full" onclick="resumeStart(\'post\')"><i class="ti ti-player-play"></i> ابدأ اختبار بعد الورشة الآن</button><div style="background:#EAF1FB;border-radius:8px;padding:10px 13px;font-size:12px;color:#003087;border:1px solid #B5D4F4"><i class="ti ti-info-circle"></i> يُجرى بعد انتهاء الورشة فعلياً.</div>';}
-  else if(!hasEval){area.innerHTML='<button class="bp bpp bp-full" onclick="resumeStart(\'eval\')"><i class="ti ti-star"></i> ابدأ تقييم الدورة والمدرب الآن</button><div style="background:#F0EEFF;border-radius:8px;padding:10px 13px;font-size:12px;color:#3E379A;border:1px solid #C4B8F4"><i class="ti ti-clock"></i> يستغرق 3-5 دقائق فقط.</div>';}
-  else{area.innerHTML='<div style="background:#EAF5EE;border:1px solid #A8D8B8;border-radius:12px;padding:20px;text-align:center"><i class="ti ti-trophy" style="font-size:32px;color:#1D6F42;display:block;margin-bottom:8px"></i><div style="font-size:15px;font-weight:700;color:#155724;margin-bottom:4px">أكملت جميع المراحل!</div><div style="font-size:12px;color:#0A5240;margin-bottom:14px">شكراً '+rec.name+'</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="background:#fff;border-radius:8px;padding:10px"><div style="font-size:18px;font-weight:700;color:#003087">'+rec.pre.total+'%</div><div style="font-size:11px;color:#888">قبل</div></div><div style="background:#fff;border-radius:8px;padding:10px"><div style="font-size:18px;font-weight:700;color:#003087">'+rec.post.total+'%</div><div style="font-size:11px;color:#888">بعد</div></div><div style="background:#fff;border-radius:8px;padding:10px"><div style="font-size:18px;font-weight:700;color:'+(rec.gap>=0?'#1D6F42':'#A32D2D')+'">'+(rec.gap>=0?'+':'')+rec.gap+' نقطة</div><div style="font-size:11px;color:#888">الفجوة</div></div></div></div>';}
-  show('tr-s3');
-}
-
-function resumeStart(mode){hide('tr-s3');if(mode==='eval'){showEval();return;}startMode(mode);}
-
-function startMode(mode){
-  tr.mode=mode;tr.idx=0;tr.ans=new Array(tr.qs.length).fill(null);tr.rev=new Array(tr.qs.length).fill(false);
-  document.getElementById('tr-res').style.display='none';
-  document.getElementById('tr-qa').style.display='block';
-  document.getElementById('tr-nav').style.display='flex';
-  var ini=tr.rec.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  var ml=mode==='pre'?'اختبار قبل الورشة':'اختبار بعد الورشة';
-  var mc=mode==='pre'?'b2':'b1';
-  document.getElementById('tr-profbar').innerHTML='<div class="ava">'+ini+'</div><div><div style="font-size:13px;font-weight:700;color:#003087">'+tr.rec.name+'</div><div style="font-size:12px;color:#555">'+tr.rec.dept+'</div></div><div style="margin-right:auto"><span class="bdg '+mc+'">'+ml+'</span></div>';
-  document.getElementById('tr-pb').style.background=mode==='pre'?'#003087':'#0F6E56';
-  document.getElementById('ps1').className='ps'+(mode==='pre'?' active':' done');
-  document.getElementById('ps2').className='ps'+(mode==='post'?' active':'');
-  document.getElementById('ps3').className='ps';
-  show('tr-s4');renderQ();
-}
-
-function renderQ(){
-  var idx=tr.idx,q=tr.qs[idx],total=tr.qs.length;
-  document.getElementById('tr-ql').textContent='السؤال '+(idx+1)+' من '+total;
-  document.getElementById('tr-qs').textContent=q.s||'';
-  document.getElementById('tr-pb').style.width=Math.round((idx+1)/total*100)+'%';
-  document.getElementById('tr-back').style.display=idx>0?'block':'none';
-  document.getElementById('tr-fwd').innerHTML=idx===total-1?'إنهاء وحفظ <i class="ti ti-check"></i>':'التالي <i class="ti ti-arrow-left"></i>';
-  var L=['أ','ب','ج','د'];
-  var tag=tr.mode==='pre'?'<span class="bdg b2">قبل الورشة</span>':'<span class="bdg b1">بعد الورشة</span>';
-  var h='<div class="qcard"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">'+tag+(q.s?'<span style="font-size:12px;color:#888">'+q.s+'</span>':'')+'<span style="font-size:11px;font-weight:700;color:#888;margin-right:auto">س'+(idx+1)+'</span></div><div class="qtxt">'+q.q+'</div>';
-  if(q.t==='m'){
-    h+='<div class="opts">';
-    var opts=q.o||[];
-    for(var i=0;i<opts.length;i++){
-      var cls='opt';
-      if(tr.rev[idx]){if(i===q.a)cls+=' ok';else if(tr.ans[idx]===i&&i!==q.a)cls+=' ng';}
-      else if(tr.ans[idx]===i)cls+=' sel';
-      h+='<div class="'+cls+'" onclick="pick('+i+')"><span class="ol">'+L[i]+'</span><span class="ot">'+opts[i]+'</span></div>';
-    }
-    h+='</div>';
-    if(tr.rev[idx]){var ok=tr.ans[idx]===q.a;h+='<div class="fb '+(ok?'fbok':'fbng')+'"><strong>'+(ok?'&#10003; صحيح':'&#10007; الإجابة الصحيحة: '+(q.o?q.o[q.a]:''))+'</strong>'+(q.e?'<br>'+q.e:'')+'</div>';}
-  } else if(q.t==='open'){
-    h+='<textarea class="ota" id="tr-open" placeholder="'+(q.ph||'اكتب هنا...')+'" oninput="tr.ans[tr.idx]=this.value">'+(tr.ans[idx]||'')+'</textarea>';
-    h+='<div class="fb fbok" style="margin-top:0"><i class="ti ti-pencil"></i> سؤال تطبيقي — ستُقيَّم من المشرف.</div>';
-  } else if(q.t==='scale'){
-    h+='<div class="scrow">';
-    for(var j=1;j<=5;j++)h+='<button class="scb'+(tr.ans[idx]===j?' on':'')+'" onclick="trScale('+j+')">'+j+'</button>';
-    h+='</div><div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-top:5px"><span>'+(q.sl?q.sl[0]:'الأدنى')+'</span><span>'+(q.sl?q.sl[1]:'الأعلى')+'</span></div>';
-  }
-  h+='</div>';
-  document.getElementById('tr-qa').innerHTML=h;
-}
-
-function pick(i){if(tr.rev[tr.idx])return;tr.ans[tr.idx]=i;tr.rev[tr.idx]=true;renderQ();}
-function trScale(i){tr.ans[tr.idx]=i;renderQ();}
-
-function trNav(dir){
-  if(dir===1&&tr.idx===tr.qs.length-1){finishTest();return;}
-  tr.idx=Math.max(0,Math.min(tr.qs.length-1,tr.idx+dir));renderQ();
-}
-
-function calcScore(){
-  var mcqs=tr.qs.filter(function(q){return q.t==='m';});
-  var c=0;mcqs.forEach(function(q){if(tr.ans[tr.qs.indexOf(q)]===q.a)c++;});
-  var secList=[...new Set(mcqs.map(function(q){return q.s;}))];
-  var ss={};
-  secList.forEach(function(s){
-    var sq=mcqs.filter(function(q){return q.s===s;});
-    var sc=sq.filter(function(q){return tr.ans[tr.qs.indexOf(q)]===q.a;}).length;
-    ss[s]=sq.length?Math.round(sc/sq.length*100):0;
-  });
-  var si=tr.qs.findIndex(function(q){return q.t==='scale';});
-  var oi=tr.qs.findIndex(function(q){return q.t==='open';});
-  return{total:mcqs.length?Math.round(c/mcqs.length*100):0,correct:c,total_q:mcqs.length,secScores:ss,confidence:si>=0?tr.ans[si]:null,open_answer:oi>=0?(tr.ans[oi]||''):''};
-}
-
-function finishTest(){
-  var sc=calcScore();
-  var rec=tr.rec,code=tr.code,mode=tr.mode;
-  if(mode==='pre')rec.pre=sc;
-  else{rec.post=sc;if(rec.pre)rec.gap=sc.total-rec.pre.total;}
-  rec.lastUpdate=new Date().toISOString();
-  var db=getDB();
-  if(!db.records[code])db.records[code]=[];
-  var idx=db.records[code].findIndex(function(r){return r.id===rec.id;});
-  if(idx>=0)db.records[code][idx]=rec;else db.records[code].push(rec);
-  setDB(db);
-  document.getElementById('tr-qa').style.display='none';
-  document.getElementById('tr-nav').style.display='none';
-  var rDiv=document.getElementById('tr-res');rDiv.style.display='block';
-  var g=sc.total>=85?['ممتاز','#155724','#D4EDDA']:sc.total>=70?['جيد جداً','#003087','#D0E4FB']:sc.total>=50?['يحتاج تعزيز','#856404','#FFF3CD']:['يحتاج مراجعة','#721C24','#F8D7DA'];
-  var secList=Object.keys(sc.secScores);
-  var sr=secList.map(function(s){var v=sc.secScores[s]||0,cl=v>=75?'#1D6F42':v>=50?'#C0A500':'#A32D2D';return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #F0F4FA"><span style="font-size:13px;min-width:130px">'+s+'</span><div style="flex:1;background:#E0E8F0;border-radius:3px;height:7px;overflow:hidden"><div style="width:'+v+'%;height:100%;background:'+cl+';border-radius:3px"></div></div><span style="font-size:13px;font-weight:700;min-width:38px;text-align:left;color:#003087">'+v+'%</span></div>';}).join('');
-  var ml=mode==='pre'?'قبل الورشة':'بعد الورشة';
-  var html='<div style="background:#F8FAFD;border:1px solid #E0E8F0;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px"><div style="font-size:52px;font-weight:800;color:#003087">'+sc.total+'%</div><div style="font-size:13px;color:#888;margin:4px 0">'+sc.correct+' من '+sc.total_q+' سؤال صحيح — '+ml+'</div><span style="font-size:13px;font-weight:700;background:'+g[2]+';color:'+g[1]+';padding:4px 16px;border-radius:6px">'+g[0]+'</span></div>'
-    +(secList.length?'<div style="background:#fff;border:1px solid #E0E8F0;border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:13px;font-weight:700;color:#003087;margin-bottom:10px">الأداء حسب المحور</div>'+sr+'</div>':'');
-  if(mode==='pre'){html+='<div style="background:#D0E4FB;border-radius:10px;padding:12px 14px;font-size:13px;color:#003087;border:1px solid #B5D4F4"><i class="ti ti-calendar"></i> بعد انتهاء الورشة عُد وأدخل الرمز <strong>'+code+'</strong> ورقمك الوظيفي لأداء اختبار "بعد".</div>';}
-  else{html+='<button class="bp bpp bp-full" onclick="goEval()"><i class="ti ti-star"></i> انتقل لتقييم الدورة والمدرب &#8592;</button>';}
-  rDiv.innerHTML=html;
-}
-
-function goEval(){hide('tr-s4');showEval();}
-
-function showEval(){
-  var rec=tr.rec;
-  var ini=rec.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  document.getElementById('tr-eval-prof').innerHTML='<div class="ava">'+ini+'</div><div><div style="font-size:13px;font-weight:700;color:#003087">'+rec.name+'</div><div style="font-size:12px;color:#555">'+rec.dept+'</div></div><div style="margin-right:auto"><span class="bdg b6">تقييم الدورة</span></div>';
-  tr.ev={};
-  var form=document.getElementById('eval-form');form.innerHTML='';
-  EQS.forEach(function(eq){
-    var box=document.createElement('div');box.className='evalbox';
-    var html='<div class="etitle">'+eq.label+'</div>';
-    if(eq.sub)html+='<div class="esub">'+eq.sub+'</div>';
-    if(eq.type==='stars'){
-      html+='<div class="stars" id="st-'+eq.id+'">';
-      for(var i=1;i<=5;i++){html+='<button class="star" aria-label="'+i+' نجوم" onclick="setStar(\''+eq.id+'\','+i+')">&#9733;</button>';}
-      html+='</div>';
-    } else if(eq.type==='sc5'){
-      html+='<div class="sc5" id="sc-'+eq.id+'">';
-      eq.opts.forEach(function(o,i){html+='<button class="s5" onclick="setSc5(\''+eq.id+'\','+i+',this)">'+o+'</button>';});
-      html+='</div>';
-    } else if(eq.type==='yn'){
-      html+='<div class="ynrow" id="yn-'+eq.id+'"><button class="yn" onclick="setYn(\''+eq.id+'\',\'yes\',this)">نعم، أوصي بها</button><button class="yn" onclick="setYn(\''+eq.id+'\',\'no\',this)">لا، لا أوصي بها</button></div>';
-    } else if(eq.type==='text'){
-      html+='<textarea class="ota" style="margin-top:8px" placeholder="'+(eq.ph||'')+'" oninput="tr.ev[\''+eq.id+'\']=this.value"></textarea>';
-    }
-    box.innerHTML=html;form.appendChild(box);
-  });
-  show('tr-s5');
-}
-
-function setStar(id,v){tr.ev[id]=v;var btns=document.querySelectorAll('#st-'+id+' .star');for(var i=0;i<btns.length;i++)btns[i].classList.toggle('on',i<v);}
-function setSc5(id,i,btn){tr.ev[id]=i+1;var all=btn.parentNode.querySelectorAll('.s5');for(var j=0;j<all.length;j++)all[j].classList.toggle('on',j===i);}
-function setYn(id,v,btn){tr.ev[id]=v;var all=btn.parentNode.querySelectorAll('.yn');for(var j=0;j<all.length;j++)all[j].classList.remove('on');btn.classList.add('on');}
-
-function saveEval(){
-  if(!tr.ev.course_overall){showToast('tr-toast','يرجى تقييم الدورة بالنجوم أولاً.','ter');return;}
-  var rec=tr.rec,code=tr.code;
-  rec.eval=Object.assign({},tr.ev,{saved:new Date().toISOString()});
-  rec.lastUpdate=new Date().toISOString();
-  var db=getDB();
-  var idx=db.records[code].findIndex(function(r){return r.id===rec.id;});
-  if(idx>=0)db.records[code][idx]=rec;
-  setDB(db);
-  hide('eval-form');document.getElementById('btn-eval').style.display='none';
-  document.getElementById('eval-done').innerHTML='<div style="background:#EAF5EE;border:1px solid #A8D8B8;border-radius:14px;padding:24px;text-align:center;margin-top:8px"><i class="ti ti-trophy" style="font-size:40px;color:#1D6F42;display:block;margin-bottom:10px"></i><div style="font-size:17px;font-weight:700;color:#155724;margin-bottom:5px">شكراً '+rec.name+'!</div><div style="font-size:13px;color:#0A5240;margin-bottom:16px">تم حفظ اختبارَيك وتقييم الدورة بنجاح</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"><div style="background:#fff;border-radius:10px;padding:12px"><div style="font-size:20px;font-weight:700;color:#003087">'+(rec.pre?rec.pre.total+'%':'—')+'</div><div style="font-size:12px;color:#888">قبل</div></div><div style="background:#fff;border-radius:10px;padding:12px"><div style="font-size:20px;font-weight:700;color:#003087">'+(rec.post?rec.post.total+'%':'—')+'</div><div style="font-size:12px;color:#888">بعد</div></div><div style="background:#fff;border-radius:10px;padding:12px"><div style="font-size:18px;font-weight:700;color:'+(rec.gap>=0?'#1D6F42':'#A32D2D')+'">'+(rec.gap!=null?(rec.gap>=0?'+':'')+rec.gap+' نقطة':'—')+'</div><div style="font-size:12px;color:#888">الفجوة</div></div></div></div>';
-  setStatus('اكتمل التقييم &#10003;','#28A745');
-}
-
-/* ===================== EXPORT ===================== */
-function doExport(fmt){
-  if(!currentCode){showToast('adm-toast','حمّل جلسة أولاً.','ter');return;}
-  var db=getDB();var recs=(db.records&&db.records[currentCode])||[];
-  if(!recs.length){showToast('adm-toast','لا بيانات.','ter');return;}
-  var sess=db.sessions[currentCode];
-  var bank=sess&&db.banks[sess.bankId];
-  var secList=bank?[...new Set(bank.questions.filter(function(q){return q.t==='m';}).map(function(q){return q.s;}))]:[]; 
-  var hdr=['name','eid','dept','title'];
-  secList.forEach(function(s){hdr.push('pre_'+s.replace(/\s+/g,'_'));});
-  hdr=hdr.concat(['pre_total','pre_confidence','pre_open']);
-  secList.forEach(function(s){hdr.push('post_'+s.replace(/\s+/g,'_'));});
-  hdr=hdr.concat(['post_total','post_confidence','post_open','gap','eval_course','eval_trainer_k','eval_trainer_d','eval_trainer_i','eval_content','eval_practical','eval_relevance','eval_time','eval_recommend','eval_best_part','eval_improvement','lastUpdate']);
-  var rows=recs.map(function(r){
-    var pv=secList.map(function(s){return r.pre&&r.pre.secScores?r.pre.secScores[s]!=null?r.pre.secScores[s]:'':'';});
-    var pov=secList.map(function(s){return r.post&&r.post.secScores?r.post.secScores[s]!=null?r.post.secScores[s]:'':'';});
-    var e=r.eval||{};
-    var row=[r.name,r.eid,r.dept,r.title].concat(pv).concat([r.pre?r.pre.total:'',r.pre?r.pre.confidence!=null?r.pre.confidence:'':'',r.pre?r.pre.open_answer||'':'']).concat(pov).concat([r.post?r.post.total:'',r.post?r.post.confidence!=null?r.post.confidence:'':'',r.post?r.post.open_answer||'':'',r.gap!=null?r.gap:'',e.course_overall||'',e.trainer_knowledge||'',e.trainer_delivery||'',e.trainer_interaction||'',e.content_quality||'',e.practical_exercises||'',e.relevance_to_work||'',e.time_management||'',e.recommend||'',e.best_part||'',e.improvement||'',r.lastUpdate||'']);
-    return row.map(function(v){var s=String(v!=null?v:'');return(s.indexOf(',')>=0||s.indexOf('"')>=0)?'"'+s.replace(/"/g,'""')+'"':s;}).join(',');
-  });
-  var csv=hdr.join(',')+'\n'+rows.join('\n');
-  if(fmt==='csv'){var b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='MTCIT_'+currentCode+'_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(u);showToast('adm-toast','تم التصدير','tok');}
-  else if(fmt==='json'){var b2=new Blob([JSON.stringify(recs,null,2)],{type:'application/json'});var u2=URL.createObjectURL(b2);var a2=document.createElement('a');a2.href=u2;a2.download='MTCIT_'+currentCode+'_'+new Date().toISOString().slice(0,10)+'.json';a2.click();URL.revokeObjectURL(u2);showToast('adm-toast','تم التصدير','tok');}
-  else{navigator.clipboard.writeText(csv).then(function(){showToast('adm-toast','تم النسخ','tok');});}
-}
-
-/* ===================== INIT ===================== */
-try{var _t=localStorage.getItem(STORAGE_KEY||'mtcit_mbo_kpi_v1');if(_t)JSON.parse(_t);}catch(e){localStorage.removeItem(STORAGE_KEY||'mtcit_mbo_kpi_v1');}
-initDefaultBank();
-populateBankSelect();
-renderSessionHistory();
+function openCourseForm(id=''){let c=id?byId(DB.courses,id):{title:'',trainer:'',target:'',hours:8,cost:0,date:new Date().toISOString().slice(0,10),status:'مجدول',kpi:'',description:''};openModal(id?'تعديل برنامج تدريبي':'إضافة برنامج تدريبي',`<form onsubmit="saveCourse(event,'${id}')" class="space-y-4"><div><label class="block text-xs font-black text-slate-600 mb-1">اسم البرنامج</label><input name="title" class="field" required placeholder="اسم البرنامج" value="${esc(c.title)}"></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">المدرب</label><input name="trainer" class="field" placeholder="المدرب" value="${esc(c.trainer)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الفئة المستهدفة</label><input name="target" class="field" placeholder="الفئة المستهدفة" value="${esc(c.target)}"></div></div><div class="grid sm:grid-cols-4 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">عدد الساعات</label><input name="hours" type="number" class="field" placeholder="الساعات" value="${esc(c.hours)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">التكلفة</label><input name="cost" type="number" class="field" placeholder="التكلفة" value="${esc(c.cost)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تاريخ التنفيذ</label><input name="date" type="date" class="field" value="${esc(c.date)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">حالة البرنامج</label><select name="status" class="field"><option ${c.status==='مجدول'?'selected':''}>مجدول</option><option ${c.status==='نشط'?'selected':''}>نشط</option><option ${c.status==='مكتمل'?'selected':''}>مكتمل</option></select></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">KPI مرتبط</label><input name="kpi" class="field" placeholder="KPI مرتبط" value="${esc(c.kpi)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">وصف البرنامج</label><textarea name="description" class="field" placeholder="وصف البرنامج">${esc(c.description)}</textarea></div><button class="btn btn-primary w-full">حفظ البرنامج</button></form>`)}
+function saveCourse(e,id){e.preventDefault();let f=new FormData(e.target);upsert('courses',{id:id||uid('cr'),title:f.get('title'),trainer:f.get('trainer'),target:f.get('target'),hours:+f.get('hours'),cost:+f.get('cost'),date:f.get('date'),status:f.get('status'),kpi:f.get('kpi'),description:f.get('description')},id)}
+function openSuccessionForm(id=''){let x=id?byId(DB.successors,id):{employeeId:DB.employees[0]?.id,targetJobId:DB.jobs[0]?.id,performance:80,potential:80,readiness:'جاهز خلال سنة',developmentPlan:''};openModal(id?'تعديل مرشح تعاقب':'إضافة مرشح تعاقب',`<form onsubmit="saveSuccession(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">الموظف المرشح</label><select name="employeeId" class="field">${DB.employees.map(e=>`<option value="${e.id}" ${x.employeeId===e.id?'selected':''}>${esc(e.name)}</option>`).join('')}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">الوظيفة المستهدفة</label><select name="targetJobId" class="field">${DB.jobs.map(j=>`<option value="${j.id}" ${x.targetJobId===j.id?'selected':''}>${esc(j.title)}</option>`).join('')}</select></div></div><div class="grid sm:grid-cols-3 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">نسبة الأداء %</label><input name="performance" type="number" min="0" max="100" class="field" value="${esc(x.performance)}" placeholder="الأداء"></div><div><label class="block text-xs font-black text-slate-600 mb-1">نسبة الإمكانات %</label><input name="potential" type="number" min="0" max="100" class="field" value="${esc(x.potential)}" placeholder="الإمكانات"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الجاهزية</label><input name="readiness" class="field" value="${esc(x.readiness)}" placeholder="الجاهزية"></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">خطة التطوير</label><textarea name="developmentPlan" class="field" placeholder="خطة التطوير">${esc(x.developmentPlan)}</textarea></div><button class="btn btn-primary w-full">حفظ المرشح</button></form>`)}
+function saveSuccession(e,id){e.preventDefault();let f=new FormData(e.target);upsert('successors',{id:id||uid('sc'),employeeId:f.get('employeeId'),targetJobId:f.get('targetJobId'),performance:+f.get('performance'),potential:+f.get('potential'),readiness:f.get('readiness'),developmentPlan:f.get('developmentPlan')},id)}
+function openSurveyForm(id=''){let v=id?byId(DB.surveys,id):{courseId:DB.courses[0]?.id,respondent:'',content:5,instructor:5,venue:5,impact:5,comment:''};openModal(id?'تعديل استمارة رضا':'تسجيل استمارة رضا',`<form onsubmit="saveSurvey(event,'${id}')" class="space-y-4"><div><label class="block text-xs font-black text-slate-600 mb-1">البرنامج التدريبي</label><select name="courseId" class="field">${DB.courses.map(c=>`<option value="${c.id}" ${v.courseId===c.id?'selected':''}>${esc(c.title)}</option>`).join('')}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">اسم المشارك / اختياري</label><input name="respondent" class="field" placeholder="اسم المشارك / اختياري" value="${esc(v.respondent)}"></div><div class="grid sm:grid-cols-4 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">تقييم المحتوى</label><input name="content" type="number" min="1" max="5" class="field" value="${esc(v.content)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تقييم المدرب</label><input name="instructor" type="number" min="1" max="5" class="field" value="${esc(v.instructor)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تقييم التنظيم</label><input name="venue" type="number" min="1" max="5" class="field" value="${esc(v.venue)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">تقييم الأثر</label><input name="impact" type="number" min="1" max="5" class="field" value="${esc(v.impact)}"></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">ملاحظات المتدرب</label><textarea name="comment" class="field" placeholder="ملاحظات المتدرب">${esc(v.comment)}</textarea></div><button class="btn btn-primary w-full">حفظ الاستمارة</button></form>`)}
+function saveSurvey(e,id){e.preventDefault();let f=new FormData(e.target);upsert('surveys',{id:id||uid('sv'),courseId:f.get('courseId'),respondent:f.get('respondent'),content:+f.get('content'),instructor:+f.get('instructor'),venue:+f.get('venue'),impact:+f.get('impact'),comment:f.get('comment')},id)}
+function exportJSON(){download('talent_suite_full_data.json',JSON.stringify(DB,null,2),'application/json')}
+function flattenRows(table){return DB[table].map(x=>{let y={...x};if(y.kpis)y.kpis=JSON.stringify(y.kpis);if(y.scores)y.scores=JSON.stringify(y.scores);return y})}
+function exportCSV(table){let rows=flattenRows(table);if(!rows.length)return toast('لا توجد بيانات');let heads=Object.keys(rows[0]);let csv='\ufeff'+heads.join(',')+'\n'+rows.map(r=>heads.map(h=>'"'+String(r[h]??'').replace(/"/g,'""')+'"').join(',')).join('\n');download(table+'.csv',csv,'text/csv;charset=utf-8')}
+function exportExcel(){if(typeof XLSX==='undefined'){toast('مكتبة Excel تحتاج اتصال إنترنت. استخدم CSV أو JSON.');return}let wb=XLSX.utils.book_new();['orgUnits','employees','jobs','questions','exams','appraisals','budgetItems','courses','successors','surveys'].forEach(t=>XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(flattenRows(t)),t));XLSX.writeFile(wb,'talent_suite_data.xlsx')}
+function parseCSV(txt){let lines=txt.replace(/^\ufeff/,'').split(/\r?\n/).filter(Boolean);let heads=lines.shift().split(',').map(h=>h.replace(/^"|"$/g,''));return lines.map(line=>{let vals=line.match(/("([^"]|"")*"|[^,]+)/g)||[];let o={};heads.forEach((h,i)=>o[h]=(vals[i]||'').replace(/^"|"$/g,'').replace(/""/g,'"'));return o})}
+function importFile(){let file=document.getElementById('importFile').files[0], target=document.getElementById('importTarget').value;if(!file)return toast('اختر ملفاً أولاً');let r=new FileReader();r.onload=e=>{try{let data;if(file.name.endsWith('.json')){data=JSON.parse(e.target.result);if(target==='all'){DB=data}else DB[target]=data}else if(file.name.endsWith('.csv')){DB[target]=parseCSV(e.target.result)}else{if(typeof XLSX==='undefined')return toast('مكتبة Excel تحتاج اتصال إنترنت');let wb=XLSX.read(e.target.result,{type:'array'});let ws=wb.Sheets[wb.SheetNames[0]];DB[target]=XLSX.utils.sheet_to_json(ws)};['jobs','appraisals'].forEach(t=>DB[t]?.forEach(x=>{if(typeof x.kpis==='string')try{x.kpis=JSON.parse(x.kpis)}catch(e){};if(typeof x.scores==='string')try{x.scores=JSON.parse(x.scores)}catch(e){}}));save();toast('تم الاستيراد بنجاح');render('data');updateHeader()}catch(err){alert('تعذر الاستيراد: '+err.message)}};if(file.name.match(/\.xlsx?$|\.xls$/))r.readAsArrayBuffer(file);else r.readAsText(file,'utf-8')}
+function resetDemo(){localStorage.removeItem(KEY);location.reload()}
+load();initTabs();render('dashboard');
 </script>
 </body>
 </html>
