@@ -3,13 +3,37 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>منظومة إدارة المواهب والهيكل الوظيفي والتقييم - v6 Dashboard 2.0</title>
+<title>منظومة إدارة المواهب والهيكل الوظيفي والتقييم - v7.4 Org Zoom Controls</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;950&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 body{font-family:'Cairo',sans-serif;background:#f8fafc}::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#f1f5f9}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:14px}.card{background:white;border:1px solid #e2e8f0;border-radius:1.5rem;box-shadow:0 10px 20px -18px #0f172a}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:.9rem;padding:.7rem 1rem;font-size:.78rem;font-weight:800;transition:.2s}.btn-primary{background:#4f46e5;color:white}.btn-primary:hover{background:#4338ca}.btn-dark{background:#0f172a;color:white}.btn-soft{background:#f1f5f9;color:#334155}.btn-danger{background:#fee2e2;color:#b91c1c}.tab-active{background:#4f46e5;color:white;box-shadow:0 10px 20px -14px #4f46e5}.tab-idle{color:#475569}.tab-idle:hover{background:#f8fafc;color:#0f172a}.org-node{display:inline-block;min-width:180px;background:#fff;border:1px solid #c7d2fe;border-radius:18px;padding:12px;box-shadow:0 8px 20px -16px #1e1b4b}.org-children{display:flex;gap:18px;justify-content:center;margin-top:18px;position:relative}.org-children:before{content:"";position:absolute;top:-9px;left:8%;right:8%;height:1px;background:#cbd5e1}.org-child{position:relative;text-align:center}.org-child:before{content:"";position:absolute;top:-18px;left:50%;height:18px;width:1px;background:#cbd5e1}.modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.field{width:100%;border:1px solid #e2e8f0;border-radius:.9rem;padding:.75rem;font-size:.78rem;font-weight:700;outline:none;background:white}.field:focus{box-shadow:0 0 0 3px #e0e7ff;border-color:#818cf8}.badge{font-size:.65rem;font-weight:900;padding:.25rem .55rem;border-radius:999px}.print-only{display:none}@media print{aside,header,.no-print,footer{display:none!important}main{box-shadow:none!important;border:none!important}.print-only{display:block}.card{break-inside:avoid}}
+
+/* عرض احترافي للهيكل الكبير */
+.org-filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;align-items:end}
+.org-tree-panel{max-height:620px;overflow:auto;background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #e2e8f0;border-radius:1.25rem;padding:18px}
+.org-large-note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:1rem;padding:12px;font-size:.78rem;font-weight:800}
+.org-scope-chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#eef2ff;color:#3730a3;padding:5px 10px;font-size:.7rem;font-weight:900}
+.org-table-box{max-height:520px;overflow:auto;border:1px solid #e2e8f0;border-radius:1rem}
+.org-table-box thead th{position:sticky;top:0;z-index:1;background:#f8fafc}
+.org-node{max-width:230px}
+.org-zoom-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:1rem;padding:8px 10px}
+.org-zoom-controls .zoom-label{font-size:.78rem;font-weight:900;color:#334155}
+.org-zoom-controls .zoom-level{font-size:.75rem;font-weight:900;color:#4f46e5;min-width:58px;text-align:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:4px 8px}
+.org-zoom-controls .btn{padding:6px 10px;font-size:.78rem;border-radius:.75rem}
+.org-tree-canvas{display:inline-block;transform-origin:top center;transition:transform .18s ease;will-change:transform}
+.org-tree-panel{cursor:grab}
+.org-tree-panel:active{cursor:grabbing}
+
+
+/* V7.12 compact table improvements */
+.criticality-cell{min-width:132px;width:132px;white-space:nowrap;text-align:center}
+.criticality-badge{display:inline-flex;align-items:center;justify-content:center;gap:.25rem;white-space:nowrap;line-height:1;padding:.32rem .55rem;border-radius:999px;font-size:.66rem;font-weight:900}
+.action-stack{display:inline-flex;flex-direction:column;gap:.35rem;align-items:stretch;justify-content:center;min-width:64px}
+.action-stack .btn{width:100%;padding:.45rem .5rem!important;font-size:.72rem!important;white-space:nowrap}
+.summary-wrap{max-width:280px;white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.table-ellipsis{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col antialiased">
@@ -63,10 +87,10 @@ body{font-family:'Cairo',sans-serif;background:#f8fafc}::-webkit-scrollbar{width
     <section id="tab-data" class="hidden space-y-6"></section>
   </main>
 </div>
-<footer class="no-print bg-slate-950 text-slate-400 py-5 text-center text-xs">© 2026 - نسخة مطورة v5 Enterprise تعمل محلياً عبر المتصفح مع حفظ LocalStorage وإمكانية التصدير والاستيراد.</footer>
+<footer class="no-print bg-slate-950 text-slate-400 py-5 text-center text-xs">© 2026 - نسخة مطورة v7.1 Enterprise تعمل محلياً عبر المتصفح مع حفظ LocalStorage وإمكانية التصدير والاستيراد.</footer>
 <div id="modal" class="modal"><div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"><div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white p-5 flex justify-between items-center"><h3 id="modalTitle" class="font-black"></h3><button onclick="closeModal()" class="text-slate-300 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button></div><div id="modalBody" class="p-6"></div></div></div>
 <script>
-const KEY='mtcit_talent_suite_v4';
+const KEY='mtcit_talent_suite_v716_render_filters_fix';
 let DB={
  orgUnits:[
   {id:'org1',name:'مكتب الرئيس التنفيذي',type:'رئاسة',parentId:'',managerEmployeeId:'emp1'},
@@ -77,9 +101,9 @@ let DB={
   {id:'org6',name:'مديرية البنية التحتية والشبكات',type:'مديرية',parentId:'org2',managerEmployeeId:'emp3'}
  ],
  jobs:[
-  {id:'job1',title:'رئيس قطاع تكنولوجيا المعلومات',grade:'قيادي',summary:'قيادة الاستراتيجية الرقمية وضمان مواءمة التقنية مع أهداف المؤسسة.',tasks:'وضع خارطة التحول الرقمي؛ الإشراف على المشاريع؛ إدارة المخاطر التقنية؛ قيادة فرق العمل.',skills:'القيادة الاستراتيجية، الحوكمة التقنية، أمن المعلومات، إدارة المشاريع',kpis:[{name:'نسبة إنجاز المبادرات الرقمية',target:90,weight:35},{name:'استقرار الخدمات الرقمية',target:99,weight:25},{name:'خفض المخاطر التقنية',target:80,weight:20},{name:'تطوير الفريق',target:85,weight:20}]},
-  {id:'job2',title:'المدير المالي التنفيذي',grade:'قيادي',summary:'إدارة التخطيط المالي والميزانيات والرقابة على الأداء المالي.',tasks:'إعداد الميزانيات؛ تحليل الانحرافات؛ إدارة التدفقات؛ ضمان الالتزام المالي.',skills:'التخطيط المالي، الحوكمة، التحليل المالي، إدارة المخاطر',kpis:[{name:'دقة التنبؤ المالي',target:90,weight:30},{name:'الالتزام بالموازنة',target:95,weight:30},{name:'سرعة إغلاق التقارير',target:90,weight:20},{name:'خفض المخاطر المالية',target:80,weight:20}]},
-  {id:'job3',title:'مهندس نظم أول',grade:'تخصصي',summary:'تشغيل الأنظمة والبنية التحتية وضمان جاهزيتها واستمراريتها.',tasks:'إدارة الخوادم؛ متابعة الأعطال؛ تطبيق معايير الأمن؛ توثيق الإجراءات.',skills:'الشبكات، الأنظمة، الأمن السيبراني، إدارة الحوادث',kpis:[{name:'زمن الاستجابة للحوادث',target:85,weight:30},{name:'توافر الأنظمة',target:99,weight:35},{name:'تطبيق التحديثات الأمنية',target:95,weight:20},{name:'توثيق الإجراءات',target:90,weight:15}]}
+  {id:'job1',title:'رئيس قطاع تكنولوجيا المعلومات',grade:'قيادي',critical:true,criticalLevel:'حرج جداً',criticalReason:'منصب قيادي مؤثر على استمرارية التحول الرقمي والخدمات التقنية.',vacancyImpact:'تعطل اتخاذ القرار التقني وتعثر المبادرات الرقمية ذات الأولوية.',maxVacancyDays:30,summary:'قيادة الاستراتيجية الرقمية وضمان مواءمة التقنية مع أهداف المؤسسة.',tasks:'وضع خارطة التحول الرقمي؛ الإشراف على المشاريع؛ إدارة المخاطر التقنية؛ قيادة فرق العمل.',skills:'القيادة الاستراتيجية، الحوكمة التقنية، أمن المعلومات، إدارة المشاريع',kpis:[{name:'نسبة إنجاز المبادرات الرقمية',target:90,weight:35},{name:'استقرار الخدمات الرقمية',target:99,weight:25},{name:'خفض المخاطر التقنية',target:80,weight:20},{name:'تطوير الفريق',target:85,weight:20}]},
+  {id:'job2',title:'المدير المالي التنفيذي',grade:'قيادي',critical:true,criticalLevel:'مرتفع',criticalReason:'مسؤولية مباشرة عن الرقابة المالية والموازنات والالتزام.',vacancyImpact:'ارتفاع مخاطر الانحراف المالي وتأخر التقارير والقرارات المالية.',maxVacancyDays:45,summary:'إدارة التخطيط المالي والميزانيات والرقابة على الأداء المالي.',tasks:'إعداد الميزانيات؛ تحليل الانحرافات؛ إدارة التدفقات؛ ضمان الالتزام المالي.',skills:'التخطيط المالي، الحوكمة، التحليل المالي، إدارة المخاطر',kpis:[{name:'دقة التنبؤ المالي',target:90,weight:30},{name:'الالتزام بالموازنة',target:95,weight:30},{name:'سرعة إغلاق التقارير',target:90,weight:20},{name:'خفض المخاطر المالية',target:80,weight:20}]},
+  {id:'job3',title:'مهندس نظم أول',grade:'تخصصي',critical:false,criticalLevel:'متوسط',criticalReason:'',vacancyImpact:'',maxVacancyDays:60,summary:'تشغيل الأنظمة والبنية التحتية وضمان جاهزيتها واستمراريتها.',tasks:'إدارة الخوادم؛ متابعة الأعطال؛ تطبيق معايير الأمن؛ توثيق الإجراءات.',skills:'الشبكات، الأنظمة، الأمن السيبراني، إدارة الحوادث',kpis:[{name:'زمن الاستجابة للحوادث',target:85,weight:30},{name:'توافر الأنظمة',target:99,weight:35},{name:'تطبيق التحديثات الأمنية',target:95,weight:20},{name:'توثيق الإجراءات',target:90,weight:15}]}
  ],
  employees:[
   {id:'emp1',name:'يوسف خالد المصري',number:'1001',email:'yousef@example.gov',orgUnitId:'org5',jobId:'job1',status:'نشط'},
@@ -115,21 +139,191 @@ let DB={
   {id:'ap1',employeeId:'emp1',period:'النصف الأول 2026',date:'2026-06-25',scores:[{kpi:'نسبة إنجاز المبادرات الرقمية',actual:86,weight:35},{kpi:'استقرار الخدمات الرقمية',actual:98,weight:25},{kpi:'خفض المخاطر التقنية',actual:75,weight:20},{kpi:'تطوير الفريق',actual:90,weight:20}],notes:'أداء جيد مع حاجة لتعزيز إدارة المخاطر.'}
  ]
 };
+const DEFAULT_DB = JSON.parse(JSON.stringify(DB));
 function uid(p){return p+Math.random().toString(36).slice(2,9)}
 function save(){localStorage.setItem(KEY,JSON.stringify(DB));}
-function load(){try{const s=localStorage.getItem(KEY);if(s){let old=JSON.parse(s);DB={...DB,...old};if(!DB.budgetItems)DB.budgetItems=[];if(!DB.courses)DB.courses=[];if(!DB.successors)DB.successors=[];if(!DB.surveys)DB.surveys=[]}}catch(e){console.warn(e)}}
+function load(){
+  try{
+    const s=localStorage.getItem(KEY);
+    if(s){
+      let old=JSON.parse(s);
+      DB={...DEFAULT_DB,...old};
+      ['orgUnits','employees','jobs','questions','exams','budgetItems','courses','successors','surveys','appraisals'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
+    }
+    migrateCriticalJobs();
+    ensureCriticalSeedData();
+    ensureBulkSeedData();
+    save();
+  }catch(e){console.warn(e);DB=JSON.parse(JSON.stringify(DEFAULT_DB));migrateCriticalJobs();ensureCriticalSeedData();ensureBulkSeedData();save();}
+}
+function migrateCriticalJobs(){
+  (DB.jobs||[]).forEach((j,idx)=>{
+    if(typeof j.critical==='undefined')j.critical=false;
+    if(!j.criticalLevel)j.criticalLevel=j.critical?'مرتفع':'متوسط';
+    if(typeof j.maxVacancyDays==='undefined'||j.maxVacancyDays==='')j.maxVacancyDays=j.critical?45:90;
+    if(typeof j.criticalReason==='undefined')j.criticalReason='';
+    if(typeof j.vacancyImpact==='undefined')j.vacancyImpact='';
+    if(typeof j.kpis==='string')try{j.kpis=JSON.parse(j.kpis)}catch(e){j.kpis=[]}
+  });
+}
+function ensureCriticalSeedData(){
+  // يعالج قواعد البيانات المحلية القديمة: إذا كانت شاشة الوظائف الحرجة فارغة، يتم تغذية أمثلة مرتبطة فعلياً بالموظفين والتعاقب.
+  if(!DB.jobs.length) DB.jobs=JSON.parse(JSON.stringify(DEFAULT_DB.jobs));
+  if(!DB.employees.length) DB.employees=JSON.parse(JSON.stringify(DEFAULT_DB.employees));
+  if(!DB.courses.length) DB.courses=JSON.parse(JSON.stringify(DEFAULT_DB.courses));
+  const hasCritical=(DB.jobs||[]).some(j=>j.critical===true || String(j.critical).toLowerCase()==='true');
+  if(!hasCritical){
+    (DB.jobs||[]).slice(0,2).forEach((j,i)=>{
+      j.critical=true;
+      j.criticalLevel=i===0?'حرج جداً':'مرتفع';
+      j.criticalReason=j.criticalReason||'تم تصنيفها كوظيفة حرجة لضمان استمرارية الأعمال وتوفير بديل مؤهل.';
+      j.vacancyImpact=j.vacancyImpact||'ارتفاع مخاطر تعطل الخدمة أو تأخر القرار عند شغور الوظيفة.';
+      j.maxVacancyDays=j.maxVacancyDays|| (i===0?30:45);
+    });
+  }
+  const criticalIds=(DB.jobs||[]).filter(j=>j.critical).map(j=>j.id);
+  if(criticalIds.length && !(DB.successors||[]).some(sc=>criticalIds.includes(sc.targetJobId))){
+    DB.successors=DB.successors||[];
+    const emps=DB.employees||[];
+    criticalIds.forEach((jid,i)=>{
+      if(!DB.successors.some(sc=>sc.targetJobId===jid)) DB.successors.push({id:uid('sc'),employeeId:(emps[i%Math.max(emps.length,1)]||{}).id||'',targetJobId:jid,performance:i?88:86,potential:i?87:92,readiness:i?'جاهز الآن':'جاهز خلال سنة',developmentPlan:i?'تطوير متقدم في الحوكمة وإدارة المخاطر':'برنامج قيادة استراتيجية + تكليف بمشروع قيادي'});
+    });
+  }
+  const needCourses=['القيادة الاستراتيجية','إدارة المخاطر','الحوكمة'];
+  needCourses.forEach((kw,i)=>{if(!(DB.courses||[]).some(c=>String(c.title+' '+c.description).includes(kw))){DB.courses.push({id:uid('cr'),title:i===0?'برنامج القيادة الاستراتيجية للوظائف الحرجة':i===1?'إدارة المخاطر واستمرارية الأعمال':'الحوكمة المؤسسية للقيادات البديلة',trainer:'مدرب معتمد',target:'بدلاء الوظائف الحرجة',hours:i===0?18:12,cost:i===0?15000:9000,date:'2026-08-'+String(10+i).padStart(2,'0'),status:'مجدول',kpi:kw,description:'برنامج مرتبط بخطة تطوير بدلاء الوظائف الحرجة وسد فجوات المهارات.'})}});
+  // بيانات اختبار إضافية للوظائف حتى يمكن اختبار الصفحة عند كثرة البيانات.
+  const extraTitles=['مدير مكتب البيانات','محلل بيانات مؤسسية','أخصائي ذكاء اصطناعي','مدير أمن معلومات','رئيس قسم التطبيقات','مطور نظم أول','مدير جودة الخدمات الرقمية','أخصائي تجربة مستخدم','مدير تكامل الأنظمة','مهندس شبكات','أخصائي حوكمة بيانات','مدير مشاريع رقمية','محلل أعمال','مسؤول قواعد بيانات','أخصائي استمرارية الأعمال','مدير البنية المؤسسية','أخصائي إدارة تغيير','رئيس قسم الدعم الفني','مدير الشراكات الرقمية','أخصائي قياس أداء'];
+  const orgIds=(DB.orgUnits||[]).map(o=>o.id);
+  extraTitles.forEach((t,i)=>{
+    const id='jobx'+(i+1);
+    if(!(DB.jobs||[]).some(j=>j.id===id || j.title===t)){
+      const critical=[3,4,8,10,11,14,15].includes(i);
+      DB.jobs.push({
+        id,title:t,grade:i%5===0?'قيادي':i%3===0?'إشرافي':'تخصصي',orgUnitId:orgIds[i%Math.max(orgIds.length,1)]||'',category:i%2?'تقنية':'إدارية',updatedAt:'2026-07-'+String((i%20)+1).padStart(2,'0'),
+        critical,criticalLevel:critical?(i%2?'مرتفع':'حرج جداً'):'متوسط',criticalReason:critical?'من الوظائف المؤثرة على استمرارية الأعمال والخدمات الرقمية وتحتاج بديل مؤهل.':'',vacancyImpact:critical?'تأخر القرارات أو الخدمات المرتبطة بالوظيفة وارتفاع مخاطر الاعتماد على فرد واحد.':'',maxVacancyDays:critical?30+i:90,
+        summary:'مسؤول عن '+t+' ضمن منظومة التحول الرقمي وإدارة المواهب ورفع كفاءة الأداء المؤسسي.',
+        tasks:'إعداد الخطط؛ متابعة التنفيذ؛ التنسيق مع الوحدات؛ تحليل المؤشرات؛ إعداد التقارير التنفيذية.',
+        skills:['القيادة','تحليل البيانات','إدارة المشاريع','الحوكمة','التواصل','إدارة المخاطر'].slice(0,3+(i%4)).join('، '),
+        kpis:[{name:'نسبة إنجاز المهام',target:85+i%10,weight:30},{name:'جودة المخرجات',target:90,weight:25},{name:'الالتزام الزمني',target:88,weight:25},{name:'رضا المستفيدين',target:85,weight:20}]
+      });
+    }
+    const empId='empx'+(i+1);
+    if(!(DB.employees||[]).some(e=>e.id===empId)){
+      DB.employees.push({id:empId,name:['سالم الهنائي','مريم البلوشية','ناصر العبري','هدى الرحبية','أحمد المعمري','فاطمة الشكيلية','خالد الرواحي','نورة السيابية','محمد الحارثي','ليلى الكندية','سعيد المقبالي','منى الغافرية','راشد اليعقوبي','عائشة النبهانية','حمد المزروعي','ريم السنانية','عبدالله الشحي','بدرية العلوية','مازن البوسعيدي','زهرة الفارسية'][i]||('موظف تجريبي '+(i+1)),number:String(2000+i+1),email:'demo'+(i+1)+'@example.gov',orgUnitId:orgIds[i%Math.max(orgIds.length,1)]||'',jobId:id,status:'نشط'});
+    }
+    const j=(DB.jobs||[]).find(x=>x.id===id);
+    if(j&&j.critical && !(DB.successors||[]).some(sc=>sc.targetJobId===id)){
+      DB.successors.push({id:uid('sc'),employeeId:empId,targetJobId:id,performance:82+(i%12),potential:80+(i%15),readiness:i%2?'جاهز خلال سنة':'جاهز الآن',developmentPlan:'خطة تطوير بديل للوظيفة الحرجة تشمل تدريب تخصصي وتكليف عملي.'});
+    }
+  });
+  // ضمان ظهور بيانات كافية فور فتح النسخة، حتى لو كان لدى المتصفح تخزين سابق.
+  if((DB.jobs||[]).length < 20 || (DB.employees||[]).length < 20){
+    console.warn('Demo data check completed; jobs:', DB.jobs.length, 'employees:', DB.employees.length);
+  }
+}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)}
 function esc(s){return String(s??'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
 const byId=(arr,id)=>arr.find(x=>x.id===id)||{};
 function orgName(id){return byId(DB.orgUnits,id).name||'غير محدد'}
-function jobName(id){return byId(DB.jobs,id).title||'غير مرتبط'}
+function jobName(id){const j=byId(DB.jobs,id)||{};return j.title||'غير مرتبط'}
+function jobOrgName(job){
+  if(!job)return 'غير محدد';
+  const orgId=job.orgUnitId||job.orgId||job.departmentId||'';
+  const org=byId(DB.orgUnits,orgId)||{};
+  return org.name||'غير محدد';
+}
+function restoreInputFocus(inputId,value){
+  setTimeout(()=>{
+    const el=document.getElementById(inputId);
+    if(!el)return;
+    el.focus();
+    const pos=String(value||'').length;
+    try{el.setSelectionRange(pos,pos)}catch(e){}
+  },0);
+}
 function empName(id){return byId(DB.employees,id).name||'لا يوجد'}
 function avgPerformance(){let vals=DB.appraisals.map(calcAppraisal);return vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0}
 function calcAppraisal(ap){let w=ap.scores.reduce((s,x)=>s+Number(x.weight||0),0)||1;return Math.round(ap.scores.reduce((s,x)=>s+(Number(x.actual||0)*Number(x.weight||0)),0)/w)}
 function switchTab(tab){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById('tab-'+tab).classList.remove('hidden');document.querySelectorAll('.navbtn').forEach(b=>{b.classList.remove('tab-active');b.classList.add('tab-idle')});document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b=>{b.classList.add('tab-active');b.classList.remove('tab-idle')});render(tab)}
 function initTabs(){document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));const labels={dashboard:'الرئيسية',org:'الهيكل',employees:'الموظفون',jobs:'الوصف الوظيفي',tests:'الاختبارات',performance:'الأداء',gap:'الفجوات',training:'الورش',succession:'9-Box',surveys:'الرضا',budget:'الموازنة',data:'البيانات'};document.getElementById('mobileTabs').innerHTML=Object.entries(labels).map(([k,v])=>`<button data-tab="${k}" class="navbtn px-4 py-2 text-xs font-black whitespace-nowrap rounded-xl ${k==='dashboard'?'tab-active':'tab-idle bg-slate-100'}">${v}</button>`).join('');document.querySelectorAll('#mobileTabs .navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));}
 function updateHeader(){document.getElementById('headEmployees').textContent=DB.employees.length;document.getElementById('headPerformance').textContent=avgPerformance()+'%'}
-function render(tab='dashboard'){updateHeader();({dashboard:renderDashboard,org:renderOrg,employees:renderEmployees,jobs:renderJobs,tests:renderTests,performance:renderPerformance,gap:renderGap,training:renderTraining,succession:renderSuccession,surveys:renderSurveys,budget:renderBudget,data:renderData}[tab]||renderDashboard)();}
+function render(tab='dashboard'){updateHeader();const map={dashboard:()=>renderDashboard(),org:()=>renderOrg(),employees:()=>renderEmployees(),jobs:()=>renderJobs(),tests:()=>renderTests(),performance:()=>renderPerformance(),gap:()=>renderGap(),training:()=>renderTraining(),succession:()=>renderSuccession(),surveys:()=>renderSurveys(),budget:()=>renderBudget(),data:()=>renderData()};(map[tab]||map.dashboard)();}
+
+function isCriticalJob(jobId){const j=byId(DB.jobs,jobId);return j.critical===true || String(j.critical).toLowerCase()==='true'}
+function criticalJobs(){return (DB.jobs||[]).filter(j=>j.critical===true || String(j.critical).toLowerCase()==='true')}
+function successorsForJob(jobId){return (DB.successors||[]).filter(sc=>sc.targetJobId===jobId)}
+function readyNowForJob(jobId){return successorsForJob(jobId).filter(sc=>String(sc.readiness||'').includes('جاهز الآن'))}
+function criticalBadge(j){
+  if(!j||!j.critical) return '<span class="criticality-badge bg-slate-50 text-slate-500">🟢 غير حرجة (Non-Critical)</span>';
+  const level=String(j.criticalLevel||'حرجة');
+  const map={
+    'حرج جداً': ['🔴','bg-rose-100','text-rose-800','حرج جداً (Very Critical)'],
+    'حرجة': ['🔴','bg-rose-50','text-rose-700','حرجة (Critical)'],
+    'مرتفع': ['🟠','bg-orange-50','text-orange-700','مرتفع (High)'],
+    'متوسط': ['🟡','bg-amber-50','text-amber-700','متوسط (Medium)'],
+    'منخفض': ['🟢','bg-emerald-50','text-emerald-700','منخفض (Low)']
+  };
+  const m=map[level]||['🔴','bg-rose-50','text-rose-700',level+' (Critical)'];
+  return `<span class="criticality-badge ${m[1]} ${m[2]}">${m[0]} ${m[3]}</span>`;
+}
+function criticalPriority(level){level=String(level||'');if(level.includes('حرج'))return 'عالية جداً';if(level.includes('مرتفع'))return 'عالية';if(level.includes('متوسط'))return 'متوسطة';return 'منخفضة'}
+
+function ensureBulkSeedData(){
+  // بيانات اختبار إضافية لضمان ظهور كتالوج الوظائف والموظفين عند فتح النسخة الجديدة أو عند وجود تخزين محلي قديم.
+  if(!Array.isArray(DB.jobs)) DB.jobs=[];
+  if(!Array.isArray(DB.employees)) DB.employees=[];
+  const orgs=(DB.orgUnits||[]).map(o=>o.id);
+  const baseOrg=orgs.length?orgs: ['org1'];
+  const jobTitles=[
+    ['مدير مكتب إدارة المشاريع الرقمية','قيادي',true,'حرج جداً'],['رئيس قسم أمن المعلومات','إشرافي',true,'مرتفع'],['أخصائي تحليل بيانات','تخصصي',false,'متوسط'],['مهندس تكامل أنظمة','تخصصي',true,'مرتفع'],['رئيس قسم تجربة المستخدم','إشرافي',false,'متوسط'],['أخصائي حوكمة بيانات','تخصصي',true,'مرتفع'],['مدير إدارة الخدمات الرقمية','قيادي',true,'حرج جداً'],['أخصائي تطوير أعمال رقمية','تخصصي',false,'متوسط'],['محلل نظم أعمال','تخصصي',false,'متوسط'],['رئيس قسم البنية المؤسسية','إشرافي',true,'مرتفع'],['أخصائي جودة خدمات','تخصصي',false,'منخفض'],['مدير إدارة الابتكار','قيادي',true,'مرتفع'],['أخصائي إدارة تغيير','تخصصي',false,'متوسط'],['رئيس فريق دعم التطبيقات','إشرافي',true,'مرتفع'],['مهندس شبكات أول','تخصصي',false,'متوسط'],['أخصائي امتثال تقني','تخصصي',true,'مرتفع'],['مدير إدارة البيانات','قيادي',true,'حرج جداً'],['مصمم خدمات رقمية','تخصصي',false,'متوسط'],['أخصائي تدريب تقني','تخصصي',false,'منخفض'],['رئيس قسم المنصات الرقمية','إشرافي',true,'مرتفع']
+  ];
+  let existingTitles=new Set(DB.jobs.map(j=>j.title));
+  jobTitles.forEach((x,i)=>{
+    if(existingTitles.has(x[0])) return;
+    const id='jobx'+String(i+1).padStart(2,'0');
+    DB.jobs.push({
+      id,title:x[0],grade:x[1],orgUnitId:baseOrg[i%baseOrg.length],critical:x[2],criticalLevel:x[3],
+      criticalReason:x[2]?'وظيفة مؤثرة على استمرارية الخدمة وتتطلب بديلاً جاهزاً.':'',
+      vacancyImpact:x[2]?'قد يؤدي شغور الوظيفة إلى تأخر المبادرات أو ارتفاع المخاطر التشغيلية.':'',
+      maxVacancyDays:x[2]?30+i%4*15:90,
+      summary:'مسؤول عن '+x[0]+' ضمن نطاق العمل المؤسسي، مع متابعة مؤشرات الأداء وتحسين جودة التنفيذ وضمان استمرارية الأعمال.',
+      tasks:'إعداد الخطط التشغيلية؛ متابعة المؤشرات؛ التنسيق مع الوحدات؛ إدارة المخاطر؛ إعداد التقارير الدورية.',
+      skills:'القيادة، التحليل، إدارة المشاريع، الاتصال، التحسين المستمر',
+      kpis:[{name:'نسبة إنجاز الخطة',target:90,weight:35},{name:'جودة المخرجات',target:85,weight:25},{name:'الالتزام الزمني',target:90,weight:20},{name:'رضا المستفيدين',target:80,weight:20}]
+    });
+  });
+  const names=['سالم البلوشي','مريم الهنائية','خالد المعمري','نورة الراشدية','حمد السيابي','ليلى الفارسية','عبدالله الهاشمي','فاطمة الشكيلية','مازن الرحبي','هدى العبرية','ناصر الكندي','سعاد المقبالية','فيصل الرواحي','منى الحارثية','إبراهيم العامري','ريم اللواتية','طارق السناني','أسماء الجابرية','وليد المحروقي','زينب البوسعيدية','راشد اليعقوبي','بدور الخروصية','محمد الحضرمي','عائشة القاسمية'];
+  let existingEmp=new Set(DB.employees.map(e=>e.number));
+  const jobs=DB.jobs||[];
+  names.forEach((name,i)=>{
+    const number='2'+String(i+1).padStart(3,'0');
+    if(existingEmp.has(number) || !jobs.length) return;
+    const job=jobs[i%jobs.length];
+    DB.employees.push({id:'empx'+String(i+1).padStart(2,'0'),name,number,email:'emp'+number+'@example.gov',orgUnitId:job.orgUnitId||baseOrg[i%baseOrg.length],jobId:job.id,status:i%9===0?'منتدب':'نشط'});
+  });
+  if(!Array.isArray(DB.successors)) DB.successors=[];
+  const hasSucc=new Set(DB.successors.map(s=>s.targetJobId+'-'+s.employeeId));
+  DB.jobs.filter(j=>j.critical).slice(0,10).forEach((j,i)=>{
+    const emp=DB.employees[(i+3)%DB.employees.length];
+    if(emp && !hasSucc.has(j.id+'-'+emp.id)) DB.successors.push({id:'scx'+i+Date.now().toString().slice(-4),employeeId:emp.id,targetJobId:j.id,performance:78+(i%6)*3,potential:82+(i%5)*3,readiness:i%3===0?'جاهز الآن':(i%3===1?'جاهز خلال سنة':'جاهز خلال سنتين'),developmentPlan:'خطة تطوير قيادية وتدريب عملي على مهام الوظيفة الحرجة'});
+  });
+}
+
+function criticalStats(){
+  const critical=criticalJobs();
+  const covered=critical.filter(j=>successorsForJob(j.id).length>0);
+  const ready=critical.filter(j=>readyNowForJob(j.id).length>0);
+  const noAlt=critical.filter(j=>successorsForJob(j.id).length===0);
+  const coverage=critical.length?Math.round(covered.length/critical.length*100):0;
+  const readyRate=critical.length?Math.round(ready.length/critical.length*100):0;
+  return {critical,covered,ready,noAlt,coverage,readyRate};
+}
+function nineBoxCell(sc){
+  const p=Number(sc.potential||0), a=Number(sc.performance||0);
+  const pr=p>=85?'قدرة عالية':p>=70?'قدرة متوسطة':'قدرة منخفضة';
+  const ar=a>=85?'أداء عالٍ':a>=70?'أداء متوسط':'أداء منخفض';
+  return pr+' / '+ar;
+}
 function renderDashboard(){
     const totalEmp=DB.employees.length;
     const active=DB.employees.filter(e=>e.status==='نشط').length;
@@ -155,6 +349,7 @@ function renderDashboard(){
     const skillMap={};
     DB.jobs.forEach(j=>(j.skills||'').split(/[،,]/).map(x=>x.trim()).filter(Boolean).forEach(sk=>skillMap[sk]=(skillMap[sk]||0)+1));
     const criticalSkill=Object.entries(skillMap).sort((a,b)=>b[1]-a[1])[0]?.[0]||'لا توجد بيانات';
+    const cs=criticalStats();
     const bestAp=DB.appraisals.map(a=>({name:empName(a.employeeId),score:calcAppraisal(a)})).sort((a,b)=>b.score-a.score)[0];
     const worstAp=DB.appraisals.map(a=>({name:empName(a.employeeId),score:calcAppraisal(a)})).sort((a,b)=>a.score-b.score)[0];
     const deptGroups=DB.orgUnits.map(o=>({name:o.name,count:DB.employees.filter(e=>e.orgUnitId===o.id).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count);
@@ -169,8 +364,9 @@ function renderDashboard(){
     if(lowPerf>0)alerts.push(['rose','أداء يحتاج تدخل','يوجد '+lowPerf+' موظف/موظفين أقل من 70%.']);
     if(jobCompletion<90)alerts.push(['amber','استكمال الربط الوظيفي','نسبة ربط الموظفين بالأوصاف الوظيفية '+jobCompletion+'%.']);
     if(successionCoverage<75)alerts.push(['amber','تغطية التعاقب','تغطية البدلاء للمناصب '+successionCoverage+'% وتحتاج تعزيز.']);
+    if(cs.noAlt.length>0)alerts.push(['rose','وظائف حرجة بدون بديل','يوجد '+cs.noAlt.length+' وظيفة حرجة تحتاج مرشح تعاقب عاجل.']);
     alerts.push(['indigo','أولوية تطوير مهاري','أكثر مهارة متكررة في الأوصاف: '+criticalSkill+'.']);
-    const compare=[['متوسط الأداء',78,kpiAchievement],['جاهزية التعاقب',55,Math.min(successionCoverage,100)],['اكتمال الوصف الوظيفي',62,jobCompletion],['تنفيذ التدريب',60,courses?Math.round(completedCourses/courses*100):0],['كفاءة الصرف',70,budget.planned?Math.max(0,100-budget.rate):85]];
+    const compare=[['جاهزية التعاقب',55,Math.min(successionCoverage,100)],['اكتمال الوصف الوظيفي',62,jobCompletion],['تنفيذ التدريب',60,courses?Math.round(completedCourses/courses*100):0],['كفاءة الصرف',70,budget.planned?Math.max(0,100-budget.rate):85]];
     document.getElementById('tab-dashboard').innerHTML=`
 <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
   <div><h2 class="text-2xl font-black text-slate-950">لوحة تحليلات الكفاءة الإستراتيجية للأفراد</h2><p class="text-xs text-slate-500 font-semibold">لوحة تنفيذية موحدة تربط الموظفين، الهيكل، الوصف الوظيفي، الاختبارات، KPIs، التعاقب، التدريب والموازنة.</p></div>
@@ -192,7 +388,6 @@ function renderDashboard(){
     ${kpiCard('إجمالي الموظفين',totalEmp,'fa-users','indigo','المسجلون في المنظومة')}
     ${kpiCard('الإدارات والمديريات',deptCount,'fa-building','sky','وحدات تشغيلية')}
     ${kpiCard('الأوصاف الوظيفية',jobs,'fa-id-card-clip','purple','مع نسبة ربط '+jobCompletion+'%')}
-    ${kpiCard('متوسط الأداء',avg+'%','fa-gauge-high','amber','آخر تقييمات KPIs')}
     ${kpiCard('نسبة تحقيق KPIs',kpiAchievement+'%','fa-bullseye','emerald','متوسط موزون')}
     ${kpiCard('جاهزية الصف الثاني',readySucc+' / '+DB.successors.length,'fa-chess-queen','fuchsia','مرشحون مرتفعو الأداء والإمكانات')}
     ${kpiCard('عدد البرامج التدريبية',courses,'fa-graduation-cap','cyan','المكتمل منها '+completedCourses)}
@@ -200,8 +395,15 @@ function renderDashboard(){
     ${kpiCard('ساعات التدريب',trainingHours,'fa-clock','blue','إجمالي الساعات المخططة')}
     ${kpiCard('رضا المتدربين',surveyAvg+' / 5','fa-face-smile','lime','متوسط الاستمارات')}
     ${kpiCard('المنصرف الفعلي',budget.actual.toLocaleString()+' ر.ع','fa-wallet','orange','المتبقي '+budget.remaining.toLocaleString())}
+    ${kpiCard('الوظائف الحرجة',cs.critical.length,'fa-triangle-exclamation','rose','تغطية البدلاء '+cs.coverage+'%')}
+    ${kpiCard('حرجة بدون بديل',cs.noAlt.length,'fa-user-slash','amber','جاهزية فورية '+cs.readyRate+'%')}
     ${kpiCard('اكتمال البيانات',Math.round((jobCompletion+Math.min(successionCoverage,100)+(DB.questions.length?100:0))/3)+'%','fa-database','slate','موظفون + وصف + بنك أسئلة')}
   </div>
+</div>
+
+<div class="card p-5 bg-gradient-to-l from-rose-50 to-white border-rose-100">
+  <div class="flex items-center justify-between gap-3 mb-4"><h3 class="font-black text-rose-900"><i class="fa-solid fa-shield-halved ml-2"></i>لوحة الوظائف الحرجة Critical Positions Dashboard</h3><button onclick="switchTab('succession')" class="btn btn-soft no-print">إدارة التعاقب</button></div>
+  <div class="overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-white"><tr><th class="p-3 text-right">الوظيفة الحرجة</th><th class="p-3">مستوى الحرج</th><th class="p-3">أقصى شغور</th><th class="p-3">عدد البدلاء</th><th class="p-3">الحالة</th></tr></thead><tbody class="divide-y">${cs.critical.map(j=>{const n=successorsForJob(j.id).length;return `<tr><td class="p-3 font-black text-rose-700">${esc(j.title)}</td><td class="p-3 text-center">${esc(j.criticalLevel)}</td><td class="p-3 text-center">${esc(j.maxVacancyDays)} يوم</td><td class="p-3 text-center font-black">${n}</td><td class="p-3 text-center"><span class="badge ${n?'bg-emerald-50 text-emerald-700':'bg-rose-50 text-rose-700'}">${n?'مغطاة':'تحتاج بديل'}</span></td></tr>`}).join('')||`<tr><td colspan="5">${empty('لم يتم تحديد وظائف حرجة بعد')}</td></tr>`}</tbody></table></div>
 </div>
 
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -225,24 +427,392 @@ function stat(t,v,icon,color){return kpiCard(t,v,icon,color)}
 function advisor(t,v,color){return `<div class="bg-white/80 border border-${color}-100 rounded-2xl p-4"><span class="text-[10px] font-black text-${color}-700 block mb-1">${t}</span><strong class="text-slate-800 leading-relaxed">${esc(v)}</strong></div>`}
 function empty(t){return `<div class="p-6 text-center text-xs text-slate-400 font-bold">${t}</div>`}
 
-function renderOrg(){document.getElementById('tab-org').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الهيكل الوظيفي</h2><p class="text-xs text-slate-500">إضافة، تعديل، حذف، وربط مدير لكل وحدة مع عرض شجري مباشر.</p></div><button onclick="openOrgForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وحدة</button></div><div class="card p-5 overflow-x-auto"><div class="min-w-[760px] text-center">${renderOrgTree('')}</div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[760px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الوحدة</th><th class="p-3">النوع</th><th class="p-3">تتبع إلى</th><th class="p-3">المدير</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.orgUnits.map(o=>`<tr><td class="p-3 font-black">${esc(o.name)}</td><td class="p-3 text-center">${esc(o.type)}</td><td class="p-3 text-center">${orgName(o.parentId)}</td><td class="p-3 text-center">${empName(o.managerEmployeeId)}</td><td class="p-3 text-center no-print"><button onclick="openOrgForm('${o.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('orgUnits','${o.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
-function renderOrgTree(parent){let kids=DB.orgUnits.filter(o=>(o.parentId||'')===parent);if(!kids.length)return '';return `<div class="org-children">${kids.map(o=>`<div class="org-child"><div class="org-node"><div class="font-black text-slate-900">${esc(o.name)}</div><div class="text-[10px] text-indigo-600 font-black mt-1">${esc(o.type)}</div><div class="text-[10px] text-slate-500 mt-1">${empName(o.managerEmployeeId)}</div></div>${renderOrgTree(o.id)}</div>`).join('')}</div>`}
-function renderEmployees(){document.getElementById('tab-employees').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">هيكلة وتسكين كادر الموظفين والمديريات</h2><p class="text-xs text-slate-500">إضافة وتعديل وحذف بيانات الموظف، تسكينه على المديرية، وربطه بالوصف الوظيفي وخطط التقييم.</p></div><button onclick="openEmployeeForm()" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>إضافة موظف</button></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الرقم/الاسم</th><th class="p-3">البريد</th><th class="p-3">الوحدة</th><th class="p-3">الوصف الوظيفي</th><th class="p-3">الحالة</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.employees.map(e=>`<tr><td class="p-3"><strong>${esc(e.name)}</strong><small class="block text-slate-400">${esc(e.number)}</small></td><td class="p-3 text-center">${esc(e.email)}</td><td class="p-3 text-center">${orgName(e.orgUnitId)}</td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}</td><td class="p-3 text-center"><span class="badge bg-emerald-50 text-emerald-700">${esc(e.status)}</span></td><td class="p-3 text-center no-print"><button onclick="openEmployeeForm('${e.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('employees','${e.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
-function renderJobs(){document.getElementById('tab-jobs').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">الوصف الوظيفي Job Description</h2><p class="text-xs text-slate-500">تعريف المهام والمهارات وKPIs وربطها مباشرة بتقييم الموظف.</p></div><button onclick="openJobForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وصف وظيفي</button></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5">${DB.jobs.map(j=>`<div class="card p-5"><div class="flex justify-between gap-2"><div><h3 class="font-black text-lg">${esc(j.title)}</h3><span class="badge bg-indigo-50 text-indigo-700">${esc(j.grade)}</span></div><div class="no-print"><button onclick="openJobForm('${j.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('jobs','${j.id}')" class="btn btn-danger py-2">حذف</button></div></div><p class="text-xs text-slate-600 font-semibold mt-3 leading-relaxed">${esc(j.summary)}</p><div class="mt-3 text-xs"><strong>المهام:</strong><p class="text-slate-500 mt-1">${esc(j.tasks)}</p></div><div class="mt-3 text-xs"><strong>المهارات:</strong><p class="text-slate-500 mt-1">${esc(j.skills)}</p></div><div class="mt-4 bg-slate-50 rounded-2xl p-3"><strong class="text-xs">KPIs المرتبطة:</strong>${(j.kpis||[]).map(k=>`<div class="flex justify-between text-[11px] mt-2"><span>${esc(k.name)}</span><span class="font-black">مستهدف ${k.target}% / وزن ${k.weight}%</span></div>`).join('')}</div></div>`).join('')}</div>`}
+let ORG_FILTER={sector:'',directorate:'',department:'',type:'',search:'',page:1,pageSize:50,view:'tree'};
+let ORG_ZOOM=Number(localStorage.getItem('mtcit_org_zoom')||'1')||1;
+function orgZoomLabel(){return Math.round(ORG_ZOOM*100)+'%'}
+function setOrgZoom(delta){ORG_ZOOM=Math.max(.45,Math.min(1.8,+(ORG_ZOOM+delta).toFixed(2)));localStorage.setItem('mtcit_org_zoom',String(ORG_ZOOM));renderOrg()}
+function resetOrgZoom(){ORG_ZOOM=1;localStorage.setItem('mtcit_org_zoom','1');renderOrg()}
+function orgTypeRank(o){let t=(o.type||'').trim(); if(/قطاع/.test(t))return 'sector'; if(/مديرية/.test(t))return 'directorate'; if(/دائرة|قسم/.test(t))return 'department'; if(/إدارة عامة|ادارة عامة/.test(t))return 'sector'; if(/إدارة|ادارة/.test(t))return 'directorate'; return 'other'}
+function orgDescendants(rootId){let out=new Set();function walk(id){DB.orgUnits.filter(x=>(x.parentId||'')===id).forEach(x=>{out.add(x.id);walk(x.id)})} if(rootId){out.add(rootId);walk(rootId)} return out}
+function orgSelectedRoot(){return ORG_FILTER.department||ORG_FILTER.directorate||ORG_FILTER.sector||''}
+function orgFilteredUnits(){let units=[...DB.orgUnits];let root=orgSelectedRoot(); if(root){let ids=orgDescendants(root); units=units.filter(o=>ids.has(o.id))} if(ORG_FILTER.type)units=units.filter(o=>orgTypeRank(o)===ORG_FILTER.type || (o.type||'')===ORG_FILTER.type); let q=(ORG_FILTER.search||'').trim().toLowerCase(); if(q)units=units.filter(o=>[o.name,o.type,orgName(o.parentId),empName(o.managerEmployeeId)].join(' ').toLowerCase().includes(q)); return units}
+function orgOptions(rank,parentId=''){let arr=DB.orgUnits.filter(o=>orgTypeRank(o)===rank); if(parentId){let ids=orgDescendants(parentId); arr=arr.filter(o=>ids.has(o.id)&&o.id!==parentId)} return arr.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ar'))}
+function setOrgFilter(k,v){ORG_FILTER[k]=v;ORG_FILTER.page=1;if(k==='sector'){ORG_FILTER.directorate='';ORG_FILTER.department=''} if(k==='directorate'){ORG_FILTER.department=''} renderOrg()}
+function resetOrgFilter(){ORG_FILTER={sector:'',directorate:'',department:'',type:'',search:'',page:1,pageSize:50,view:'tree'};renderOrg()}
+function orgFilterSelect(label,key,options,placeholder){return `<label class="block"><span class="text-[11px] font-black text-slate-500 mb-1 block">${label}</span><select class="field" onchange="setOrgFilter('${key}',this.value)"><option value="">${placeholder}</option>${options.map(o=>`<option value="${o.id}" ${ORG_FILTER[key]===o.id?'selected':''}>${esc(o.name)}</option>`).join('')}</select></label>`}
+function renderOrg(){
+ const filtered=orgFilteredUnits(); const root=orgSelectedRoot(); const rootName=root?orgName(root):'كامل الهيكل'; const total=DB.orgUnits.length; const start=(ORG_FILTER.page-1)*ORG_FILTER.pageSize; const pageRows=filtered.slice(start,start+ORG_FILTER.pageSize); const pages=Math.max(1,Math.ceil(filtered.length/ORG_FILTER.pageSize)); const tooLargeForTree=filtered.length>120 && !root && !ORG_FILTER.search;
+ const sectors=orgOptions('sector'); const dirs=orgOptions('directorate',ORG_FILTER.sector); const depts=orgOptions('department',ORG_FILTER.directorate||ORG_FILTER.sector);
+ document.getElementById('tab-org').innerHTML=`
+ <div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الهيكل الوظيفي</h2><p class="text-xs text-slate-500">تمت إضافة عرض احترافي للبيانات الكبيرة: فلترة حسب القطاع/المديرية/الدائرة، بحث، وجدول مقسم الصفحات.</p></div><button onclick="openOrgForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وحدة</button></div>
+ <div class="card p-5 space-y-4 no-print"><div class="flex items-center justify-between gap-3 flex-wrap"><div><h3 class="font-black text-slate-900"><i class="fa-solid fa-filter ml-2 text-indigo-600"></i>تصفية الهيكل الوظيفي</h3><p class="text-[11px] text-slate-500 font-semibold mt-1">للهياكل الكبيرة لا يُنصح بعرض كل الوحدات دفعة واحدة؛ اختر نطاقاً تنظيمياً ثم استعرض الشجرة أو الجدول.</p></div><span class="org-scope-chip"><i class="fa-solid fa-sitemap"></i>${esc(rootName)} — ${filtered.length} من ${total}</span></div><div class="org-filter-grid">
+ ${orgFilterSelect('القطاع / الإدارة العامة','sector',sectors,'كل القطاعات')}
+ ${orgFilterSelect('المديرية / الإدارة','directorate',dirs,'كل المديريات')}
+ ${orgFilterSelect('الدائرة / القسم','department',depts,'كل الدوائر')}
+ <label class="block"><span class="text-[11px] font-black text-slate-500 mb-1 block">النوع</span><select class="field" onchange="setOrgFilter('type',this.value)"><option value="">كل الأنواع</option><option value="sector" ${ORG_FILTER.type==='sector'?'selected':''}>قطاع / إدارة عامة</option><option value="directorate" ${ORG_FILTER.type==='directorate'?'selected':''}>مديرية / إدارة</option><option value="department" ${ORG_FILTER.type==='department'?'selected':''}>دائرة / قسم</option></select></label>
+ <label class="block"><span class="text-[11px] font-black text-slate-500 mb-1 block">بحث باسم الوحدة أو المدير</span><div class="flex gap-2"><input id="orgSearchBox" class="field" value="${esc(ORG_FILTER.search)}" onkeydown="if(event.key==='Enter'){ORG_FILTER.search=this.value;ORG_FILTER.page=1;renderOrg()}" placeholder="اكتب ثم اضغط Enter..."><button type="button" class="btn btn-dark px-3" onclick="ORG_FILTER.search=document.getElementById('orgSearchBox').value;ORG_FILTER.page=1;renderOrg()"><i class="fa-solid fa-magnifying-glass"></i></button></div></label>
+ <label class="block"><span class="text-[11px] font-black text-slate-500 mb-1 block">طريقة العرض</span><select class="field" onchange="ORG_FILTER.view=this.value;renderOrg()"><option value="tree" ${ORG_FILTER.view==='tree'?'selected':''}>مخطط شجري</option><option value="table" ${ORG_FILTER.view==='table'?'selected':''}>جدول تفصيلي</option></select></label>
+ </div><div class="flex gap-2 flex-wrap"><button onclick="resetOrgFilter()" class="btn btn-soft"><i class="fa-solid fa-rotate-right"></i>إعادة تعيين</button><button onclick="ORG_FILTER.view='table';renderOrg()" class="btn btn-dark"><i class="fa-solid fa-table"></i>عرض جدول</button><button onclick="ORG_FILTER.view='tree';renderOrg()" class="btn btn-primary"><i class="fa-solid fa-sitemap"></i>عرض شجري</button></div></div>
+ ${ORG_FILTER.view==='tree'?`<div class="card p-5"><div class="flex items-center justify-between mb-3 gap-3 flex-wrap"><div><h3 class="font-black">المخطط الشجري للنطاق المحدد</h3><span class="text-xs text-slate-500 font-bold">${filtered.length} وحدة</span></div><div class="org-zoom-controls no-print"><span class="zoom-label">التحكم في العرض:</span><button type="button" class="btn btn-soft" onclick="setOrgZoom(-0.1)" title="تصغير"><i class="fa-solid fa-minus"></i></button><span class="zoom-level">${orgZoomLabel()}</span><button type="button" class="btn btn-soft" onclick="setOrgZoom(0.1)" title="تكبير"><i class="fa-solid fa-plus"></i></button><button type="button" class="btn btn-dark" onclick="resetOrgZoom()" title="إعادة ضبط"><i class="fa-solid fa-rotate-left"></i> Reset</button></div></div>${tooLargeForTree?`<div class="org-large-note"><i class="fa-solid fa-triangle-exclamation ml-2"></i>عدد الوحدات كبير جداً. لتجنب بطء الصفحة، اختر قطاعاً أو مديرية أو دائرة من الفلاتر، أو استخدم العرض الجدولي.</div>`:`<div class="org-tree-panel text-center"><div class="org-tree-canvas min-w-[760px]" style="zoom:${ORG_ZOOM};">${root?renderOrgTreeFiltered(root,filtered.map(x=>x.id)):renderOrgTreeFiltered('',filtered.map(x=>x.id))}</div></div>`}</div>`:''}
+ <div class="card overflow-hidden"><div class="p-4 bg-slate-50 flex justify-between gap-3 flex-wrap"><div><strong>قائمة الوحدات التنظيمية</strong><small class="block text-slate-500">يعرض ${pageRows.length} صف في الصفحة الحالية من أصل ${filtered.length}</small></div><div class="flex gap-2 items-center no-print"><button class="btn btn-soft py-2" ${ORG_FILTER.page<=1?'disabled':''} onclick="ORG_FILTER.page--;renderOrg()">السابق</button><span class="text-xs font-black text-slate-500">${ORG_FILTER.page} / ${pages}</span><button class="btn btn-soft py-2" ${ORG_FILTER.page>=pages?'disabled':''} onclick="ORG_FILTER.page++;renderOrg()">التالي</button></div></div><div class="org-table-box"><table class="w-full text-xs min-w-[860px]"><thead><tr><th class="p-3 text-right">الوحدة</th><th class="p-3">النوع</th><th class="p-3">تتبع إلى</th><th class="p-3">المدير</th><th class="p-3">المستوى</th><th class="p-3 no-print w-[105px]">إجراءات (Actions)</th></tr></thead><tbody class="divide-y">${pageRows.map(o=>`<tr><td class="p-3 font-black">${esc(o.name)}</td><td class="p-3 text-center">${esc(o.type)}</td><td class="p-3 text-center">${orgName(o.parentId)}</td><td class="p-3 text-center">${empName(o.managerEmployeeId)}</td><td class="p-3 text-center"><span class="badge bg-indigo-50 text-indigo-700">${orgTypeRank(o)==='sector'?'قطاع':orgTypeRank(o)==='directorate'?'مديرية':orgTypeRank(o)==='department'?'دائرة':'أخرى'}</span></td><td class="p-3 text-center no-print"><button onclick="openOrgForm('${o.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('orgUnits','${o.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')||`<tr><td colspan="6" class="p-8 text-center text-slate-400 font-black">لا توجد نتائج مطابقة للفلاتر الحالية</td></tr>`}</tbody></table></div></div>`}
+function orgManagerLine(o){
+ let manager=empName(o.managerEmployeeId);
+ if(!o.managerEmployeeId)return `<div class="mt-2 text-[10px] text-slate-400 font-bold">لا يوجد مدير محدد</div>`;
+ return `<div class="mt-2 text-[10px] text-slate-500"><span class="font-black text-slate-600">مدير الوحدة:</span> ${manager}</div>`;
+}
+function orgNodeCard(o){return `<div class="org-node"><div class="font-black text-slate-900 leading-snug">${esc(o.name)}</div><div class="text-[10px] text-indigo-600 font-black mt-1">${esc(o.type)}</div>${orgManagerLine(o)}</div>`}
+function renderOrgSubtree(parentId,allowed){
+ const kids=DB.orgUnits.filter(o=>(o.parentId||'')===parentId && allowed.has(o.id));
+ if(!kids.length)return '';
+ return `<div class="org-children">${kids.map(k=>`<div class="org-child">${orgNodeCard(k)}${renderOrgSubtree(k.id,allowed)}</div>`).join('')}</div>`;
+}
+function renderOrgTreeFiltered(parent,allowedIds){
+ const allowed=new Set(allowedIds||DB.orgUnits.map(x=>x.id));
+ if(parent){
+  const root=byId(DB.orgUnits,parent);
+  if(!root||!allowed.has(parent))return '';
+  return `<div class="org-children"><div class="org-child">${orgNodeCard(root)}${renderOrgSubtree(parent,allowed)}</div></div>`;
+ }
+ const roots=DB.orgUnits.filter(o=>!(o.parentId||'') && allowed.has(o.id));
+ if(!roots.length)return '';
+ return `<div class="org-children">${roots.map(r=>`<div class="org-child">${orgNodeCard(r)}${renderOrgSubtree(r.id,allowed)}</div>`).join('')}</div>`;
+}
+function renderOrgTree(parent){return renderOrgTreeFiltered(parent,DB.orgUnits.map(x=>x.id))}
+
+let EMP_FILTER={q:'',org:'all',job:'all',grade:'all',status:'all',critical:'all'};
+let empSearchTimer=null;
+function debouncedEmployeeSearch(value){
+  EMP_FILTER.q=value;
+  clearTimeout(empSearchTimer);
+  empSearchTimer=setTimeout(()=>{renderEmployees();restoreInputFocus('empSearch',EMP_FILTER.q);},220);
+}
+function setEmpFilter(key,value){EMP_FILTER[key]=value;renderEmployees();}
+function resetEmpFilters(){EMP_FILTER={q:'',org:'all',job:'all',grade:'all',status:'all',critical:'all'};renderEmployees();}
+
+let jobCatalogState={q:'',org:'',grade:'',critical:'',page:1,pageSize:10,selected:'',compareA:'',compareB:''};
+let jobSearchTimer=null;
+function debouncedJobSearch(value){
+  jobCatalogState.q=value;
+  jobCatalogState.page=1;
+  clearTimeout(jobSearchTimer);
+  jobSearchTimer=setTimeout(()=>{renderJobs();restoreInputFocus('jobSearch',jobCatalogState.q);},220);
+}
+function jobOrgScope(id){
+  if(!id)return null;
+  const out=[id]; let changed=true;
+  while(changed){changed=false;(DB.orgUnits||[]).forEach(o=>{if(o.parentId&&out.includes(o.parentId)&&!out.includes(o.id)){out.push(o.id);changed=true;}})}
+  return out;
+}
+function jobFilteredList(){
+  const q=String(jobCatalogState.q||'').trim().toLowerCase();
+  const scope=jobOrgScope(jobCatalogState.org);
+  return (DB.jobs||[]).filter(j=>{
+    const org=jobOrgName(j)||'';
+    const hay=[j.title,j.grade,j.summary,j.tasks,j.skills,org,(j.kpis||[]).map(k=>k.name).join(' ')].join(' ').toLowerCase();
+    if(q && !hay.includes(q)) return false;
+    if(scope && !scope.includes(j.orgUnitId||'')) return false;
+    if(jobCatalogState.grade && j.grade!==jobCatalogState.grade) return false;
+    const succ=successorsForJob(j.id).length;
+    if(jobCatalogState.critical==='yes' && !j.critical) return false;
+    if(jobCatalogState.critical==='no' && j.critical) return false;
+    if(jobCatalogState.critical==='withAlt' && !(j.critical && succ>0)) return false;
+    if(jobCatalogState.critical==='noAlt' && !(j.critical && succ===0)) return false;
+    return true;
+  });
+}
+function setJobFilter(key,value){jobCatalogState[key]=value;jobCatalogState.page=1;renderJobs();}
+function setJobPage(page){jobCatalogState.page=page;renderJobs();}
+function selectJob(id){jobCatalogState.selected=id;renderJobs();setTimeout(()=>document.getElementById('jobDrawer')?.scrollIntoView({behavior:'smooth',block:'start'}),50);}
+function resetJobFilters(){jobCatalogState={...jobCatalogState,q:'',org:'',grade:'',critical:'',page:1,selected:'',compareA:'',compareB:''};renderJobs();}
+
+function renderEmployees(){
+  const q=String(EMP_FILTER.q||'').trim().toLowerCase();
+  const orgFilter=EMP_FILTER.org||'all';
+  const jobFilter=EMP_FILTER.job||'all';
+  const gradeFilter=EMP_FILTER.grade||'all';
+  const statusFilter=EMP_FILTER.status||'all';
+  const criticalFilter=EMP_FILTER.critical||'all';
+  const getDescendants=(id)=>{let out=[id], added=true; while(added){added=false; DB.orgUnits.forEach(o=>{if(o.parentId && out.includes(o.parentId) && !out.includes(o.id)){out.push(o.id); added=true;}})} return out;};
+  const orgScope=orgFilter==='all'?null:getDescendants(orgFilter);
+  const statuses=[...new Set(DB.employees.map(e=>e.status).filter(Boolean))];
+  const grades=[...new Set(DB.jobs.map(j=>j.grade).filter(Boolean))];
+  let rows=DB.employees.filter(e=>{
+    const job=byId(DB.jobs,e.jobId)||{};
+    const org=byId(DB.orgUnits,e.orgUnitId)||{};
+    const hay=[e.name,e.number,e.email,e.status,job.title,job.grade,org.name,org.type].join(' ').toLowerCase();
+    if(q && !hay.includes(q))return false;
+    if(orgScope && !orgScope.includes(e.orgUnitId))return false;
+    if(jobFilter!=='all' && e.jobId!==jobFilter)return false;
+    if(gradeFilter!=='all' && job.grade!==gradeFilter)return false;
+    if(statusFilter!=='all' && e.status!==statusFilter)return false;
+    if(criticalFilter==='critical' && !job.critical)return false;
+    if(criticalFilter==='noncritical' && job.critical)return false;
+    return true;
+  });
+  const total=DB.employees.length, active=DB.employees.filter(e=>e.status==='نشط').length, linked=DB.employees.filter(e=>e.jobId).length, critical=DB.employees.filter(e=>isCriticalJob(e.jobId)).length;
+  document.getElementById('tab-employees').innerHTML=`
+  <div class="flex flex-col sm:flex-row justify-between gap-3">
+    <div><h2 class="text-2xl font-black">الموظفون والتسكين الوظيفي (Employees)</h2><p class="text-xs text-slate-500">بحث وفلترة الموظفين حسب الوحدة التنظيمية، الوظيفة، المستوى الوظيفي، الحالة، والوظائف الحرجة.</p></div>
+    <button onclick="openEmployeeForm()" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>إضافة موظف</button>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    ${stat('إجمالي الموظفين',total,'fa-users','indigo')}
+    ${stat('نشطون',active,'fa-user-check','emerald')}
+    ${stat('مرتبطون بوصف وظيفي',Math.round((linked/Math.max(total,1))*100)+'%','fa-id-card','amber')}
+    ${stat('يشغلون وظائف حرجة',critical,'fa-triangle-exclamation','rose')}
+  </div>
+  <div class="card p-4 no-print">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-3 items-end">
+      <div class="xl:col-span-2"><label class="block text-[11px] font-black text-slate-500 mb-1">بحث عام</label><input id="empSearch" class="field" value="${esc(EMP_FILTER.q)}" oninput="debouncedEmployeeSearch(this.value)" placeholder="ابحث بالاسم، الرقم، البريد، الوحدة أو الوظيفة..."></div>
+      <div><label class="block text-[11px] font-black text-slate-500 mb-1">الوحدة التنظيمية</label><select id="empOrgFilter" class="field" onchange="setEmpFilter('org',this.value)"><option value="all">كل الوحدات</option>${DB.orgUnits.map(o=>`<option value="${o.id}" ${orgFilter===o.id?'selected':''}>${esc(o.name)}</option>`).join('')}</select></div>
+      <div><label class="block text-[11px] font-black text-slate-500 mb-1">الوظيفة</label><select id="empJobFilter" class="field" onchange="setEmpFilter('job',this.value)"><option value="all">كل الوظائف</option>${DB.jobs.map(j=>`<option value="${j.id}" ${jobFilter===j.id?'selected':''}>${esc(j.title)}</option>`).join('')}</select></div>
+      <div><label class="block text-[11px] font-black text-slate-500 mb-1">المستوى</label><select id="empGradeFilter" class="field" onchange="setEmpFilter('grade',this.value)"><option value="all">كل المستويات</option>${grades.map(g=>`<option value="${esc(g)}" ${gradeFilter===g?'selected':''}>${esc(g)}</option>`).join('')}</select></div>
+      <div><label class="block text-[11px] font-black text-slate-500 mb-1">الحالة</label><select id="empStatusFilter" class="field" onchange="setEmpFilter('status',this.value)"><option value="all">كل الحالات</option>${statuses.map(st=>`<option value="${esc(st)}" ${statusFilter===st?'selected':''}>${esc(st)}</option>`).join('')}</select></div>
+    </div>
+    <div class="flex flex-wrap gap-2 mt-3">
+      <select id="empCriticalFilter" class="field max-w-xs" onchange="setEmpFilter('critical',this.value)"><option value="all" ${criticalFilter==='all'?'selected':''}>كل الوظائف</option><option value="critical" ${criticalFilter==='critical'?'selected':''}>وظائف حرجة فقط</option><option value="noncritical" ${criticalFilter==='noncritical'?'selected':''}>وظائف غير حرجة</option></select>
+      <button onclick="resetEmpFilters()" class="btn btn-soft"><i class="fa-solid fa-rotate-left"></i>إعادة تعيين</button>
+      <span class="badge bg-indigo-50 text-indigo-700 self-center">المعروض: ${rows.length} من ${total}</span>
+    </div>
+  </div>
+  <div class="card overflow-x-auto">
+    <table class="w-full text-xs min-w-[980px]">
+      <thead class="bg-slate-50"><tr><th class="p-3 text-right">الرقم/الاسم</th><th class="p-3">البريد</th><th class="p-3">الوحدة</th><th class="p-3">الوظيفة</th><th class="p-3">المستوى</th><th class="p-3">الأهمية</th><th class="p-3">الحالة</th><th class="p-3 no-print w-[84px]">إجراءات</th></tr></thead>
+      <tbody class="divide-y">${rows.map(e=>{let j=byId(DB.jobs,e.jobId)||{}; return `<tr><td class="p-3"><strong>${esc(e.name)}</strong><small class="block text-slate-400">${esc(e.number)}</small></td><td class="p-3 text-center">${esc(e.email)}</td><td class="p-3 text-center">${orgName(e.orgUnitId)}</td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}</td><td class="p-3 text-center"><span class="badge bg-slate-100 text-slate-700">${esc(j.grade||'-')}</span></td><td class="p-3 text-center">${j.critical?`<span class="badge bg-rose-50 text-rose-700">حرجة</span><small class="block text-rose-500 mt-1">${esc(j.criticalLevel||'')}</small>`:`<span class="badge bg-emerald-50 text-emerald-700">عادية</span>`}</td><td class="p-3 text-center"><span class="badge bg-emerald-50 text-emerald-700">${esc(e.status)}</span></td><td class="p-3 text-center no-print"><div class="action-stack"><button onclick="openEmployeeForm('${e.id}')" class="btn btn-soft">تعديل</button><button onclick="del('employees','${e.id}')" class="btn btn-danger">حذف</button></div></td></tr>`}).join('')||`<tr><td colspan="8">${empty('لا توجد نتائج مطابقة للفلاتر الحالية')}</td></tr>`}</tbody>
+    </table>
+  </div>`
+}
+function renderJobs(){
+  const cs=criticalStats();
+  const list=jobFilteredList();
+  const pages=Math.max(1,Math.ceil(list.length/jobCatalogState.pageSize));
+  if(jobCatalogState.page>pages)jobCatalogState.page=pages;
+  const from=(jobCatalogState.page-1)*jobCatalogState.pageSize;
+  const rows=list.slice(from,from+jobCatalogState.pageSize);
+  const grades=[...new Set((DB.jobs||[]).map(j=>j.grade).filter(Boolean))];
+  const selected=byId(DB.jobs,jobCatalogState.selected)||rows[0]||DB.jobs[0]||{};
+  jobCatalogState.selected=selected.id||'';
+  const orgOptions=(DB.orgUnits||[]).map(o=>`<option value="${o.id}" ${jobCatalogState.org===o.id?'selected':''}>${esc(o.name)}</option>`).join('');
+  const gradeOptions=grades.map(g=>`<option ${jobCatalogState.grade===g?'selected':''}>${esc(g)}</option>`).join('');
+  const pageButtons=Array.from({length:pages},(_,i)=>`<button onclick="setJobPage(${i+1})" class="btn ${jobCatalogState.page===i+1?'btn-primary':'btn-soft'} py-2">${i+1}</button>`).join('');
+  document.getElementById('tab-jobs').innerHTML=`
+<div class="flex flex-col sm:flex-row justify-between gap-3">
+  <div>
+    <h2 class="text-2xl font-black">الوصف الوظيفي (Job Description)</h2>
+    <p class="text-xs text-slate-500">كتالوج الوظائف (Job Catalog) مع جدول مدمج وفلاتر وتفاصيل موسعة مناسبة للبيانات الكبيرة.</p>
+  </div>
+  <button onclick="openJobForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة وصف وظيفي (Add Job Description)</button>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+  ${stat('إجمالي الوظائف (Total Jobs)',DB.jobs.length,'fa-briefcase','indigo')}
+  ${stat('الوظائف الحرجة (Critical Positions)',cs.critical.length,'fa-triangle-exclamation','rose')}
+  ${stat('لها بديل (Covered)',cs.covered.length+' / '+cs.critical.length,'fa-user-shield','emerald')}
+  ${stat('بدون بديل (No Successor)',cs.noAlt.length,'fa-user-slash','amber')}
+  ${stat('نتائج البحث (Filtered Results)',list.length,'fa-filter','sky')}
+</div>
+
+<div class="card p-5">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+    <div class="md:col-span-2">
+      <label class="block text-[11px] font-black text-slate-500 mb-1">بحث ذكي (Smart Search)</label>
+      <input id="jobSearch" class="field" placeholder="ابحث بالمسمى، المهارة، الإدارة، مؤشر KPI..." value="${esc(jobCatalogState.q)}" oninput="debouncedJobSearch(this.value)">
+    </div>
+    <div>
+      <label class="block text-[11px] font-black text-slate-500 mb-1">القطاع / المديرية (Sector / Directorate)</label>
+      <select class="field" onchange="setJobFilter('org',this.value)"><option value="">الكل (All)</option>${orgOptions}</select>
+    </div>
+    <div>
+      <label class="block text-[11px] font-black text-slate-500 mb-1">المستوى الوظيفي (Job Level)</label>
+      <select class="field" onchange="setJobFilter('grade',this.value)"><option value="">الكل (All)</option>${gradeOptions}</select>
+    </div>
+    <div>
+      <label class="block text-[11px] font-black text-slate-500 mb-1">الحالة (Status)</label>
+      <select class="field" onchange="setJobFilter('critical',this.value)">
+        <option value="" ${!jobCatalogState.critical?'selected':''}>الكل (All)</option>
+        <option value="yes" ${jobCatalogState.critical==='yes'?'selected':''}>الوظائف الحرجة فقط (Critical Only)</option>
+        <option value="no" ${jobCatalogState.critical==='no'?'selected':''}>غير حرجة (Non-Critical)</option>
+        <option value="withAlt" ${jobCatalogState.critical==='withAlt'?'selected':''}>حرجة لها بديل (Covered Critical)</option>
+        <option value="noAlt" ${jobCatalogState.critical==='noAlt'?'selected':''}>حرجة بدون بديل (Critical Without Successor)</option>
+      </select>
+    </div>
+  </div>
+  <div class="flex gap-2 flex-wrap mt-4">
+    <button onclick="resetJobFilters()" class="btn btn-soft"><i class="fa-solid fa-rotate-right"></i>إعادة تعيين (Reset)</button>
+    <button onclick="jobCatalogState.critical='yes';jobCatalogState.page=1;renderJobs()" class="btn btn-soft">الوظائف الحرجة (Critical)</button>
+    <button onclick="jobCatalogState.critical='noAlt';jobCatalogState.page=1;renderJobs()" class="btn btn-soft">بدون بديل (No Successor)</button>
+  </div>
+</div>
+
+<div class="card p-0 overflow-hidden">
+  <div class="px-5 py-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-2">
+    <div>
+      <h3 class="font-black text-lg">كتالوج الوظائف (Job Catalog)</h3>
+      <p class="text-[11px] text-slate-500 font-bold">الجدول بعرض كامل مع تمرير أفقي عند كثرة الأعمدة.</p>
+    </div>
+    <span class="text-xs font-black text-slate-400">عرض ${list.length?from+1:0}-${Math.min(from+jobCatalogState.pageSize,list.length)} من ${list.length}</span>
+  </div>
+  <div class="overflow-auto max-h-[58vh]">
+    <table class="w-full text-xs min-w-[930px]">
+      <thead class="sticky top-0 z-10 bg-slate-50">
+        <tr>
+          <th class="p-3 text-right w-[270px]">الوظيفة (Job Title)</th>
+          <th class="p-3 w-[220px]">الوحدة التنظيمية (Org Unit)</th>
+          <th class="p-3 w-[110px]">المستوى (Level)</th>
+          <th class="p-3 criticality-cell">الأهمية (Criticality)</th>
+          <th class="p-3 w-[90px]">البدلاء (Successors)</th>
+          <th class="p-3 w-[390px]">ملخص مختصر (Summary)</th>
+          <th class="p-3 w-[80px]">الإجراء</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y">
+        ${rows.map(j=>{const succ=successorsForJob(j.id);return `<tr class="${selected.id===j.id?'bg-indigo-50/70':''} hover:bg-slate-50">
+          <td class="p-3 align-top"><button onclick="selectJob('${j.id}')" class="font-black text-indigo-700 hover:underline text-right">${esc(j.title)}</button><div class="text-[10px] text-slate-400 mt-1">ID: ${esc(j.id)}</div></td>
+          <td class="p-3 text-center align-top">${esc(jobOrgName(j))}</td>
+          <td class="p-3 text-center align-top"><span class="badge bg-slate-100 text-slate-700">${esc(j.grade)}</span></td>
+          <td class="p-3 align-top criticality-cell">${criticalBadge(j)}</td>
+          <td class="p-3 text-center align-top font-black ${j.critical&&!succ.length?'text-rose-600':'text-emerald-700'}">${succ.length}</td>
+          <td class="p-3 align-top text-slate-600"><div class="summary-wrap" title="${esc(j.summary||'غير محدد')}">${esc(j.summary||'غير محدد')}</div></td>
+          <td class="p-3 text-center align-top"><div class="action-stack"><button onclick="selectJob('${j.id}')" class="btn btn-primary" title="عرض التفاصيل">عرض</button><button onclick="openJobForm('${j.id}')" class="btn btn-soft" title="تعديل الوصف الوظيفي">تعديل</button></div></td>
+        </tr>`}).join('')||`<tr><td colspan="7">${empty('لا توجد نتائج مطابقة للفلاتر')}</td></tr>`}
+      </tbody>
+    </table>
+  </div>
+  <div class="p-4 border-t border-slate-100 flex justify-center gap-2 flex-wrap">${pageButtons}</div>
+</div>
+
+<div id="jobDrawer" class="card p-0 overflow-hidden">
+  ${renderJobDrawer(selected)}
+</div>
+
+<div class="card p-5">
+  <h3 class="font-black mb-4"><i class="fa-solid fa-code-compare ml-2"></i>مقارنة وظيفتين (Job Comparison)</h3>
+  <div class="grid md:grid-cols-3 gap-3 items-end">
+    <select class="field" onchange="jobCatalogState.compareA=this.value;renderJobs()"><option value="">اختر الوظيفة الأولى (First Job)</option>${DB.jobs.map(j=>`<option value="${j.id}" ${jobCatalogState.compareA===j.id?'selected':''}>${esc(j.title)}</option>`).join('')}</select>
+    <select class="field" onchange="jobCatalogState.compareB=this.value;renderJobs()"><option value="">اختر الوظيفة الثانية (Second Job)</option>${DB.jobs.map(j=>`<option value="${j.id}" ${jobCatalogState.compareB===j.id?'selected':''}>${esc(j.title)}</option>`).join('')}</select>
+    <button class="btn btn-dark" onclick="renderJobs()">تحديث المقارنة (Refresh)</button>
+  </div>
+  ${renderJobCompare(jobCatalogState.compareA,jobCatalogState.compareB)}
+</div>`;
+}
+function renderJobDrawer(j){
+  if(!j||!j.id)return empty('اختر وظيفة من الجدول لعرض التفاصيل');
+  const succ=successorsForJob(j.id);
+  const skills=(j.skills||'').split(/[،,]/).map(x=>x.trim()).filter(Boolean);
+  const kpis=j.kpis||[];
+  return `<div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white p-6">
+    <div class="flex flex-col lg:flex-row justify-between gap-4">
+      <div>
+        <div class="text-[11px] font-black text-indigo-200 mb-1">بطاقة الوصف الوظيفي (Job Description Card)</div>
+        <h3 class="text-2xl font-black">${esc(j.title)}</h3>
+        <p class="text-xs text-indigo-100 mt-2">${esc(jobOrgName(j))} · ${esc(j.grade)} · ${esc(j.updatedAt||'2026-07-08')}</p>
+      </div>
+      <div class="flex items-start gap-2 flex-wrap"><button onclick="openJobForm('${j.id}')" class="btn btn-soft py-2">تعديل (Edit)</button>${criticalBadge(j)}</div>
+    </div>
+  </div>
+  <div class="p-5">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-5">
+      <div class="rounded-2xl bg-slate-50 p-4"><div class="text-[10px] font-black text-slate-400">المستوى (Level)</div><div class="font-black mt-1">${esc(j.grade||'غير محدد')}</div></div>
+      <div class="rounded-2xl bg-slate-50 p-4"><div class="text-[10px] font-black text-slate-400">الأهمية (Criticality)</div><div class="font-black mt-1">${j.critical?esc(j.criticalLevel||'حرجة'):'غير حرجة'}</div></div>
+      <div class="rounded-2xl bg-slate-50 p-4"><div class="text-[10px] font-black text-slate-400">البدلاء (Successors)</div><div class="font-black mt-1">${succ.length}</div></div>
+      <div class="rounded-2xl bg-slate-50 p-4"><div class="text-[10px] font-black text-slate-400">أقصى شغور (Max Vacancy)</div><div class="font-black mt-1">${esc(j.maxVacancyDays||0)} يوم</div></div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+      <section class="rounded-3xl border border-slate-100 p-5">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-circle-info ml-2 text-indigo-600"></i>البيانات العامة (General)</h4>
+        <p class="text-sm text-slate-600 leading-8">${esc(j.summary||'غير محدد')}</p>
+      </section>
+      <section class="rounded-3xl border border-slate-100 p-5">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-list-check ml-2 text-indigo-600"></i>المهام والمسؤوليات (Tasks & Responsibilities)</h4>
+        <p class="text-sm text-slate-600 leading-8 whitespace-pre-line">${esc(j.tasks||'غير محدد')}</p>
+      </section>
+      <section class="rounded-3xl border border-slate-100 p-5">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-brain ml-2 text-indigo-600"></i>المهارات والجدارات (Skills & Competencies)</h4>
+        <div class="flex flex-wrap gap-2">${skills.map(s=>`<span class="badge bg-slate-100 text-slate-700">${esc(s)}</span>`).join('')||'<span class="text-xs text-slate-400">غير محدد</span>'}</div>
+      </section>
+      <section class="rounded-3xl border border-slate-100 p-5">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-bullseye ml-2 text-indigo-600"></i>مؤشرات الأداء (KPIs)</h4>
+        <div class="overflow-x-auto"><table class="w-full text-xs min-w-[460px]"><thead><tr><th class="p-2 text-right">المؤشر (KPI)</th><th class="p-2">المستهدف (Target)</th><th class="p-2">الوزن (Weight)</th></tr></thead><tbody>${kpis.map(k=>`<tr><td class="p-2 font-bold">${esc(k.name)}</td><td class="p-2 text-center">${k.target}%</td><td class="p-2 text-center">${k.weight}%</td></tr>`).join('')||'<tr><td colspan="3" class="p-3 text-center text-slate-400">لا توجد مؤشرات</td></tr>'}</tbody></table></div>
+      </section>
+      <section class="rounded-3xl border ${j.critical?'border-rose-100 bg-rose-50/30':'border-slate-100'} p-5">
+        <h4 class="font-black mb-3 text-rose-800"><i class="fa-solid fa-triangle-exclamation ml-2"></i>الوظيفة الحرجة (Critical Position)</h4>
+        <div class="text-sm text-slate-700 leading-8"><b>سبب الحرج:</b> ${esc(j.criticalReason||'غير محدد')}<br><b>أثر الشغور:</b> ${esc(j.vacancyImpact||'غير محدد')}<br><b>أقصى مدة شغور:</b> ${esc(j.maxVacancyDays||0)} يوم</div>
+      </section>
+      <section class="rounded-3xl border border-slate-100 p-5">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-user-shield ml-2 text-indigo-600"></i>التعاقب الوظيفي (Succession)</h4>
+        <div class="space-y-2">${succ.map(sc=>`<div class="bg-white rounded-2xl p-3 border"><b>${empName(sc.employeeId)}</b><div class="text-xs text-slate-500 mt-1">الجاهزية (Readiness): ${esc(sc.readiness)} · الأداء ${sc.performance}% · الإمكانات ${sc.potential}%</div></div>`).join('')||'<div class="text-xs text-slate-400">لا يوجد بدلاء مسجلون</div>'}</div>
+      </section>
+      <section class="rounded-3xl border border-slate-100 p-5 xl:col-span-2">
+        <h4 class="font-black mb-3"><i class="fa-solid fa-graduation-cap ml-2 text-indigo-600"></i>التدريب والتطوير (Training & Development)</h4>
+        <p class="text-sm text-slate-600 leading-8">${j.critical?'أولوية تدريب عالية: ربط تلقائي بخطة تطوير بدلاء الوظائف الحرجة.':'أولوية تدريب عادية حسب فجوات المهارات.'}</p>
+      </section>
+    </div>
+  </div>`;
+}
+function renderJobCompare(a,b){
+  const ja=byId(DB.jobs,a), jb=byId(DB.jobs,b);
+  if(!ja.id||!jb.id)return '<p class="text-xs text-slate-500 mt-4">اختر وظيفتين لعرض المقارنة.</p>';
+  const row=(label,x,y)=>`<tr><td class="p-3 font-black bg-slate-50">${label}</td><td class="p-3">${x}</td><td class="p-3">${y}</td></tr>`;
+  return `<div class="overflow-x-auto mt-4"><table class="w-full text-xs min-w-[760px]"><thead><tr><th class="p-3">البند</th><th class="p-3">${esc(ja.title)}</th><th class="p-3">${esc(jb.title)}</th></tr></thead><tbody>${row('المستوى',esc(ja.grade),esc(jb.grade))}${row('الوحدة',esc(jobOrgName(ja)),esc(jobOrgName(jb)))}${row('حرجة',ja.critical?'نعم - '+esc(ja.criticalLevel):'لا',jb.critical?'نعم - '+esc(jb.criticalLevel):'لا')}${row('البدلاء',successorsForJob(ja.id).length,successorsForJob(jb.id).length)}${row('المهارات',esc(ja.skills),esc(jb.skills))}</tbody></table></div>`;
+}
 function renderTests(){document.getElementById('tab-tests').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">نظام اختبار الموظفين وبنك الأسئلة</h2><p class="text-xs text-slate-500">إنشاء أسئلة، تنفيذ اختبار، حفظ النتيجة، وتصدير/استيراد البنك.</p></div><div class="flex gap-2"><button onclick="openQuestionForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة سؤال</button><button onclick="openExamForm()" class="btn btn-dark"><i class="fa-solid fa-play"></i>بدء اختبار</button></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card overflow-x-auto"><div class="p-4 bg-slate-50 font-black">بنك الأسئلة (${DB.questions.length})</div><table class="w-full text-xs min-w-[700px]"><tbody class="divide-y">${DB.questions.map(q=>`<tr><td class="p-3"><strong>${esc(q.question)}</strong><small class="block text-indigo-600 font-black">${esc(q.competency)} - ${esc(q.level)}</small></td><td class="p-3 text-center no-print"><button onclick="openQuestionForm('${q.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('questions','${q.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div><div class="card overflow-x-auto"><div class="p-4 bg-slate-50 font-black">نتائج الاختبارات (${DB.exams.length})</div><table class="w-full text-xs"><tbody class="divide-y">${DB.exams.map(e=>`<tr><td class="p-3"><strong>${empName(e.employeeId)}</strong><small class="block text-slate-400">${esc(e.date)} - ${esc(e.competency)}</small></td><td class="p-3 text-center font-black text-indigo-700">${e.score}%</td><td class="p-3 text-center no-print"><button onclick="del('exams','${e.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')||`<tr><td>${empty('لا توجد اختبارات منفذة')}</td></tr>`}</tbody></table></div></div>`}
-function renderPerformance(){document.getElementById('tab-performance').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">نظام تقييم الأداء Performance Appraisal</h2><p class="text-xs text-slate-500">يربط الوصف الوظيفي بأهداف قابلة للقياس KPIs ويحسب تقييم الموظف دورياً.</p></div><button onclick="openAppraisalForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تقييم جديد</button></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">الفترة</th><th class="p-3">الوظيفة</th><th class="p-3">النتيجة</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${DB.appraisals.map(a=>{let e=byId(DB.employees,a.employeeId);return `<tr><td class="p-3 font-black">${empName(a.employeeId)}</td><td class="p-3 text-center">${esc(a.period)}<small class="block text-slate-400">${esc(a.date)}</small></td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}</td><td class="p-3 text-center"><span class="text-lg font-black ${calcAppraisal(a)>=85?'text-emerald-700':calcAppraisal(a)>=70?'text-amber-600':'text-rose-600'}">${calcAppraisal(a)}%</span></td><td class="p-3">${esc(a.notes)}</td><td class="p-3 text-center no-print"><button onclick="openAppraisalForm('${a.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('appraisals','${a.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')}</tbody></table></div>`}
+function renderPerformance(){document.getElementById('tab-performance').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">نظام تقييم الأداء (Performance Appraisal)</h2><p class="text-xs text-slate-500">يربط الوصف الوظيفي بأهداف قابلة للقياس KPIs ويحسب تقييم الموظف دورياً.</p></div><button onclick="openAppraisalForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تقييم جديد</button></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">الفترة</th><th class="p-3">الوظيفة</th><th class="p-3">النتيجة</th><th class="p-3">ملاحظات</th><th class="p-3 no-print w-[105px]">إجراءات (Actions)</th></tr></thead><tbody class="divide-y">${DB.appraisals.map(a=>{let e=byId(DB.employees,a.employeeId);return `<tr><td class="p-3 font-black">${empName(a.employeeId)}</td><td class="p-3 text-center">${esc(a.period)}<small class="block text-slate-400">${esc(a.date)}</small></td><td class="p-3 text-center text-indigo-700 font-black">${jobName(e.jobId)}<div class="mt-1">${isCriticalJob(e.jobId)?'<span class="badge bg-rose-50 text-rose-700">يشغل وظيفة حرجة</span>':''}</div></td><td class="p-3 text-center"><span class="text-lg font-black ${calcAppraisal(a)>=85?'text-emerald-700':calcAppraisal(a)>=70?'text-amber-600':'text-rose-600'}">${calcAppraisal(a)}%</span></td><td class="p-3">${esc(a.notes)}</td><td class="p-3 text-center no-print"><div class="action-stack"><button onclick="openAppraisalForm('${a.id}')" class="btn btn-soft">تعديل (Edit)</button><button onclick="del('appraisals','${a.id}')" class="btn btn-danger">حذف (Delete)</button></div></td></tr>`}).join('')}</tbody></table></div>`}
 
 function budgetTotals(){let planned=(DB.budgetItems||[]).reduce((s,x)=>s+Number(x.planned||0),0), actual=(DB.budgetItems||[]).reduce((s,x)=>s+Number(x.actual||0),0);return {planned,actual,remaining:planned-actual,rate:planned?Math.round(actual/planned*100):0}}
 
 function skillList(job){return String(job.skills||'').split(/[،,]/).map(x=>x.trim()).filter(Boolean)}
 function examScoreByCompetency(empId,comp){let arr=(DB.exams||[]).filter(e=>e.employeeId===empId && (!comp || e.competency===comp));return arr.length?Math.round(arr.reduce((s,x)=>s+Number(x.score||0),0)/arr.length):60}
 function gapRowsForEmployee(e){let job=byId(DB.jobs,e.jobId);let skills=skillList(job);return skills.map(sk=>{let current=examScoreByCompetency(e.id,sk);let target=85;let gap=Math.max(target-current,0);let course=(DB.courses||[]).find(c=>String(c.description+' '+c.title+' '+c.kpi).includes(sk))||DB.courses?.[0]||{};return {skill:sk,current,target,gap,course:course.title||'برنامج تطوير عام'}})}
-function renderGap(){let empId=document.getElementById('gapEmp')?.value||DB.employees[0]?.id;let e=byId(DB.employees,empId)||DB.employees[0]||{};let rows=e.id?gapRowsForEmployee(e):[];let avg=rows.length?Math.round(rows.reduce((s,x)=>s+x.current,0)/rows.length):0;document.getElementById('tab-gap').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">تحليل فجوات المهارات والجدارات</h2><p class="text-xs text-slate-500">مقارنة مستوى الموظف الحالي مع متطلبات الوصف الوظيفي، مع توصية تلقائية بالورش المناسبة.</p></div><select id="gapEmp" onchange="renderGap()" class="field max-w-sm">${DB.employees.map(x=>`<option value="${x.id}" ${x.id===e.id?'selected':''}>${esc(x.name)} - ${jobName(x.jobId)}</option>`).join('')}</select></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('الموظف',esc(e.name),'fa-user','indigo')}${stat('الوظيفة',jobName(e.jobId),'fa-id-card','emerald')}${stat('متوسط الجدارة',avg+'%','fa-gauge-high','amber')}${stat('متوسط الفجوة',Math.max(85-avg,0)+'%','fa-chart-gantt','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الجدارة المطلوبة</th><th class="p-3">الحالي</th><th class="p-3">المستهدف</th><th class="p-3">الفجوة</th><th class="p-3">البرنامج المقترح</th><th class="p-3">مؤشر بصري</th></tr></thead><tbody class="divide-y">${rows.map(r=>`<tr><td class="p-3 font-black">${esc(r.skill)}</td><td class="p-3 text-center font-black">${r.current}%</td><td class="p-3 text-center">${r.target}%</td><td class="p-3 text-center font-black ${r.gap>15?'text-rose-600':'text-emerald-700'}">${r.gap}%</td><td class="p-3 text-indigo-700 font-black">${esc(r.course)}</td><td class="p-3"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 bg-indigo-500" style="width:${Math.min(r.current,100)}%"></div></div></td></tr>`).join('')||`<tr><td colspan="6">${empty('لا توجد بيانات')}</td></tr>`}</tbody></table></div>`}
-function renderTraining(){document.getElementById('tab-training').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">دليل ومواصفات ورش العمل والبرامج التدريبية</h2><p class="text-xs text-slate-500">إدارة البرامج، التكلفة، المدرب، الساعات، الربط بالـ KPIs، وتقييم الأثر.</p></div><button onclick="openCourseForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة برنامج</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-5">${(DB.courses||[]).map(c=>`<div class="card p-5"><div class="flex justify-between"><span class="badge bg-indigo-50 text-indigo-700">${esc(c.status)}</span><span class="text-xs text-slate-400 font-bold">${esc(c.date)}</span></div><h3 class="font-black text-lg mt-3">${esc(c.title)}</h3><p class="text-xs text-slate-500 mt-2 leading-relaxed">${esc(c.description)}</p><div class="grid grid-cols-2 gap-2 mt-4 text-xs"><div class="bg-slate-50 rounded-xl p-3"><b>المدرب</b><br>${esc(c.trainer)}</div><div class="bg-slate-50 rounded-xl p-3"><b>الساعات</b><br>${esc(c.hours)} ساعة</div><div class="bg-slate-50 rounded-xl p-3"><b>التكلفة</b><br>${Number(c.cost||0).toLocaleString()} ر.ع</div><div class="bg-slate-50 rounded-xl p-3"><b>KPI</b><br>${esc(c.kpi)}</div></div><div class="no-print mt-4 flex gap-2"><button onclick="openCourseForm('${c.id}')" class="btn btn-soft py-2">تعديل</button><button onclick="del('courses','${c.id}')" class="btn btn-danger py-2">حذف</button></div></div>`).join('')||empty('لا توجد برامج')}</div>`}
-function nineBoxCell(sc){let p=Number(sc.performance||0), po=Number(sc.potential||0);let row=po>=85?'قدرة عالية':po>=70?'قدرة متوسطة':'قدرة منخفضة';let col=p>=85?'أداء عالٍ':p>=70?'أداء متوسط':'أداء منخفض';return row+' / '+col}
-function renderSuccession(){let cells=['قدرة عالية / أداء منخفض','قدرة عالية / أداء متوسط','قدرة عالية / أداء عالٍ','قدرة متوسطة / أداء منخفض','قدرة متوسطة / أداء متوسط','قدرة متوسطة / أداء عالٍ','قدرة منخفضة / أداء منخفض','قدرة منخفضة / أداء متوسط','قدرة منخفضة / أداء عالٍ'];document.getElementById('tab-succession').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">برامج التعاقب ومصفوفة الـ (9-Box Grid) للقيادات</h2><p class="text-xs text-slate-500">تصنيف المرشحين حسب الأداء والإمكانات، وربطهم بخطط إحلال وتطوير.</p></div><button onclick="openSuccessionForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة مرشح</button></div><div class="card p-5"><div class="grid grid-cols-1 md:grid-cols-3 gap-3">${cells.map(c=>`<div class="min-h-36 rounded-2xl border border-slate-200 bg-slate-50 p-3"><h4 class="text-[11px] font-black text-slate-600 mb-2">${c}</h4>${(DB.successors||[]).filter(sc=>nineBoxCell(sc)===c).map(sc=>`<div class="bg-white border border-indigo-100 rounded-xl p-2 mb-2 text-xs"><b>${empName(sc.employeeId)}</b><br><span class="text-indigo-700 font-black">${jobName(sc.targetJobId)}</span><br><small>${esc(sc.readiness)}</small></div>`).join('')}</div>`).join('')}</div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">المنصب المستهدف</th><th class="p-3">الأداء</th><th class="p-3">الإمكانات</th><th class="p-3">الجاهزية</th><th class="p-3">خطة التطوير</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.successors||[]).map(sc=>`<tr><td class="p-3 font-black">${empName(sc.employeeId)}</td><td class="p-3 text-center text-indigo-700 font-black">${jobName(sc.targetJobId)}</td><td class="p-3 text-center">${sc.performance}%</td><td class="p-3 text-center">${sc.potential}%</td><td class="p-3 text-center">${esc(sc.readiness)}</td><td class="p-3">${esc(sc.developmentPlan)}</td><td class="p-3 no-print"><button onclick="openSuccessionForm('${sc.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('successors','${sc.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
-function renderSurveys(){let n=(DB.surveys||[]).length||1, avg=k=>Math.round((DB.surveys||[]).reduce((s,x)=>s+Number(x[k]||0),0)/n*10)/10;document.getElementById('tab-surveys').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">استمارات قياس الآراء ورضى المتدربين والخبراء</h2><p class="text-xs text-slate-500">تحليل رضا المتدربين عن المحتوى والمدرب والتنظيم والأثر العملي.</p></div><button onclick="openSurveyForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تسجيل استمارة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('جودة المحتوى',avg('content')+'/5','fa-book','indigo')}${stat('أداء المدرب',avg('instructor')+'/5','fa-chalkboard-user','emerald')}${stat('التنظيم',avg('venue')+'/5','fa-building','amber')}${stat('الأثر العملي',avg('impact')+'/5','fa-chart-line','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البرنامج</th><th class="p-3">المشارك</th><th class="p-3">المحتوى</th><th class="p-3">المدرب</th><th class="p-3">التنظيم</th><th class="p-3">الأثر</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.surveys||[]).map(v=>`<tr><td class="p-3 font-black">${esc((byId(DB.courses,v.courseId)||{}).title||v.courseId)}</td><td class="p-3 text-center">${esc(v.respondent)}</td><td class="p-3 text-center">${v.content}/5</td><td class="p-3 text-center">${v.instructor}/5</td><td class="p-3 text-center">${v.venue}/5</td><td class="p-3 text-center">${v.impact}/5</td><td class="p-3">${esc(v.comment)}</td><td class="p-3 no-print"><button onclick="openSurveyForm('${v.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('surveys','${v.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
-function renderBudget(){let b=budgetTotals(), byDept={};(DB.budgetItems||[]).forEach(x=>{byDept[x.department]=byDept[x.department]||{planned:0,actual:0};byDept[x.department].planned+=Number(x.planned||0);byDept[x.department].actual+=Number(x.actual||0)});document.getElementById('tab-budget').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الموازنة والصرف</h2><p class="text-xs text-slate-500">تخطيط الموازنة، تسجيل الصرف الفعلي، متابعة الانحرافات، وتعديل أو حذف أي بند.</p></div><button onclick="openBudgetForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة بند موازنة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('إجمالي المخطط',b.planned.toLocaleString()+' ر.ع','fa-coins','indigo')}${stat('إجمالي الفعلي',b.actual.toLocaleString()+' ر.ع','fa-money-bill-transfer','emerald')}${stat('المتبقي/الانحراف',b.remaining.toLocaleString()+' ر.ع','fa-scale-balanced','amber')}${stat('نسبة الصرف',b.rate+'%','fa-chart-pie','rose')}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card p-5"><h3 class="font-black mb-4">الصرف حسب الإدارة</h3><div class="space-y-3">${Object.entries(byDept).map(([d,v])=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${esc(d)}</span><span>${v.actual.toLocaleString()} / ${v.planned.toLocaleString()} ر.ع</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 ${v.actual>v.planned?'bg-rose-500':'bg-indigo-500'} rounded-full" style="width:${Math.min(v.actual/Math.max(v.planned,1)*100,100)}%"></div></div></div>`).join('')||empty('لا توجد بيانات موازنة')}</div></div><div class="card p-5"><h3 class="font-black mb-4">تنبيهات مالية</h3>${b.actual>b.planned?`<div class="bg-rose-50 border border-rose-100 text-rose-700 rounded-2xl p-4 text-xs font-black">يوجد تجاوز في إجمالي الصرف الفعلي عن المخطط.</div>`:`<div class="bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl p-4 text-xs font-black">الصرف الحالي داخل حدود الموازنة المخططة.</div>`}<div class="mt-3 text-xs text-slate-500 leading-relaxed">يمكن تصدير هذه الصفحة ضمن Excel/CSV/JSON من مركز البيانات.</div></div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[950px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البند</th><th class="p-3">التاريخ</th><th class="p-3">الإدارة</th><th class="p-3">التصنيف</th><th class="p-3">المخطط</th><th class="p-3">الفعلي</th><th class="p-3">الانحراف</th><th class="p-3">ملاحظات</th><th class="p-3 no-print">إجراءات</th></tr></thead><tbody class="divide-y">${(DB.budgetItems||[]).map(x=>{let diff=Number(x.planned||0)-Number(x.actual||0);return `<tr><td class="p-3 font-black">${esc(x.item)}</td><td class="p-3 text-center">${esc(x.date)}</td><td class="p-3 text-center">${esc(x.department)}</td><td class="p-3 text-center"><span class="badge bg-indigo-50 text-indigo-700">${esc(x.category)}</span></td><td class="p-3 text-center font-black">${Number(x.planned||0).toLocaleString()}</td><td class="p-3 text-center font-black">${Number(x.actual||0).toLocaleString()}</td><td class="p-3 text-center font-black ${diff<0?'text-rose-600':'text-emerald-700'}">${diff.toLocaleString()}</td><td class="p-3">${esc(x.notes)}</td><td class="p-3 text-center no-print"><button onclick="openBudgetForm('${x.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('budgetItems','${x.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')||`<tr><td colspan="9">${empty('لا توجد بنود موازنة')}</td></tr>`}</tbody></table></div>`}
+let GAP_FILTER={search:'',employeeId:''};
+function gapEmployeeSearchText(e){
+  const job=byId(DB.jobs,e.jobId)||{};
+  return [e.name,e.number,e.email,e.status,orgName(e.orgUnitId),jobName(e.jobId),jobOrgName(job)].join(' ').toLowerCase();
+}
+function gapFilteredEmployees(){
+  const q=String(GAP_FILTER.search||'').trim().toLowerCase();
+  let rows=[...(DB.employees||[])];
+  if(q) rows=rows.filter(e=>gapEmployeeSearchText(e).includes(q));
+  return rows;
+}
+function setGapSearch(v){
+  GAP_FILTER.search=v;
+  const rows=gapFilteredEmployees();
+  if(rows.length && !rows.some(e=>e.id===GAP_FILTER.employeeId)) GAP_FILTER.employeeId=rows[0].id;
+  updateGapEmployeeOptions();
+  renderGapDetails();
+}
+function setGapEmployee(id){GAP_FILTER.employeeId=id;renderGapDetails();}
+function updateGapEmployeeOptions(){
+  const box=document.getElementById('gapEmpList'); if(!box) return;
+  const rows=gapFilteredEmployees();
+  box.innerHTML=`<select id="gapEmp" onchange="setGapEmployee(this.value)" class="field">${rows.map(x=>`<option value="${x.id}" ${x.id===GAP_FILTER.employeeId?'selected':''}>${esc(x.name)} - ${orgName(x.orgUnitId)} - ${jobName(x.jobId)}</option>`).join('')}</select><div class="text-[10px] text-slate-400 font-bold mt-1">نتائج البحث: ${rows.length} موظف</div>`;
+}
+function renderGapDetails(){
+  const wrap=document.getElementById('gapDetails'); if(!wrap) return;
+  const filtered=gapFilteredEmployees();
+  let empId=GAP_FILTER.employeeId || filtered[0]?.id || DB.employees[0]?.id;
+  let e=byId(DB.employees,empId)||filtered[0]||DB.employees[0]||{};
+  if(e.id) GAP_FILTER.employeeId=e.id;
+  let rows=e.id?gapRowsForEmployee(e):[];
+  let job=byId(DB.jobs,e.jobId)||{};
+  let avg=rows.length?Math.round(rows.reduce((s,x)=>s+x.current,0)/rows.length):0;
+  if(!e.id){wrap.innerHTML=empty('لا توجد بيانات مطابقة للبحث');return;}
+  wrap.innerHTML=`${job.critical?`<div class="card p-4 bg-rose-50 border-rose-100"><div class="font-black text-rose-800"><i class="fa-solid fa-triangle-exclamation ml-2"></i>هذا الموظف يشغل وظيفة حرجة: ${esc(job.title)}</div><p class="text-xs text-rose-700 mt-1">أولوية سد الفجوات: ${criticalPriority(job.criticalLevel)} — لأن غياب شاغل الوظيفة قد يؤثر على استمرارية العمل.</p></div>`:''}<div class="grid grid-cols-1 md:grid-cols-5 gap-4">${stat('الموظف',esc(e.name),'fa-user','indigo')}${stat('الإدارة',orgName(e.orgUnitId),'fa-sitemap','slate')}${stat('الوظيفة',jobName(e.jobId),'fa-id-card','emerald')}${stat('متوسط الجدارة',avg+'%','fa-gauge-high','amber')}${stat(job.critical?'أولوية التدريب':'متوسط الفجوة',job.critical?criticalPriority(job.criticalLevel):Math.max(85-avg,0)+'%','fa-chart-gantt','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الجدارة المطلوبة</th><th class="p-3">الحالي</th><th class="p-3">المستهدف</th><th class="p-3">الفجوة</th><th class="p-3">الأولوية</th><th class="p-3">البرنامج المقترح</th><th class="p-3">مؤشر بصري</th></tr></thead><tbody class="divide-y">${rows.map(r=>`<tr><td class="p-3 font-black">${esc(r.skill)}</td><td class="p-3 text-center font-black">${r.current}%</td><td class="p-3 text-center">${r.target}%</td><td class="p-3 text-center font-black ${r.gap>15||job.critical?'text-rose-600':'text-emerald-700'}">${r.gap}%</td><td class="p-3 text-center"><span class="badge ${job.critical?'bg-rose-50 text-rose-700':'bg-slate-50 text-slate-600'}">${job.critical?criticalPriority(job.criticalLevel):(r.gap>15?'عالية':'متوسطة')}</span></td><td class="p-3 text-indigo-700 font-black">${esc(r.course)}</td><td class="p-3"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 ${job.critical?'bg-rose-500':'bg-indigo-500'}" style="width:${Math.min(r.current,100)}%"></div></div></td></tr>`).join('')||`<tr><td colspan="7">${empty('لا توجد بيانات')}</td></tr>`}</tbody></table></div>`;
+}
+function renderGap(){
+  const existing=document.getElementById('gapSearch')?.value;
+  if(existing!==undefined) GAP_FILTER.search=existing;
+  const rows=gapFilteredEmployees();
+  if(!GAP_FILTER.employeeId || !rows.some(e=>e.id===GAP_FILTER.employeeId)) GAP_FILTER.employeeId=rows[0]?.id || DB.employees[0]?.id || '';
+  document.getElementById('tab-gap').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">تحليل فجوات المهارات والجدارات</h2><p class="text-xs text-slate-500">يمكن البحث باسم الموظف أو رقمه أو إدارته لاختيار الموظف وتحليل فجواته.</p></div></div><div class="card p-4"><div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-end"><div><label class="block text-xs font-black text-slate-600 mb-1">بحث باسم الموظف أو الإدارة</label><input id="gapSearch" class="field" placeholder="اكتب اسم الموظف أو الإدارة..." value="${esc(GAP_FILTER.search)}" oninput="setGapSearch(this.value)"></div><div><label class="block text-xs font-black text-slate-600 mb-1">اختيار الموظف</label><div id="gapEmpList"></div></div></div></div><div id="gapDetails" class="space-y-4"></div>`;
+  updateGapEmployeeOptions();
+  renderGapDetails();
+}
+function renderTraining(){const criticalDev=criticalJobs().flatMap(j=>successorsForJob(j.id).map(sc=>({job:j,sc,emp:byId(DB.employees,sc.employeeId)})));document.getElementById('tab-training').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">دليل ومواصفات ورش العمل والبرامج التدريبية</h2><p class="text-xs text-slate-500">إدارة البرامج، التكلفة، المدرب، الساعات، وربط التدريب بسد فجوات الوظائف الحرجة.</p></div><button onclick="openCourseForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة برنامج</button></div><div class="card p-5 bg-gradient-to-l from-indigo-50 to-white"><h3 class="font-black mb-3"><i class="fa-solid fa-route ml-2"></i>خطة تطوير بدلاء الوظائف الحرجة</h3><div class="overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead><tr class="bg-slate-50"><th class="p-3 text-right">الوظيفة الحرجة</th><th class="p-3">البديل</th><th class="p-3">الجاهزية</th><th class="p-3">أولوية التدريب</th><th class="p-3">خطة التطوير</th></tr></thead><tbody class="divide-y">${criticalDev.map(x=>`<tr><td class="p-3 font-black text-rose-700">${esc(x.job.title)}</td><td class="p-3 text-center">${esc(x.emp.name||'غير محدد')}</td><td class="p-3 text-center">${esc(x.sc.readiness)}</td><td class="p-3 text-center"><span class="badge bg-rose-50 text-rose-700">${criticalPriority(x.job.criticalLevel)}</span></td><td class="p-3">${esc(x.sc.developmentPlan||'تحديد برنامج تطوير مخصص')}</td></tr>`).join('')||`<tr><td colspan="5">${empty('لا توجد وظائف حرجة لها بدلاء حتى الآن')}</td></tr>`}</tbody></table></div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-5">${(DB.courses||[]).map(c=>`<div class="card p-5"><div class="flex justify-between"><span class="badge bg-indigo-50 text-indigo-700">${esc(c.status)}</span><span class="text-xs text-slate-400 font-bold">${esc(c.date)}</span></div><h3 class="font-black text-lg mt-3">${esc(c.title)}</h3><p class="text-xs text-slate-500 mt-2 leading-relaxed">${esc(c.description)}</p><div class="grid grid-cols-2 gap-2 mt-4 text-xs"><div class="bg-slate-50 rounded-xl p-3"><b>المدرب</b><br>${esc(c.trainer)}</div><div class="bg-slate-50 rounded-xl p-3"><b>الساعات</b><br>${esc(c.hours)} ساعة</div><div class="bg-slate-50 rounded-xl p-3"><b>التكلفة</b><br>${Number(c.cost||0).toLocaleString()} ر.ع</div><div class="bg-slate-50 rounded-xl p-3"><b>KPI</b><br>${esc(c.kpi)}</div></div><div class="no-print mt-4 flex gap-2"><button onclick="openCourseForm('${c.id}')" class="btn btn-soft py-2">تعديل</button><button onclick="del('courses','${c.id}')" class="btn btn-danger py-2">حذف</button></div></div>`).join('')||empty('لا توجد برامج')}</div>`}
+function renderSuccession(){let cells=['قدرة عالية / أداء منخفض','قدرة عالية / أداء متوسط','قدرة عالية / أداء عالٍ','قدرة متوسطة / أداء منخفض','قدرة متوسطة / أداء متوسط','قدرة متوسطة / أداء عالٍ','قدرة منخفضة / أداء منخفض','قدرة منخفضة / أداء متوسط','قدرة منخفضة / أداء عالٍ'];const cs=criticalStats();document.getElementById('tab-succession').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">برامج التعاقب ومصفوفة الـ (9-Box Grid) للقيادات</h2><p class="text-xs text-slate-500">تصنيف المرشحين وربطهم تلقائياً بالوظائف الحرجة وخطط الإحلال.</p></div><button onclick="openSuccessionForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة مرشح</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('وظائف حرجة',cs.critical.length,'fa-triangle-exclamation','rose')}${stat('تغطية البدلاء',cs.coverage+'%','fa-user-shield','emerald')}${stat('جاهزية فورية',cs.readyRate+'%','fa-circle-check','indigo')}${stat('بدون بديل',cs.noAlt.length,'fa-user-slash','amber')}</div><div class="card overflow-x-auto"><h3 class="font-black mb-3 text-rose-900"><i class="fa-solid fa-shield-halved ml-2"></i>خريطة التعاقب للوظائف الحرجة</h3><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الوظيفة الحرجة</th><th class="p-3">مستوى الحرج</th><th class="p-3">عدد البدلاء</th><th class="p-3">جاهز الآن</th><th class="p-3">الحالة</th><th class="p-3">أثر الشغور</th></tr></thead><tbody class="divide-y">${cs.critical.map(j=>{const all=successorsForJob(j.id),ready=readyNowForJob(j.id);return `<tr><td class="p-3 font-black text-rose-700">${esc(j.title)}</td><td class="p-3 text-center">${esc(j.criticalLevel)}</td><td class="p-3 text-center font-black">${all.length}</td><td class="p-3 text-center font-black">${ready.length}</td><td class="p-3 text-center"><span class="badge ${all.length?'bg-emerald-50 text-emerald-700':'bg-rose-50 text-rose-700'}">${all.length?'مغطاة':'بدون بديل'}</span></td><td class="p-3">${esc(j.vacancyImpact||'غير محدد')}</td></tr>`}).join('')||`<tr><td colspan="6">${empty('لم يتم تحديد وظائف حرجة بعد')}</td></tr>`}</tbody></table></div><div class="card p-5"><div class="grid grid-cols-1 md:grid-cols-3 gap-3">${cells.map(c=>`<div class="min-h-36 rounded-2xl border border-slate-200 bg-slate-50 p-3"><h4 class="text-[11px] font-black text-slate-600 mb-2">${c}</h4>${(DB.successors||[]).filter(sc=>nineBoxCell(sc)===c).map(sc=>{const j=byId(DB.jobs,sc.targetJobId);return `<div class="bg-white border ${j.critical?'border-rose-200':'border-indigo-100'} rounded-xl p-2 mb-2 text-xs"><b>${empName(sc.employeeId)}</b><br><span class="${j.critical?'text-rose-700':'text-indigo-700'} font-black">${jobName(sc.targetJobId)}</span>${j.critical?' <span class="badge bg-rose-50 text-rose-700">حرجة</span>':''}<br><small>${esc(sc.readiness)}</small></div>`}).join('')}</div>`).join('')}</div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[900px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">الموظف</th><th class="p-3">المنصب المستهدف</th><th class="p-3">حرجة</th><th class="p-3">الأداء</th><th class="p-3">الإمكانات</th><th class="p-3">الجاهزية</th><th class="p-3">خطة التطوير</th><th class="p-3 no-print w-[105px]">إجراءات (Actions)</th></tr></thead><tbody class="divide-y">${(DB.successors||[]).map(sc=>{const j=byId(DB.jobs,sc.targetJobId);return `<tr><td class="p-3 font-black">${empName(sc.employeeId)}</td><td class="p-3 text-center ${j.critical?'text-rose-700':'text-indigo-700'} font-black">${jobName(sc.targetJobId)}</td><td class="p-3 text-center">${criticalBadge(j)}</td><td class="p-3 text-center">${sc.performance}%</td><td class="p-3 text-center">${sc.potential}%</td><td class="p-3 text-center">${esc(sc.readiness)}</td><td class="p-3">${esc(sc.developmentPlan)}</td><td class="p-3 no-print"><button onclick="openSuccessionForm('${sc.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('successors','${sc.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')}</tbody></table></div>`}
+function renderSurveys(){let n=(DB.surveys||[]).length||1, avg=k=>Math.round((DB.surveys||[]).reduce((s,x)=>s+Number(x[k]||0),0)/n*10)/10;document.getElementById('tab-surveys').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">استمارات قياس الآراء ورضى المتدربين والخبراء</h2><p class="text-xs text-slate-500">تحليل رضا المتدربين عن المحتوى والمدرب والتنظيم والأثر العملي.</p></div><button onclick="openSurveyForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>تسجيل استمارة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('جودة المحتوى',avg('content')+'/5','fa-book','indigo')}${stat('أداء المدرب',avg('instructor')+'/5','fa-chalkboard-user','emerald')}${stat('التنظيم',avg('venue')+'/5','fa-building','amber')}${stat('الأثر العملي',avg('impact')+'/5','fa-chart-line','rose')}</div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[850px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البرنامج</th><th class="p-3">المشارك</th><th class="p-3">المحتوى</th><th class="p-3">المدرب</th><th class="p-3">التنظيم</th><th class="p-3">الأثر</th><th class="p-3">ملاحظات</th><th class="p-3 no-print w-[105px]">إجراءات (Actions)</th></tr></thead><tbody class="divide-y">${(DB.surveys||[]).map(v=>`<tr><td class="p-3 font-black">${esc((byId(DB.courses,v.courseId)||{}).title||v.courseId)}</td><td class="p-3 text-center">${esc(v.respondent)}</td><td class="p-3 text-center">${v.content}/5</td><td class="p-3 text-center">${v.instructor}/5</td><td class="p-3 text-center">${v.venue}/5</td><td class="p-3 text-center">${v.impact}/5</td><td class="p-3">${esc(v.comment)}</td><td class="p-3 no-print"><button onclick="openSurveyForm('${v.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('surveys','${v.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function renderBudget(){let b=budgetTotals(), byDept={};(DB.budgetItems||[]).forEach(x=>{byDept[x.department]=byDept[x.department]||{planned:0,actual:0};byDept[x.department].planned+=Number(x.planned||0);byDept[x.department].actual+=Number(x.actual||0)});document.getElementById('tab-budget').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">إدارة الموازنة والصرف</h2><p class="text-xs text-slate-500">تخطيط الموازنة، تسجيل الصرف الفعلي، متابعة الانحرافات، وتعديل أو حذف أي بند.</p></div><button onclick="openBudgetForm()" class="btn btn-primary"><i class="fa-solid fa-plus"></i>إضافة بند موازنة</button></div><div class="grid grid-cols-1 md:grid-cols-4 gap-4">${stat('إجمالي المخطط',b.planned.toLocaleString()+' ر.ع','fa-coins','indigo')}${stat('إجمالي الفعلي',b.actual.toLocaleString()+' ر.ع','fa-money-bill-transfer','emerald')}${stat('المتبقي/الانحراف',b.remaining.toLocaleString()+' ر.ع','fa-scale-balanced','amber')}${stat('نسبة الصرف',b.rate+'%','fa-chart-pie','rose')}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card p-5"><h3 class="font-black mb-4">الصرف حسب الإدارة</h3><div class="space-y-3">${Object.entries(byDept).map(([d,v])=>`<div><div class="flex justify-between text-xs font-bold mb-1"><span>${esc(d)}</span><span>${v.actual.toLocaleString()} / ${v.planned.toLocaleString()} ر.ع</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-2 ${v.actual>v.planned?'bg-rose-500':'bg-indigo-500'} rounded-full" style="width:${Math.min(v.actual/Math.max(v.planned,1)*100,100)}%"></div></div></div>`).join('')||empty('لا توجد بيانات موازنة')}</div></div><div class="card p-5"><h3 class="font-black mb-4">تنبيهات مالية</h3>${b.actual>b.planned?`<div class="bg-rose-50 border border-rose-100 text-rose-700 rounded-2xl p-4 text-xs font-black">يوجد تجاوز في إجمالي الصرف الفعلي عن المخطط.</div>`:`<div class="bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl p-4 text-xs font-black">الصرف الحالي داخل حدود الموازنة المخططة.</div>`}<div class="mt-3 text-xs text-slate-500 leading-relaxed">يمكن تصدير هذه الصفحة ضمن Excel/CSV/JSON من مركز البيانات.</div></div></div><div class="card overflow-x-auto"><table class="w-full text-xs min-w-[950px]"><thead class="bg-slate-50"><tr><th class="p-3 text-right">البند</th><th class="p-3">التاريخ</th><th class="p-3">الإدارة</th><th class="p-3">التصنيف</th><th class="p-3">المخطط</th><th class="p-3">الفعلي</th><th class="p-3">الانحراف</th><th class="p-3">ملاحظات</th><th class="p-3 no-print w-[105px]">إجراءات (Actions)</th></tr></thead><tbody class="divide-y">${(DB.budgetItems||[]).map(x=>{let diff=Number(x.planned||0)-Number(x.actual||0);return `<tr><td class="p-3 font-black">${esc(x.item)}</td><td class="p-3 text-center">${esc(x.date)}</td><td class="p-3 text-center">${esc(x.department)}</td><td class="p-3 text-center"><span class="badge bg-indigo-50 text-indigo-700">${esc(x.category)}</span></td><td class="p-3 text-center font-black">${Number(x.planned||0).toLocaleString()}</td><td class="p-3 text-center font-black">${Number(x.actual||0).toLocaleString()}</td><td class="p-3 text-center font-black ${diff<0?'text-rose-600':'text-emerald-700'}">${diff.toLocaleString()}</td><td class="p-3">${esc(x.notes)}</td><td class="p-3 text-center no-print"><button onclick="openBudgetForm('${x.id}')" class="btn btn-soft py-2">تعديل</button> <button onclick="del('budgetItems','${x.id}')" class="btn btn-danger py-2">حذف</button></td></tr>`}).join('')||`<tr><td colspan="9">${empty('لا توجد بنود موازنة')}</td></tr>`}</tbody></table></div>`}
 
 function renderData(){document.getElementById('tab-data').innerHTML=`<div><h2 class="text-2xl font-black">مركز البيانات والتبادل</h2><p class="text-xs text-slate-500">تصدير واستيراد كامل أو جزئي للبيانات بصيغ Excel وCSV وJSON.</p></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5"><div class="card p-5 space-y-3"><h3 class="font-black">تصدير البيانات</h3><div class="grid grid-cols-2 gap-2"><button onclick="exportJSON()" class="btn btn-primary">JSON كامل</button><button onclick="exportExcel()" class="btn btn-primary">Excel Workbook</button><button onclick="exportCSV('employees')" class="btn btn-soft">CSV الموظفون</button><button onclick="exportCSV('orgUnits')" class="btn btn-soft">CSV الهيكل</button><button onclick="exportCSV('jobs')" class="btn btn-soft">CSV الوصف</button><button onclick="exportCSV('questions')" class="btn btn-soft">CSV الأسئلة</button><button onclick="exportCSV('appraisals')" class="btn btn-soft">CSV التقييم</button><button onclick="exportCSV('budgetItems')" class="btn btn-soft">CSV الموازنة</button><button onclick="exportCSV('courses')" class="btn btn-soft">CSV البرامج</button><button onclick="exportCSV('successors')" class="btn btn-soft">CSV التعاقب</button><button onclick="exportCSV('surveys')" class="btn btn-soft">CSV الرضا</button><button onclick="window.print()" class="btn btn-dark">طباعة/حفظ PDF</button></div></div><div class="card p-5 space-y-3"><h3 class="font-black">استيراد البيانات</h3><label class="block text-xs font-black text-slate-600 mb-1">نوع البيانات المراد استيرادها</label><select id="importTarget" class="field"><option value="all">JSON كامل للنظام</option><option value="employees">الموظفون CSV/Excel</option><option value="orgUnits">الهيكل CSV/Excel</option><option value="jobs">الوصف الوظيفي CSV/Excel</option><option value="questions">بنك الأسئلة CSV/Excel</option><option value="appraisals">التقييم CSV/Excel</option><option value="budgetItems">الموازنة CSV/Excel</option><option value="courses">البرامج التدريبية CSV/Excel</option><option value="successors">التعاقب CSV/Excel</option><option value="surveys">استمارات الرضا CSV/Excel</option></select><label class="block text-xs font-black text-slate-600 mb-1">اختر ملف البيانات</label><input type="file" id="importFile" accept=".json,.csv,.xlsx,.xls" class="field"><button onclick="importFile()" class="btn btn-primary w-full">استيراد وتحديث النظام</button><button onclick="resetDemo()" class="btn btn-danger w-full">استعادة بيانات تجريبية</button><p class="text-[11px] text-slate-500 leading-relaxed">ملاحظة: ملف Excel يستورد أول ورقة فقط إلى الجدول المختار. JSON الكامل يستبدل جميع بيانات النظام.</p></div></div>`}
 function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('show')}
@@ -254,8 +824,8 @@ function openOrgForm(id=''){let o=id?byId(DB.orgUnits,id):{id:'',name:'',type:''
 function saveOrg(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('org'),name:f.get('name'),type:f.get('type'),parentId:f.get('parentId'),managerEmployeeId:f.get('managerEmployeeId')};upsert('orgUnits',obj,id)}
 function openEmployeeForm(id=''){let x=id?byId(DB.employees,id):{name:'',number:'',email:'',orgUnitId:'',jobId:'',status:'نشط'};openModal(id?'تعديل موظف':'إضافة موظف',`<form onsubmit="saveEmployee(event,'${id}')" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">اسم الموظف</label><input name="name" class="field" required placeholder="اسم الموظف" value="${esc(x.name)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الرقم الوظيفي</label><input name="number" class="field" placeholder="الرقم الوظيفي" value="${esc(x.number)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">البريد الإلكتروني</label><input name="email" class="field" placeholder="البريد" value="${esc(x.email)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">حالة الموظف</label><select name="status" class="field"><option ${x.status==='نشط'?'selected':''}>نشط</option><option ${x.status==='موقوف'?'selected':''}>موقوف</option><option ${x.status==='منقول'?'selected':''}>منقول</option></select></div><div><label class="block text-xs font-black text-slate-600 mb-1">الوحدة</label><select name="orgUnitId" class="field">${options(DB.orgUnits,x.orgUnitId)}</select></div><div><label class="block text-xs font-black text-slate-600 mb-1">الوصف الوظيفي</label><select name="jobId" class="field">${options(DB.jobs,x.jobId)}</select></div><button class="btn btn-primary sm:col-span-2">حفظ</button></form>`)}
 function saveEmployee(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('emp'),name:f.get('name'),number:f.get('number'),email:f.get('email'),orgUnitId:f.get('orgUnitId'),jobId:f.get('jobId'),status:f.get('status')};upsert('employees',obj,id)}
-function openJobForm(id=''){let j=id?byId(DB.jobs,id):{title:'',grade:'',summary:'',tasks:'',skills:'',kpis:[{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25}]};openModal(id?'تعديل الوصف الوظيفي':'إضافة وصف وظيفي',`<form onsubmit="saveJob(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">المسمى الوظيفي</label><input name="title" class="field" required placeholder="المسمى الوظيفي" value="${esc(j.title)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الدرجة / المستوى</label><input name="grade" class="field" placeholder="الدرجة/المستوى" value="${esc(j.grade)}"></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">ملخص الوظيفة</label><textarea name="summary" class="field" placeholder="ملخص الوظيفة">${esc(j.summary)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهام والمسؤوليات</label><textarea name="tasks" class="field" placeholder="المهام والمسؤوليات">${esc(j.tasks)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهارات والجدارات</label><textarea name="skills" class="field" placeholder="المهارات والجدارات">${esc(j.skills)}</textarea></div><div class="bg-slate-50 rounded-2xl p-4"><h4 class="font-black text-sm mb-3">KPIs</h4>${[0,1,2,3].map(i=>`<div class="grid grid-cols-12 gap-2 mb-2"><div class="col-span-6"><label class="block text-[10px] font-black text-slate-500 mb-1">اسم KPI</label><input name="kpi${i}" class="field" placeholder="اسم KPI" value="${esc((j.kpis[i]||{}).name)}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">المستهدف</label><input name="target${i}" type="number" class="field" placeholder="المستهدف" value="${(j.kpis[i]||{}).target||''}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الوزن</label><input name="weight${i}" type="number" class="field" placeholder="الوزن" value="${(j.kpis[i]||{}).weight||''}"></div></div>`).join('')}</div><button class="btn btn-primary w-full">حفظ</button></form>`)}
-function saveJob(e,id){e.preventDefault();let f=new FormData(e.target), kpis=[0,1,2,3].map(i=>({name:f.get('kpi'+i),target:Number(f.get('target'+i)||0),weight:Number(f.get('weight'+i)||0)})).filter(k=>k.name);let obj={id:id||uid('job'),title:f.get('title'),grade:f.get('grade'),summary:f.get('summary'),tasks:f.get('tasks'),skills:f.get('skills'),kpis};upsert('jobs',obj,id)}
+function openJobForm(id=''){let j=id?byId(DB.jobs,id):{title:'',grade:'',critical:false,criticalLevel:'متوسط',criticalReason:'',vacancyImpact:'',maxVacancyDays:90,summary:'',tasks:'',skills:'',kpis:[{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25},{name:'',target:90,weight:25}]};openModal(id?'تعديل الوصف الوظيفي':'إضافة وصف وظيفي',`<form onsubmit="saveJob(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">المسمى الوظيفي</label><input name="title" class="field" required placeholder="المسمى الوظيفي" value="${esc(j.title)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">الدرجة / المستوى</label><input name="grade" class="field" placeholder="الدرجة/المستوى" value="${esc(j.grade)}"></div></div><div class="bg-rose-50 border border-rose-100 rounded-2xl p-4"><div class="flex items-center gap-2 mb-3"><input id="criticalCheck" name="critical" type="checkbox" ${j.critical?'checked':''} onchange="document.getElementById('criticalFields').classList.toggle('hidden',!this.checked)"><label for="criticalCheck" class="text-sm font-black text-rose-900">وظيفة حرجة / مهم توفير بديل</label></div><div id="criticalFields" class="${j.critical?'':'hidden'} grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">مستوى الحرج</label><select name="criticalLevel" class="field"><option ${j.criticalLevel==='منخفض'?'selected':''}>منخفض</option><option ${j.criticalLevel==='متوسط'?'selected':''}>متوسط</option><option ${j.criticalLevel==='مرتفع'?'selected':''}>مرتفع</option><option ${j.criticalLevel==='حرج جداً'?'selected':''}>حرج جداً</option></select></div><div><label class="block text-xs font-black text-slate-600 mb-1">أقصى مدة شغور مقبولة / يوم</label><input name="maxVacancyDays" type="number" class="field" value="${esc(j.maxVacancyDays)}"></div><div class="sm:col-span-2"><label class="block text-xs font-black text-slate-600 mb-1">سبب اعتبارها وظيفة حرجة</label><textarea name="criticalReason" class="field" placeholder="مثال: مسؤولية مباشرة عن خدمة حيوية أو قرار استراتيجي">${esc(j.criticalReason)}</textarea></div><div class="sm:col-span-2"><label class="block text-xs font-black text-slate-600 mb-1">تأثير غياب شاغل الوظيفة</label><textarea name="vacancyImpact" class="field" placeholder="الأثر التشغيلي/المالي/الاستراتيجي عند شغور الوظيفة">${esc(j.vacancyImpact)}</textarea></div></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">ملخص الوظيفة</label><textarea name="summary" class="field" placeholder="ملخص الوظيفة">${esc(j.summary)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهام والمسؤوليات</label><textarea name="tasks" class="field" placeholder="المهام والمسؤوليات">${esc(j.tasks)}</textarea></div><div><label class="block text-xs font-black text-slate-600 mb-1">المهارات والجدارات</label><textarea name="skills" class="field" placeholder="المهارات والجدارات">${esc(j.skills)}</textarea></div><div class="bg-slate-50 rounded-2xl p-4"><h4 class="font-black text-sm mb-3">KPIs</h4>${[0,1,2,3].map(i=>`<div class="grid grid-cols-12 gap-2 mb-2"><div class="col-span-6"><label class="block text-[10px] font-black text-slate-500 mb-1">اسم KPI</label><input name="kpi${i}" class="field" placeholder="اسم KPI" value="${esc((j.kpis[i]||{}).name)}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">المستهدف</label><input name="target${i}" type="number" class="field" placeholder="المستهدف" value="${(j.kpis[i]||{}).target||''}"></div><div class="col-span-3"><label class="block text-[10px] font-black text-slate-500 mb-1">الوزن</label><input name="weight${i}" type="number" class="field" placeholder="الوزن" value="${(j.kpis[i]||{}).weight||''}"></div></div>`).join('')}</div><button class="btn btn-primary w-full">حفظ</button></form>`)}
+function saveJob(e,id){e.preventDefault();let f=new FormData(e.target), kpis=[0,1,2,3].map(i=>({name:f.get('kpi'+i),target:Number(f.get('target'+i)||0),weight:Number(f.get('weight'+i)||0)})).filter(k=>k.name);let obj={id:id||uid('job'),title:f.get('title'),grade:f.get('grade'),critical:!!f.get('critical'),criticalLevel:f.get('criticalLevel')||'متوسط',criticalReason:f.get('criticalReason')||'',vacancyImpact:f.get('vacancyImpact')||'',maxVacancyDays:Number(f.get('maxVacancyDays')||0),summary:f.get('summary'),tasks:f.get('tasks'),skills:f.get('skills'),kpis};upsert('jobs',obj,id)}
 function openQuestionForm(id=''){let q=id?byId(DB.questions,id):{competency:'',level:'متوسط',question:'',a:'',b:'',c:'',d:'',correct:'a'};openModal(id?'تعديل سؤال':'إضافة سؤال',`<form onsubmit="saveQuestion(event,'${id}')" class="space-y-4"><div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-black text-slate-600 mb-1">الجدارة</label><input name="competency" class="field" required placeholder="الجدارة" value="${esc(q.competency)}"></div><div><label class="block text-xs font-black text-slate-600 mb-1">مستوى السؤال</label><select name="level" class="field"><option ${q.level==='أساسي'?'selected':''}>أساسي</option><option ${q.level==='متوسط'?'selected':''}>متوسط</option><option ${q.level==='متقدم'?'selected':''}>متقدم</option></select></div></div><div><label class="block text-xs font-black text-slate-600 mb-1">نص السؤال</label><textarea name="question" class="field" required placeholder="نص السؤال">${esc(q.question)}</textarea></div>${['a','b','c','d'].map(l=>`<div><label class="block text-xs font-black text-slate-600 mb-1">اختيار ${l.toUpperCase()}</label><input name="${l}" class="field" placeholder="اختيار ${l.toUpperCase()}" value="${esc(q[l])}"></div>`).join('')}<label class="block text-xs font-black text-slate-600 mb-1">الإجابة الصحيحة</label><select name="correct" class="field">${['a','b','c','d'].map(l=>`<option value="${l}" ${q.correct===l?'selected':''}>${l.toUpperCase()}</option>`).join('')}</select><button class="btn btn-primary w-full">حفظ السؤال</button></form>`)}
 function saveQuestion(e,id){e.preventDefault();let f=new FormData(e.target), obj={id:id||uid('q'),competency:f.get('competency'),level:f.get('level'),question:f.get('question'),a:f.get('a'),b:f.get('b'),c:f.get('c'),d:f.get('d'),correct:f.get('correct')};upsert('questions',obj,id)}
 function openExamForm(){openModal('تنفيذ اختبار موظف',`<form onsubmit="runExam(event)" class="space-y-4"><label class="block text-xs font-black text-slate-600 mb-1">الموظف</label><select name="employeeId" class="field" required>${options(DB.employees,'')}</select><label class="text-xs font-black">الجدارة / المجال</label><input name="competency" class="field" placeholder="اتركها فارغة لاستخدام جميع الأسئلة"><p class="text-xs text-slate-500">سيتم احتساب نتيجة تجريبية من اختيار الإجابات في النموذج التالي.</p><div id="examQuestions" class="space-y-3">${DB.questions.map(q=>`<div class="bg-slate-50 rounded-2xl p-3"><strong class="text-xs">${esc(q.question)}</strong><select name="ans_${q.id}" class="field mt-2"><option value="a">A - ${esc(q.a)}</option><option value="b">B - ${esc(q.b)}</option><option value="c">C - ${esc(q.c)}</option><option value="d">D - ${esc(q.d)}</option></select></div>`).join('')}</div><button class="btn btn-primary w-full">حفظ نتيجة الاختبار</button></form>`)}
@@ -283,8 +853,8 @@ function exportCSV(table){let rows=flattenRows(table);if(!rows.length)return toa
 function exportExcel(){if(typeof XLSX==='undefined'){toast('مكتبة Excel تحتاج اتصال إنترنت. استخدم CSV أو JSON.');return}let wb=XLSX.utils.book_new();['orgUnits','employees','jobs','questions','exams','appraisals','budgetItems','courses','successors','surveys'].forEach(t=>XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(flattenRows(t)),t));XLSX.writeFile(wb,'talent_suite_data.xlsx')}
 function parseCSV(txt){let lines=txt.replace(/^\ufeff/,'').split(/\r?\n/).filter(Boolean);let heads=lines.shift().split(',').map(h=>h.replace(/^"|"$/g,''));return lines.map(line=>{let vals=line.match(/("([^"]|"")*"|[^,]+)/g)||[];let o={};heads.forEach((h,i)=>o[h]=(vals[i]||'').replace(/^"|"$/g,'').replace(/""/g,'"'));return o})}
 function importFile(){let file=document.getElementById('importFile').files[0], target=document.getElementById('importTarget').value;if(!file)return toast('اختر ملفاً أولاً');let r=new FileReader();r.onload=e=>{try{let data;if(file.name.endsWith('.json')){data=JSON.parse(e.target.result);if(target==='all'){DB=data}else DB[target]=data}else if(file.name.endsWith('.csv')){DB[target]=parseCSV(e.target.result)}else{if(typeof XLSX==='undefined')return toast('مكتبة Excel تحتاج اتصال إنترنت');let wb=XLSX.read(e.target.result,{type:'array'});let ws=wb.Sheets[wb.SheetNames[0]];DB[target]=XLSX.utils.sheet_to_json(ws)};['jobs','appraisals'].forEach(t=>DB[t]?.forEach(x=>{if(typeof x.kpis==='string')try{x.kpis=JSON.parse(x.kpis)}catch(e){};if(typeof x.scores==='string')try{x.scores=JSON.parse(x.scores)}catch(e){}}));save();toast('تم الاستيراد بنجاح');render('data');updateHeader()}catch(err){alert('تعذر الاستيراد: '+err.message)}};if(file.name.match(/\.xlsx?$|\.xls$/))r.readAsArrayBuffer(file);else r.readAsText(file,'utf-8')}
-function resetDemo(){localStorage.removeItem(KEY);location.reload()}
-load();initTabs();render('dashboard');
+function resetDemo(){localStorage.removeItem(KEY);DB=JSON.parse(JSON.stringify(DEFAULT_DB));migrateCriticalJobs();ensureCriticalSeedData();ensureBulkSeedData();save();toast('تمت استعادة البيانات التجريبية مع إحصائيات الوظائف الحرجة');render('dashboard');updateHeader()}
+try{load();initTabs();render('dashboard');}catch(err){console.error(err);document.body.insertAdjacentHTML('afterbegin',`<div style="direction:rtl;background:#fee2e2;color:#991b1b;padding:12px 16px;font-family:Cairo,Arial;border-bottom:1px solid #fecaca;font-weight:700">حدث خطأ في تهيئة البيانات: ${err.message}</div>`);}
 </script>
 </body>
 </html>
