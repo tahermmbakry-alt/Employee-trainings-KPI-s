@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>منظومة إدارة المواهب والهيكل الوظيفي والتقييم - v7.4 Org Zoom Controls</title>
+<title>منظومة التقييم المؤسسي والتعاقب ومؤشرات الاداء للموظفين - V7.20</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;950&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,19 +34,52 @@ body{font-family:'Cairo',sans-serif;background:#f8fafc}::-webkit-scrollbar{width
 .action-stack{display:inline-flex;flex-direction:column;gap:.35rem;align-items:stretch;justify-content:center;min-width:64px}
 .action-stack .btn{width:100%;padding:.45rem .5rem!important;font-size:.72rem!important;white-space:nowrap}
 .summary-wrap{max-width:280px;white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.table-ellipsis{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* V7.20 header layout fix: flexible title/version/subtitle without clipping */
+.app-header-shell{min-height:104px;padding-top:14px;padding-bottom:14px;align-items:center}
+.app-title-block{min-width:0;line-height:1.35;padding-top:2px;padding-bottom:2px}
+.app-title-row{display:block;line-height:1.45;margin:0 0 4px 0;white-space:normal;overflow:visible}
+.app-version-row{display:flex;align-items:center;gap:.5rem;margin:2px 0 5px 0;min-height:24px}
+.version-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:999px;background:rgba(99,102,241,.24);color:#dbeafe;border:1px solid rgba(199,210,254,.45);font-size:.72rem;font-weight:950;white-space:nowrap;vertical-align:middle}
+.app-subtitle-row{display:block;line-height:1.55;white-space:normal;overflow:visible}
+.header-settings-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border-radius:.9rem;padding:.65rem .85rem;font-size:.74rem;font-weight:900;background:rgba(255,255,255,.08);color:#e0e7ff;border:1px solid rgba(199,210,254,.28);transition:.2s;white-space:nowrap}
+.header-settings-btn:hover{background:rgba(255,255,255,.14);color:white}
+.gap-filter-card{padding:1rem;border-radius:1.25rem;background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #e2e8f0}
+.gap-filter-row{display:grid;grid-template-columns:minmax(260px,1fr) minmax(320px,1.2fr);gap:.85rem;align-items:start}
+.gap-filter-row label{min-height:1rem}
+.gap-filter-field{height:44px;min-height:44px}
+.gap-filter-help{min-height:18px}
+
+/* V7.22: شعار البرنامج المستورد */
+.app-logo-box{width:56px;height:56px;border-radius:18px;background:rgba(99,102,241,.95);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 12px 28px rgba(79,70,229,.25);border:1px solid rgba(199,210,254,.35);flex-shrink:0}
+.app-logo-box img{width:100%;height:100%;object-fit:contain;background:white;padding:5px}
+.app-logo-box .default-logo-icon{font-size:1.25rem;color:white}
+.logo-preview-box{width:82px;height:82px;border-radius:18px;border:1px dashed #c7d2fe;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logo-preview-box img{max-width:100%;max-height:100%;object-fit:contain}
+.logo-upload-actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+
+@media(max-width:900px){.gap-filter-row{grid-template-columns:1fr}.version-badge{margin-top:.25rem}.header-settings-btn span{display:none}}
+
 </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col antialiased">
 <header class="no-print bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 text-white shadow-2xl sticky top-0 z-40 border-b border-indigo-400/20">
-  <div class="max-w-7xl mx-auto h-20 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between gap-4 app-header-shell">
     <div class="flex items-center gap-4">
-      <div class="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg"><i class="fa-solid fa-sitemap text-xl"></i></div>
-      <div>
-        <h1 class="text-lg sm:text-2xl font-black">منظومة إدارة المواهب والهيكل والتقييم المؤسسي</h1>
-        <p class="text-xs text-indigo-200 font-semibold">اختبارات الموظفين، الهيكل الوظيفي، الوصف الوظيفي، KPIs، وتبادل البيانات Excel / CSV / JSON</p>
+      <div id="appLogoBox" class="app-logo-box"><i class="fa-solid fa-sitemap default-logo-icon"></i></div>
+      <div class="app-title-block">
+        <h1 class="text-lg sm:text-2xl font-black app-title-row">
+          <span id="appTitleText">منظومة التقييم المؤسسي والتعاقب ومؤشرات الاداء للموظفين</span>
+        </h1>
+        <div class="app-version-row">
+          <span class="text-[10px] text-indigo-200 font-black">رقم الإصدار</span>
+          <span id="appVersionBadge" class="version-badge">V7.22</span>
+        </div>
+        <p id="appSubtitleText" class="text-xs text-indigo-200 font-semibold app-subtitle-row">اختبارات الموظفين، الهيكل الوظيفي، الوصف الوظيفي، KPIs، وتبادل البيانات Excel / CSV / JSON</p>
       </div>
     </div>
-    <div class="hidden md:flex gap-3 text-right">
+    <div class="hidden md:flex gap-3 text-right items-center">
+      <button onclick="openAppSettingsForm()" class="header-settings-btn no-print" title="تغيير اسم البرنامج والوصف"><i class="fa-solid fa-pen-to-square"></i><span>تعديل الاسم</span></button>
       <div class="bg-slate-900/70 border border-slate-700 rounded-2xl px-4 py-2"><span class="block text-[10px] text-slate-400 font-black">الموظفون</span><strong id="headEmployees" class="text-emerald-300">0</strong></div>
       <div class="bg-slate-900/70 border border-slate-700 rounded-2xl px-4 py-2"><span class="block text-[10px] text-slate-400 font-black">متوسط الأداء</span><strong id="headPerformance" class="text-amber-300">0%</strong></div>
     </div>
@@ -87,11 +120,17 @@ body{font-family:'Cairo',sans-serif;background:#f8fafc}::-webkit-scrollbar{width
     <section id="tab-data" class="hidden space-y-6"></section>
   </main>
 </div>
-<footer class="no-print bg-slate-950 text-slate-400 py-5 text-center text-xs">© 2026 - نسخة مطورة v7.1 Enterprise تعمل محلياً عبر المتصفح مع حفظ LocalStorage وإمكانية التصدير والاستيراد.</footer>
+<footer class="no-print bg-slate-950 text-slate-400 py-5 text-center text-xs">© 2026 - نسخة مطورة V7.19 Enterprise تعمل محلياً عبر المتصفح مع حفظ LocalStorage وإمكانية التصدير والاستيراد.</footer>
 <div id="modal" class="modal"><div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"><div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white p-5 flex justify-between items-center"><h3 id="modalTitle" class="font-black"></h3><button onclick="closeModal()" class="text-slate-300 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button></div><div id="modalBody" class="p-6"></div></div></div>
 <script>
-const KEY='mtcit_talent_suite_v716_render_filters_fix';
+const APP_INFO={
+ title:'منظومة التقييم المؤسسي والتعاقب ومؤشرات الاداء للموظفين',
+ subtitle:'اختبارات الموظفين، الهيكل الوظيفي، الوصف الوظيفي، KPIs، وتبادل البيانات Excel / CSV / JSON',
+ version:'V7.22'
+};
+const KEY='mtcit_talent_suite_v722_logo_upload';
 let DB={
+ appSettings:{title:APP_INFO.title,subtitle:APP_INFO.subtitle,version:APP_INFO.version,logo:''},
  orgUnits:[
   {id:'org1',name:'مكتب الرئيس التنفيذي',type:'رئاسة',parentId:'',managerEmployeeId:'emp1'},
   {id:'org2',name:'الإدارة العامة للتحول الرقمي',type:'إدارة عامة',parentId:'org1',managerEmployeeId:'emp1'},
@@ -149,6 +188,7 @@ function load(){
       let old=JSON.parse(s);
       DB={...DEFAULT_DB,...old};
       ['orgUnits','employees','jobs','questions','exams','budgetItems','courses','successors','surveys','appraisals'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
+      DB.appSettings={...DEFAULT_DB.appSettings,...(old.appSettings||{})};
     }
     migrateCriticalJobs();
     ensureCriticalSeedData();
@@ -246,7 +286,22 @@ function avgPerformance(){let vals=DB.appraisals.map(calcAppraisal);return vals.
 function calcAppraisal(ap){let w=ap.scores.reduce((s,x)=>s+Number(x.weight||0),0)||1;return Math.round(ap.scores.reduce((s,x)=>s+(Number(x.actual||0)*Number(x.weight||0)),0)/w)}
 function switchTab(tab){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById('tab-'+tab).classList.remove('hidden');document.querySelectorAll('.navbtn').forEach(b=>{b.classList.remove('tab-active');b.classList.add('tab-idle')});document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b=>{b.classList.add('tab-active');b.classList.remove('tab-idle')});render(tab)}
 function initTabs(){document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));const labels={dashboard:'الرئيسية',org:'الهيكل',employees:'الموظفون',jobs:'الوصف الوظيفي',tests:'الاختبارات',performance:'الأداء',gap:'الفجوات',training:'الورش',succession:'9-Box',surveys:'الرضا',budget:'الموازنة',data:'البيانات'};document.getElementById('mobileTabs').innerHTML=Object.entries(labels).map(([k,v])=>`<button data-tab="${k}" class="navbtn px-4 py-2 text-xs font-black whitespace-nowrap rounded-xl ${k==='dashboard'?'tab-active':'tab-idle bg-slate-100'}">${v}</button>`).join('');document.querySelectorAll('#mobileTabs .navbtn').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));}
-function updateHeader(){document.getElementById('headEmployees').textContent=DB.employees.length;document.getElementById('headPerformance').textContent=avgPerformance()+'%'}
+function updateHeader(){
+  document.getElementById('headEmployees').textContent=DB.employees.length;
+  document.getElementById('headPerformance').textContent=avgPerformance()+'%';
+  DB.appSettings={...APP_INFO,...(DEFAULT_DB.appSettings||{}),...(DB.appSettings||{})};
+  const titleEl=document.getElementById('appTitleText');
+  const subEl=document.getElementById('appSubtitleText');
+  const verEl=document.getElementById('appVersionBadge');
+  const logoEl=document.getElementById('appLogoBox');
+  if(titleEl)titleEl.textContent=DB.appSettings.title||DEFAULT_DB.appSettings.title;
+  if(subEl)subEl.textContent=DB.appSettings.subtitle||DEFAULT_DB.appSettings.subtitle;
+  if(verEl)verEl.textContent=(DB.appSettings&&DB.appSettings.version)||APP_INFO.version||'V7.22';
+  if(logoEl){
+    const logo=DB.appSettings.logo||'';
+    logoEl.innerHTML=logo?`<img src="${logo}" alt="شعار البرنامج">`:`<i class="fa-solid fa-sitemap default-logo-icon"></i>`;
+  }
+}
 function render(tab='dashboard'){updateHeader();const map={dashboard:()=>renderDashboard(),org:()=>renderOrg(),employees:()=>renderEmployees(),jobs:()=>renderJobs(),tests:()=>renderTests(),performance:()=>renderPerformance(),gap:()=>renderGap(),training:()=>renderTraining(),succession:()=>renderSuccession(),surveys:()=>renderSurveys(),budget:()=>renderBudget(),data:()=>renderData()};(map[tab]||map.dashboard)();}
 
 function isCriticalJob(jobId){const j=byId(DB.jobs,jobId);return j.critical===true || String(j.critical).toLowerCase()==='true'}
@@ -324,6 +379,60 @@ function nineBoxCell(sc){
   const ar=a>=85?'أداء عالٍ':a>=70?'أداء متوسط':'أداء منخفض';
   return pr+' / '+ar;
 }
+
+function openAppSettingsForm(){
+  DB.appSettings={...APP_INFO,...(DEFAULT_DB.appSettings||{}),...(DB.appSettings||{})};
+  const logo=DB.appSettings.logo||'';
+  openModal('تعديل بيانات البرنامج والشعار',`<form onsubmit="saveAppSettings(event)" class="space-y-4">
+    <div><label class="block text-xs font-black text-slate-600 mb-1">اسم البرنامج</label><input name="title" class="field" required value="${esc(DB.appSettings.title)}"></div>
+    <div><label class="block text-xs font-black text-slate-600 mb-1">الوصف المختصر تحت العنوان</label><textarea name="subtitle" class="field" rows="3">${esc(DB.appSettings.subtitle)}</textarea></div>
+    <div><label class="block text-xs font-black text-slate-600 mb-1">رقم الإصدار</label><input name="version" class="field" value="${esc(DB.appSettings.version||APP_INFO.version||'V7.22')}"></div>
+    <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50">
+      <label class="block text-xs font-black text-slate-700 mb-2">شعار البرنامج</label>
+      <div class="flex items-center gap-4 flex-wrap">
+        <div id="logoPreviewBox" class="logo-preview-box">${logo?`<img src="${logo}" alt="الشعار">`:'<i class="fa-solid fa-image text-slate-400 text-2xl"></i>'}</div>
+        <div class="flex-1 min-w-[220px]">
+          <input type="hidden" name="logo" id="appLogoData" value="${esc(logo)}">
+          <input type="file" id="appLogoFile" accept="image/*" class="field" onchange="handleAppLogoUpload(event)">
+          <div class="logo-upload-actions mt-2">
+            <button type="button" class="btn btn-soft" onclick="document.getElementById('appLogoFile').click()"><i class="fa-solid fa-upload"></i> استيراد صورة</button>
+            <button type="button" class="btn btn-danger" onclick="clearAppLogo()"><i class="fa-solid fa-trash"></i> حذف الشعار</button>
+          </div>
+          <p class="text-[11px] text-slate-500 font-bold mt-2">يفضل استخدام صورة PNG أو JPG مربعة. سيتم حفظ الشعار محلياً داخل المتصفح.</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 text-xs text-indigo-800 font-bold leading-relaxed">سيظهر الاسم والوصف ورقم الإصدار والشعار مباشرة في أعلى الصفحة، ويتم حفظها محلياً داخل المتصفح.</div>
+    <button class="btn btn-primary w-full">حفظ إعدادات البرنامج</button>
+  </form>`);
+}
+function handleAppLogoUpload(e){
+  const file=e.target.files&&e.target.files[0];
+  if(!file)return;
+  if(!file.type.startsWith('image/')){toast('الرجاء اختيار ملف صورة فقط');return;}
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const data=ev.target.result;
+    const input=document.getElementById('appLogoData');
+    const preview=document.getElementById('logoPreviewBox');
+    if(input)input.value=data;
+    if(preview)preview.innerHTML=`<img src="${data}" alt="الشعار">`;
+  };
+  reader.readAsDataURL(file);
+}
+function clearAppLogo(){
+  const input=document.getElementById('appLogoData');
+  const preview=document.getElementById('logoPreviewBox');
+  if(input)input.value='';
+  if(preview)preview.innerHTML='<i class="fa-solid fa-image text-slate-400 text-2xl"></i>';
+}
+function saveAppSettings(e){
+  e.preventDefault();
+  const f=new FormData(e.target);
+  DB.appSettings={title:f.get('title'),subtitle:f.get('subtitle'),version:f.get('version')||APP_INFO.version||'V7.22',logo:f.get('logo')||''};
+  save();closeModal();updateHeader();toast('تم تحديث بيانات البرنامج والشعار');
+}
+
 function renderDashboard(){
     const totalEmp=DB.employees.length;
     const active=DB.employees.filter(e=>e.status==='نشط').length;
@@ -786,7 +895,7 @@ function setGapEmployee(id){GAP_FILTER.employeeId=id;renderGapDetails();}
 function updateGapEmployeeOptions(){
   const box=document.getElementById('gapEmpList'); if(!box) return;
   const rows=gapFilteredEmployees();
-  box.innerHTML=`<select id="gapEmp" onchange="setGapEmployee(this.value)" class="field">${rows.map(x=>`<option value="${x.id}" ${x.id===GAP_FILTER.employeeId?'selected':''}>${esc(x.name)} - ${orgName(x.orgUnitId)} - ${jobName(x.jobId)}</option>`).join('')}</select><div class="text-[10px] text-slate-400 font-bold mt-1">نتائج البحث: ${rows.length} موظف</div>`;
+  box.innerHTML=`<select id="gapEmp" onchange="setGapEmployee(this.value)" class="field gap-filter-field">${rows.map(x=>`<option value="${x.id}" ${x.id===GAP_FILTER.employeeId?'selected':''}>${esc(x.name)} - ${orgName(x.orgUnitId)} - ${jobName(x.jobId)}</option>`).join('')}</select><div class="text-[10px] text-slate-400 font-bold mt-1">نتائج البحث: ${rows.length} موظف</div>`;
 }
 function renderGapDetails(){
   const wrap=document.getElementById('gapDetails'); if(!wrap) return;
@@ -805,7 +914,7 @@ function renderGap(){
   if(existing!==undefined) GAP_FILTER.search=existing;
   const rows=gapFilteredEmployees();
   if(!GAP_FILTER.employeeId || !rows.some(e=>e.id===GAP_FILTER.employeeId)) GAP_FILTER.employeeId=rows[0]?.id || DB.employees[0]?.id || '';
-  document.getElementById('tab-gap').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">تحليل فجوات المهارات والجدارات</h2><p class="text-xs text-slate-500">يمكن البحث باسم الموظف أو رقمه أو إدارته لاختيار الموظف وتحليل فجواته.</p></div></div><div class="card p-4"><div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-end"><div><label class="block text-xs font-black text-slate-600 mb-1">بحث باسم الموظف أو الإدارة</label><input id="gapSearch" class="field" placeholder="اكتب اسم الموظف أو الإدارة..." value="${esc(GAP_FILTER.search)}" oninput="setGapSearch(this.value)"></div><div><label class="block text-xs font-black text-slate-600 mb-1">اختيار الموظف</label><div id="gapEmpList"></div></div></div></div><div id="gapDetails" class="space-y-4"></div>`;
+  document.getElementById('tab-gap').innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-3"><div><h2 class="text-2xl font-black">تحليل فجوات المهارات والجدارات</h2><p class="text-xs text-slate-500">يمكن البحث باسم الموظف أو رقمه أو إدارته لاختيار الموظف وتحليل فجواته.</p></div></div><div class="gap-filter-card"><div class="gap-filter-row"><div><label class="block text-xs font-black text-slate-600 mb-1">بحث باسم الموظف أو الإدارة</label><input id="gapSearch" class="field gap-filter-field" placeholder="اكتب اسم الموظف أو الإدارة..." value="${esc(GAP_FILTER.search)}" oninput="setGapSearch(this.value)"><div class="gap-filter-help text-[10px] text-slate-400 font-bold mt-1">يبحث في الاسم، الرقم الوظيفي، البريد، الإدارة، والوظيفة.</div></div><div><label class="block text-xs font-black text-slate-600 mb-1">اختيار الموظف</label><div id="gapEmpList"></div></div></div></div><div id="gapDetails" class="space-y-4 mt-4"></div>`;
   updateGapEmployeeOptions();
   renderGapDetails();
 }
